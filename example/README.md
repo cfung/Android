@@ -1,2 +1,2 @@
-# Android
-Repo for Android projects
+# Android Examples
+Repo for Android code example
