@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         dataModels.add(new DataModel("Oreo", "Android 8.0", "26", "August 21, 2017"));
 
         adapter = new CustomAdapter(dataModels, getApplicationContext());
+        // without this line, text and images will not be displayed on UI
+        listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
