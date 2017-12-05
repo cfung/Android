@@ -10,8 +10,9 @@
 
     <ImageView
         android:id="@+id/list_item_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_launcher"/>
 
     <LinearLayout
         android:layout_width="0dp"
