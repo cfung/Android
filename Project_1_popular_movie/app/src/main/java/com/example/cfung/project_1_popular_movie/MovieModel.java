@@ -6,15 +6,9 @@ package com.example.cfung.project_1_popular_movie;
 
 public class MovieModel {
 
-    String movieName;
-    String movieLink;
-    int image; // drawable reference id
-
-    public MovieModel(String mName, int mImage)
-    {
-        this.movieName = mName;
-        this.image = mImage;
-    }
+    private String movieName;
+    private String movieLink;
+    //private int image; // drawable reference id
 
     public MovieModel(String mName, String mLink)
     {
@@ -22,7 +16,7 @@ public class MovieModel {
         this.movieLink = mLink;
     }
 
-    public String getMovieLink(){
-        return this.movieLink;
-    }
+    public String getMovieName(){ return this.movieName;}
+    public String getMovieLink(){return this.movieLink;}
+
 }
