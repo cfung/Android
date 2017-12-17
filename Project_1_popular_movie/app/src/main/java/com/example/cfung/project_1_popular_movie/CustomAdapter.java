@@ -134,7 +134,8 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
                 .into(iconView);*/
 
         TextView movieNameView = (TextView) convertView.findViewById(R.id.list_item_movie_name);
-        movieNameView.setText(movies.getMovieName());
+        movieNameView.setText("movie 1");
+        //movieNameView.setText(movies.getMovieName());
 
         return convertView;
     }

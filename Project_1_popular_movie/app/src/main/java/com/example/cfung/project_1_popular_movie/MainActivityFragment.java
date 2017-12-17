@@ -9,6 +9,7 @@ import android.widget.GridView;
 import android.widget.ListView;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 
 /**
  * Created by cfung on 10/4/17.
@@ -18,12 +19,15 @@ public class MainActivityFragment extends Fragment {
 
     private CustomAdapter movieAdapter;
 
-    MovieModel[] movies = {
+    /*MovieModel[] movies = {
 
             //public MovieModel(String mName, int mImage)
-            new MovieModel("movie 1", 1),
+            new MovieModel(getMovieName(), getMovieLink()),
+    };*/
+    ArrayList<MovieModel> movieModelArrayList = new ArrayList<MovieModel>();
 
-    };
+    //movieModelArrayList.add(movie);
+
 
 
     public MainActivityFragment(){
@@ -34,8 +38,9 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-        movieAdapter = new CustomAdapter(getActivity(), Arrays.asList(movies));
+        MovieModel movie = new MovieModel("movie 1", "");
+        movieModelArrayList.add(movie);
+        movieAdapter = new CustomAdapter(getActivity(), movieModelArrayList);
 
         GridView gridView = (GridView) rootView.findViewById(R.id.movie_grid);
         gridView.setAdapter(movieAdapter);
