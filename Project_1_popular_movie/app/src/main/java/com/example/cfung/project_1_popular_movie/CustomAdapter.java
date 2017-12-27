@@ -105,13 +105,14 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
         /*for (int i=0; i.size();i++){
 
             Log.v(TAG, "movie in getView.."+movies.get(i).getMovieName());
-        }
+        }*/
 
         //crashing since AllMovies is Null
-        String moviePostPath1 = "http://image.tmdb.org/t/p/w185/"+movies.get(0).getMovieLink();*/
         Log.v(TAG, "mMovies link is..."+mMovies.getMovieLink());
+        String moviePostPath1 = "http://image.tmdb.org/t/p/w185/"+mMovies.getMovieLink();
+        Log.v(TAG, "what is moviePostPath1.."+moviePostPath1);
         Picasso.with(getContext())
-                .load(mMovies.getMovieLink())
+                .load(moviePostPath1)
                 .placeholder(R.drawable.placeholder)
                 .into(imageView);
         //imageView.setImageResource(R.drawable.ic_launcher);
@@ -120,10 +121,10 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
                 .into(iconView);*/
 
         TextView movieNameView = (TextView) convertView.findViewById(R.id.list_item_movie_name);
-        //movieNameView.setText(AllMovies.get(0).getMovieName());
+        movieNameView.setText(AllMovies.get(position).getMovieName());
         //movieNameView.setText(movies.getMovieName());
 
-        ImageView imageView2 = (ImageView) convertView.findViewById(R.id.list_item_icon2);
+        /*ImageView imageView2 = (ImageView) convertView.findViewById(R.id.list_item_icon2);
 
         Picasso.with(getContext())
                 .load("http://image.tmdb.org/t/p/w185/qMGeFRYrV7yBNQA7chN0rq8BpwX.jpg")
@@ -141,7 +142,7 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
                 .into(imageView3);
 
         TextView movieNameView3 = (TextView) convertView.findViewById(R.id.list_item_movie_name3);
-        //movieNameView3.setText("movie 3");
+        //movieNameView3.setText("movie 3");*/
 
         // TODO 3:  return rootView or convertView???
         return convertView;
