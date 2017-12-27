@@ -1,5 +1,6 @@
 package com.example.cfung.project_1_popular_movie;
 
+import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -82,18 +83,15 @@ public class MainActivity extends AppCompatActivity {
             Log.v(TAG, "starting doInBackground...");
             String response = null;
             ArrayList<MovieModel> resultslist = new ArrayList<MovieModel>();
-            //String[] resultslist = null;
 
             try {
                 URL url = new URL(urls[0]);
-                //URLConnection conn = movieAPI.openConnection();
                 HttpsURLConnection httpconn = (HttpsURLConnection) url.openConnection();
                 httpconn.setRequestMethod("GET");
                 InputStream in = new BufferedInputStream((httpconn.getInputStream()));
                 response = convertStreamToString(in);
                 Log.v(TAG, "json response: "+ response);
 
-                //DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
                 JSONObject results = new JSONObject(response);
 
                 Log.v(TAG, "results response: " + results);
@@ -109,13 +107,9 @@ public class MainActivity extends AppCompatActivity {
                     // completed:  add movie to movieArray
                     MovieModel movie = new MovieModel(title, popularity, poster_path);
                     resultslist.add(movie);
-                    //resultslist.add(movieArray);
 
                 }
-                //JSONObject jsonObject = new JSONObject(response);
-                //Log.d(TAG, "jsonObject: "+jsonObject);
-                //String moviesPoster = jsonObject.getString("poster_path");
-                //Log.d(TAG, "haha: " + moviesPoster);
+
             } catch (IOException e){
                 e.printStackTrace();
             } catch(JSONException e){
@@ -130,36 +124,17 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(result);
             Log.v(TAG, "what is result in onPostExecute.." +result);
             //ArrayList<MovieModel> AllMovies = new ArrayList<MovieModel>();
-            /*Log.v(TAG, "first result in onPostExecute "+ result);
-            if (result!=null) {
-                for (int i=0; i<result.size(); i++) {
-                    Log.v(TAG, "i is..." + String.valueOf(i));
-                    Log.v(TAG,"result in onPostExecute is: "+result.get(i).getMovieName());
-                    //MovieModel movie = new MovieModel(title, popularity, poster);
-                    MovieModel movie = new MovieModel(result.get(i).getMovieName(), result.get(i).getPopularity(), result.get(i).getMovieLink());
-                    AllMovies.add(movie);
-                    Log.v(TAG, "end of onPostExecute.."+AllMovies.get(i).getMovieName());
-                }
-            }*/
+
             if(result != null){
-                //mPosterMoviePaths =  MovieDataParser.getMoviePosterPaths(mMovieJsonStr);
-                //AllMovies = result;
+
                 movieAdapter.clear();
-                for (MovieModel movie:result){
-                    Log.v(TAG, "what is result in onPostExecute..:"+movie.getMovieName());
-                    movieAdapter.add(movie);
+                for (int i=0; i<result.size();i++){
+                    Log.v(TAG, "i is..."+i);
+                    Log.v(TAG, "what is result in onPostExecute..:"+result.get(i).getMovieName());
+                    movieAdapter.add(result.get(i));
                 }
+
             }
-
-            /*
-            mForecastAdapter.clear();
-            for(String dayForecastStr : result) {
-                mForecastAdapter.add(dayForecastStr);
-            }*/
-
-            //movieAdapter = new CustomAdapter(MainActivity.this, 0, AllMovies);
-            //Log.v(TAG, "AllMovies...in onPostExecute.."+AllMovies.get(0).getMovieName());
-            //gridView.setAdapter(movieAdapter);
 
         }
     }
@@ -167,26 +142,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
         setContentView(R.layout.main);
-
-        //View rootView = inflater.inflate(R.layout.activity_main, container, false);
-
-        //String url = "https://api.themoviedb.org/3/movie/popular?api_key=bad34c8d38b0750ab6bef23cb64440ba";
-        //new MovieQueryTask().execute(url);
-
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
 
         GridView gridView = (GridView) findViewById(R.id.movie_grid);
         AllMovies = new ArrayList<MovieModel>();
@@ -195,8 +151,6 @@ public class MainActivity extends AppCompatActivity {
         gridView.setAdapter(movieAdapter);
         // completed 4:  call asynctask here
         new MovieQueryTask().execute(MOVIE_API_URL);
-        //makeServiceCall(MOVIE_API_URL);
-        //return rootView;
     }
 
     @Override
