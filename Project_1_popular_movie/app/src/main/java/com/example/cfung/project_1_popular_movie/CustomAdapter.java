@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,118 +41,22 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
 
     private static final String TAG = "MyActivity";
 
-    private String convertStreamToString(InputStream is){
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        try {
-            while ((line = reader.readLine()) != null){
-                sb.append(line).append('\n');
-            }
-        } catch (IOException e){
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-        }
+    String BASE_POSTER_URL= "http://image.tmdb.org/t/p/w185";
 
-        return sb.toString();
-    }
-
-    public String makeServiceCall(String reqUrl){
-
-        String response = null;
-        try{
-            URL url = new URL (reqUrl);
-            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            InputStream in = new BufferedInputStream(conn.getInputStream());
-            Log.i("resp in makeService: ", in.toString());
-            response = convertStreamToString(in);
-
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-
-        return response;
-
-    }
+    ArrayList<MovieModel> AllMovies = new ArrayList<MovieModel>();
 
 
-    public class MovieQueryTask extends AsyncTask<String, Void, String[]>{
-
-        @Override
-        protected String[] doInBackground(String... urls) {
-            Log.v(TAG, "starting doInBackground...");
-            String response = null;
-            //ArrayList<String> resultslist = new ArrayList<String>();
-            String[] resultslist = null;
-
-            try {
-                URL url = new URL(urls[0]);
-                //URLConnection conn = movieAPI.openConnection();
-                HttpsURLConnection httpconn = (HttpsURLConnection) url.openConnection();
-                httpconn.setRequestMethod("GET");
-                InputStream in = new BufferedInputStream((httpconn.getInputStream()));
-                response = convertStreamToString(in);
-                Log.v(TAG, "json response: "+ response);
-
-                //DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
-                JSONObject results = new JSONObject(response);
-
-                Log.v(TAG, "results response: " + results);
-
-                JSONArray movieResults = results.getJSONArray("results");
-                for (int i=0; i<movieResults.length(); i++){
-                    JSONObject jsonobject = movieResults.getJSONObject(i);
-                    String poster_path = jsonobject.getString("poster_path");
-                    Log.v(TAG, "poster_path...:" + poster_path);
-                    String title = jsonobject.getString("original_title");
-                    // TODO 
-                }
-                //JSONObject jsonObject = new JSONObject(response);
-                //Log.d(TAG, "jsonObject: "+jsonObject);
-                //String moviesPoster = jsonObject.getString("poster_path");
-                //Log.d(TAG, "haha: " + moviesPoster);
-            } catch (IOException e){
-                e.printStackTrace();
-            } catch(JSONException e){
-                e.printStackTrace();
-            }
-            Log.v(TAG, "returning results in doInbackground.."+resultslist);
-            return resultslist;
-        }
-
-        @Override
-        protected void onPostExecute(String[] result){
-            super.onPostExecute(result);
-
-            ArrayList<MovieModel> AllMovies = new ArrayList<MovieModel>();
-            Log.v(TAG, "first result in onPostExecute "+ result);
-            if (result!=null) {
-                for (int i=0; i<20; i++) {
-
-                    Log.v(TAG,"result in onPostExecute is: "+result);
-                    //MovieModel movie = new MovieModel(title, popularity, poster);
-                    MovieModel movie = new MovieModel("", "", "");
-                    AllMovies.add(movie);
-                }
-            }
-        }
-    }
 
     //TODO 1:  Do i need to override this default constructor?
     public CustomAdapter(Activity context, int resources, ArrayList<MovieModel> movies){
         super(context, resources, movies);
+        this.AllMovies = movies;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
         Log.v(TAG, "what is getView position"+position);
-        MovieModel movies = getItem(position);
+        MovieModel mMovies = getItem(position);
 
         /*
 
@@ -168,8 +73,8 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
         Picasso.with(getContext()).setLoggingEnabled(true);
         //https://api.themoviedb.org/3/movie/550?api_key=bad34c8d38b0750ab6bef23cb64440ba
 
-        String url = "https://api.themoviedb.org/3/movie/popular?api_key=bad34c8d38b0750ab6bef23cb64440ba";
-        new MovieQueryTask().execute(url);
+        /*String url = "https://api.themoviedb.org/3/movie/popular?api_key=bad34c8d38b0750ab6bef23cb64440ba";
+        new MovieQueryTask().execute(url);*/
         //makeServiceCall(url);
         /*try {
 
@@ -197,9 +102,16 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
         //For most phones we recommend using “w185”.
         // /9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg (poster path)
 
+        /*for (int i=0; i.size();i++){
 
+            Log.v(TAG, "movie in getView.."+movies.get(i).getMovieName());
+        }
+
+        //crashing since AllMovies is Null
+        String moviePostPath1 = "http://image.tmdb.org/t/p/w185/"+movies.get(0).getMovieLink();*/
+        Log.v(TAG, "mMovies link is..."+mMovies.getMovieLink());
         Picasso.with(getContext())
-                .load("http://image.tmdb.org/t/p/w185/qlGoGQSVMzIjGbpvXzZUOH1FjNu.jpg")
+                .load(mMovies.getMovieLink())
                 .placeholder(R.drawable.placeholder)
                 .into(imageView);
         //imageView.setImageResource(R.drawable.ic_launcher);
@@ -208,7 +120,7 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
                 .into(iconView);*/
 
         TextView movieNameView = (TextView) convertView.findViewById(R.id.list_item_movie_name);
-        movieNameView.setText("movie 1");
+        //movieNameView.setText(AllMovies.get(0).getMovieName());
         //movieNameView.setText(movies.getMovieName());
 
         ImageView imageView2 = (ImageView) convertView.findViewById(R.id.list_item_icon2);
