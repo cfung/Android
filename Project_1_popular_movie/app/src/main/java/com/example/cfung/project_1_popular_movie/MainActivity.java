@@ -1,5 +1,7 @@
 package com.example.cfung.project_1_popular_movie;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,7 +14,9 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,12 +30,15 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 
+import android.widget.AdapterView.OnItemClickListener;
+
 import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MyActivity";
-    final static String MOVIE_API_URL = "https://api.themoviedb.org/3/movie/popular?api_key=bad34c8d38b0750ab6bef23cb64440ba";
+    final static String MOVIE_API_POPULAR = "https://api.themoviedb.org/3/movie/popular?api_key=bad34c8d38b0750ab6bef23cb64440ba";
+    final static String MOVIE_API_TOP = "https://api.themoviedb.org/3/movie/top_rated?api_key=bad34c8d38b0750ab6bef23cb64440ba";
     private GridView gridView = null;
     private CustomAdapter movieAdapter = null;
     ArrayList<MovieModel> AllMovies = null;
@@ -86,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<MovieModel> resultslist = new ArrayList<MovieModel>();
 
             try {
+                Log.v(TAG, "what is URL in doInBackground.."+urls[0].toString());
                 URL url = new URL(urls[0]);
                 HttpsURLConnection httpconn = (HttpsURLConnection) url.openConnection();
                 httpconn.setRequestMethod("GET");
@@ -134,9 +142,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.v(TAG, "what is result in onPostExecute..:"+result.get(i).getMovieName());
                     movieAdapter.add(result.get(i));
                 }
-
             }
-
         }
     }
 
@@ -161,7 +167,26 @@ public class MainActivity extends AppCompatActivity {
         movieAdapter = new CustomAdapter(MainActivity.this, 0, AllMovies);
         gridView.setAdapter(movieAdapter);
         // completed 4:  call asynctask here
-        new MovieQueryTask().execute(MOVIE_API_URL);
+        new MovieQueryTask().execute(MOVIE_API_POPULAR);
+
+        gridView.setOnItemClickListener(new OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+
+                Context context = MainActivity.this;
+                String message = "Image clicked!\nTODO: Start a new Activity and pass some data.";
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+
+                Class detailActivity = DetailActivity.class;
+
+                Intent startDetailActivityIntent = new Intent(context, detailActivity);
+                startActivity(startDetailActivityIntent);
+
+            }
+        });
+
+
     }
 
     @Override
@@ -182,9 +207,13 @@ public class MainActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.action_popular:
+                Log.v(TAG, "onOptionsItemSelected - popular");
+                new MovieQueryTask().execute(MOVIE_API_POPULAR);
                 return true;
 
             case R.id.action_toprated:
+                Log.v(TAG, "onOptionsItemSelected - top rated");
+                new MovieQueryTask().execute(MOVIE_API_TOP);
                 return true;
 
             default:
