@@ -113,8 +113,11 @@ public class MainActivity extends AppCompatActivity {
                     Log.v(TAG, "movieResults poster_path...:" + poster_path);
                     String title = jsonobject.getString("original_title");
                     String popularity = jsonobject.getString("popularity");
+                    String overview = jsonobject.getString("overview");
+                    String vote_average = jsonobject.getString("vote_average");
+                    String release_date = jsonobject.getString("release_date");
                     // completed:  add movie to movieArray
-                    MovieModel movie = new MovieModel(title, popularity, poster_path);
+                    MovieModel movie = new MovieModel(title, popularity, poster_path, overview, vote_average, release_date);
                     resultslist.add(movie);
 
                 }
@@ -175,12 +178,17 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 
                 Context context = MainActivity.this;
-                String message = "Image clicked!\nTODO: Start a new Activity and pass some data.";
+                String message = AllMovies.get(position).getMovieName()+"Image clicked!\n";
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show();
 
                 Class detailActivity = DetailActivity.class;
 
                 Intent startDetailActivityIntent = new Intent(context, detailActivity);
+                startDetailActivityIntent.putExtra("name", AllMovies.get(position).getMovieName());
+                startDetailActivityIntent.putExtra("link", AllMovies.get(position).getMovieLink());
+                startDetailActivityIntent.putExtra("overview", AllMovies.get(position).getOverview());
+                startDetailActivityIntent.putExtra("vote_average", AllMovies.get(position).getVote_average());
+                startDetailActivityIntent.putExtra("overview", AllMovies.get(position).getRelease_date());
                 startActivity(startDetailActivityIntent);
 
             }
