@@ -11,7 +11,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         // This is to retrieve API key
-        buildCofigField 'String', 'bad34c8d38b0750ab6bef23cb64440ba', getApiKey()
+        //buildCofigField 'String', 'bad34c8d38b0750ab6bef23cb64440ba', getApiKey()
     }
     buildTypes {
         release {
@@ -23,6 +23,10 @@ android {
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://maven.google.com/'
+        name 'Google'
+    }
 }
 
 dependencies {
