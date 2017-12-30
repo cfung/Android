@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         return sb.toString();
     }
 
+    // AsyncTask to perform network operation in a separate thread than mainUI thread
     public class MovieQueryTask extends AsyncTask<String, Void, ArrayList<MovieModel>> {
 
         @Override

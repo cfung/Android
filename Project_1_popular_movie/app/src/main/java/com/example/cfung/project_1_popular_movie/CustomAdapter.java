@@ -34,7 +34,7 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
- * Created by cfung on 10/4/17.
+ * CustomAdapter which holds an ImageView and TextView
  */
 //public class CustomAdapter extends ArrayAdapter<MovieModel>{
 public class CustomAdapter extends ArrayAdapter<MovieModel>{
@@ -75,7 +75,6 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
         TextView movieNameView = (TextView) convertView.findViewById(R.id.list_item_movie_name);
         movieNameView.setText(AllMovies.get(position).getMovieName());
 
-        // TODO 3:  return rootView or convertView???
         return convertView;
     }
 }
