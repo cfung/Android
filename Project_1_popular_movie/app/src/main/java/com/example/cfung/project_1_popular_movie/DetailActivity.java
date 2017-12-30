@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.util.Log;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by cfung on 12/27/17.
@@ -17,6 +20,8 @@ import android.widget.TextView;
  */
 
 public class DetailActivity extends AppCompatActivity {
+
+    private static final String TAG = "MyActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -34,17 +39,23 @@ public class DetailActivity extends AppCompatActivity {
 
         if(movieBundle != null)
         {
-
-
-            //imageView.s
+            String textLink = (String) movieBundle.get("link");
             String textTitle =(String) movieBundle.get("name");
-            movieTitle.setText(textTitle);
+            movieTitle.setText("Title: "+textTitle);
             String textSynopsis =(String) movieBundle.get("overview");
-            movieSynopsis.setText(textSynopsis);
+            movieSynopsis.setText("Synopsis: "+textSynopsis);
             String textRating =(String) movieBundle.get("vote_average");
-            movieRating.setText(textRating);
+            movieRating.setText("Rating: "+textRating);
             String textDate =(String) movieBundle.get("release_date");
-            movieReleaseDate.setText(textDate);
+            movieReleaseDate.setText("Release Date: "+textDate);
+
+            String moviePath = "http://image.tmdb.org/t/p/w185/" + textLink;
+            Log.v(TAG, "what is moviePath in detail.."+moviePath);
+
+            Picasso.with(getApplicationContext())
+                    .load(moviePath)
+                    .placeholder(R.drawable.placeholder)
+                    .into(imageView);
 
         }
 
