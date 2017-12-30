@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(false);
 
         GridView gridView = (GridView) findViewById(R.id.movie_grid);
         AllMovies = new ArrayList<MovieModel>();
