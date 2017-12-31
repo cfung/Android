@@ -62,7 +62,6 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.list_item_icon);
         Picasso.with(getContext()).setLoggingEnabled(true);
-        //https://api.themoviedb.org/3/movie/550?api_key=bad34c8d38b0750ab6bef23cb64440ba
 
         Log.v(TAG, "mMovies link is..."+mMovies.getMovieLink());
         String moviePostPath1 = "http://image.tmdb.org/t/p/w185/"+mMovies.getMovieLink();
