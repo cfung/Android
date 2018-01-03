@@ -37,8 +37,8 @@ import javax.net.ssl.HttpsURLConnection;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MyActivity";
-    final static String MOVIE_API_POPULAR = "https://api.themoviedb.org/3/movie/popular?api_key=<API_KEY>";
-    final static String MOVIE_API_TOP = "https://api.themoviedb.org/3/movie/top_rated?api_key=<API_KEY>";
+    final static String MOVIE_API_POPULAR = "https://api.themoviedb.org/3/movie/popular?api_key=bad34c8d38b0750ab6bef23cb64440ba";
+    final static String MOVIE_API_TOP = "https://api.themoviedb.org/3/movie/top_rated?api_key=bad34c8d38b0750ab6bef23cb64440ba";
     private GridView gridView = null;
     private CustomAdapter movieAdapter = null;
     ArrayList<MovieModel> AllMovies = null;
@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int i=0; i<movieResults.length(); i++){
                     //ArrayList<String> movieArray = new ArrayList<String>();
                     JSONObject jsonobject = movieResults.getJSONObject(i);
+                    String id = jsonobject.getString("id");
                     String poster_path = jsonobject.getString("poster_path");
                     Log.v(TAG, "movieResults poster_path...:" + poster_path);
                     String title = jsonobject.getString("original_title");
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                     String vote_average = jsonobject.getString("vote_average");
                     String release_date = jsonobject.getString("release_date");
                     // completed:  add movie to movieArray
-                    MovieModel movie = new MovieModel(title, popularity, poster_path, overview, vote_average, release_date);
+                    MovieModel movie = new MovieModel(title, popularity, poster_path, overview, vote_average, release_date, id);
                     resultslist.add(movie);
 
                 }

@@ -12,9 +12,10 @@ public class MovieModel {
     private String overview;
     private String vote_average;
     private String release_date;
+    private String id;
     //private int image; // drawable reference id
 
-    public MovieModel(String mName, String poplularity, String mLink, String mOverview, String mVote_average, String mRelease_date)
+    public MovieModel(String mName, String poplularity, String mLink, String mOverview, String mVote_average, String mRelease_date, String mID)
     {
         this.movieName = mName;
         this.popularity = poplularity;
@@ -22,6 +23,7 @@ public class MovieModel {
         this.overview = mOverview;
         this.vote_average = mVote_average;
         this.release_date = mRelease_date;
+        this.id = mID;
     }
 
     public String getMovieName(){ return this.movieName;}
@@ -30,5 +32,5 @@ public class MovieModel {
     public String getOverview(){return this.overview;}
     public String getVote_average(){return this.vote_average;}
     public String getRelease_date(){return this.release_date;}
-
+    public String getMovieID(){return this.id;}
 }
