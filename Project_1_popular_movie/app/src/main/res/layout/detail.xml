@@ -36,6 +36,12 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/detail_date"
                 android:layout_below="@+id/detail_vote"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_trailer"
+                android:layout_below="@+id/detail_date"
+                android:src="@drawable/play_button"/>
 
         </RelativeLayout>
     </LinearLayout>

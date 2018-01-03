@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.util.Log;
 import android.widget.Toast;
 import com.squareup.picasso.Picasso;
+import android.net.Uri;
 
 /**
  * Created by cfung on 12/27/17.
@@ -71,6 +72,9 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String youtubePath = "https://www.youtube.com/watch?v=Y9JvS2TmSvA";
                 Uri uri = Uri.parse(youtubePath);
+                uri = Uri.parse("vnd.youtube:" + uri.getQueryParameter("v"));
+                Intent movieIntent = new Intent (Intent.ACTION_VIEW, uri);
+                startActivity(movieIntent);
                 Toast.makeText(DetailActivity.this,
                         "ImageButton is clicked!", Toast.LENGTH_SHORT).show();
                 Log.v(TAG, "what is trailerPath: "+trailerPath);
