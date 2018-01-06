@@ -44,6 +44,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private static final String TAG = "MyActivity";
     private String trailerPath = null;
+    private String trailerKey = null;
     private String reviewPath = null;
 
     private String convertStreamToString(InputStream is){
@@ -83,13 +84,13 @@ public class DetailActivity extends AppCompatActivity {
         return response;
     }
 
-    public class DetailQueryTask extends AsyncTask<String, Void, ArrayList<String>>{
+    public class DetailQueryTask extends AsyncTask<String, Void, String>{
 
         @Override
-        protected ArrayList<String> doInBackground(String... urls){
+        protected String doInBackground(String... urls){
 
             String responseKey = null;
-            ArrayList<String> resultslist = new ArrayList<String>();
+            String resultKey = null;
             try{
                 String resp = makeServiceCall(urls[0]);
                 Log.v(TAG, "what is url in doInBAckground-DetailActivity.."+urls[0].toString());
@@ -100,7 +101,7 @@ public class DetailActivity extends AppCompatActivity {
                 for (int i=0; i<detailResults.length(); i++){
                     JSONObject jsonobject = detailResults.getJSONObject(i);
                     String movieKey = jsonobject.getString("key");
-                    resultslist.add(movieKey);
+                    resultKey = movieKey;
                     //String resp_movieKey = makeServiceCall("");
                 }
 
@@ -109,17 +110,17 @@ public class DetailActivity extends AppCompatActivity {
             }
 
 
-            Log.v(TAG, "what is resultslist in trailer key.."+resultslist.get(0).toString());
-            return resultslist;
+            Log.v(TAG, "what is resultslist in trailer key.."+resultKey.toString());
+            return resultKey;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<String> result){
+        protected void onPostExecute(String result){
             super.onPostExecute(result);
 
             if(result != null){
 
-
+                trailerKey = result;
 
             }
         }
@@ -185,7 +186,7 @@ public class DetailActivity extends AppCompatActivity {
             }catch(IOException e){
                 e.printStackTrace();
             }*/
-            
+
         }
 
 
@@ -193,7 +194,7 @@ public class DetailActivity extends AppCompatActivity {
         trailerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String youtubePath = "https://www.youtube.com/watch?v=Y9JvS2TmSvA";
+                String youtubePath = "https://www.youtube.com/watch?v=" + trailerKey;
                 Uri uri = Uri.parse(youtubePath);
                 uri = Uri.parse("vnd.youtube:" + uri.getQueryParameter("v"));
                 Intent movieIntent = new Intent (Intent.ACTION_VIEW, uri);
