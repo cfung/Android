@@ -33,4 +33,5 @@ public class MovieModel {
     public String getVote_average(){return this.vote_average;}
     public String getRelease_date(){return this.release_date;}
     public String getMovieID(){return this.id;}
+
 }

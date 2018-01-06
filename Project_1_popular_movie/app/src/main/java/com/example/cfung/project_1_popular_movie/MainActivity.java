@@ -191,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
                 startDetailActivityIntent.putExtra("overview", AllMovies.get(position).getOverview());
                 startDetailActivityIntent.putExtra("vote_average", AllMovies.get(position).getVote_average());
                 startDetailActivityIntent.putExtra("release_date", AllMovies.get(position).getRelease_date());
+                startDetailActivityIntent.putExtra("id", AllMovies.get(position).getMovieID());
                 startActivity(startDetailActivityIntent);
 
             }

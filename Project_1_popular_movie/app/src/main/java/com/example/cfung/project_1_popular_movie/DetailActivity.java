@@ -1,6 +1,8 @@
 package com.example.cfung.project_1_popular_movie;
 
 import android.content.Intent;
+import android.graphics.Movie;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,6 +13,22 @@ import android.util.Log;
 import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import android.net.Uri;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by cfung on 12/27/17.
@@ -26,6 +44,87 @@ public class DetailActivity extends AppCompatActivity {
 
     private static final String TAG = "MyActivity";
     private String trailerPath = null;
+    private String reviewPath = null;
+
+    private String convertStreamToString(InputStream is){
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        try {
+            while ((line = reader.readLine()) != null){
+                sb.append(line).append('\n');
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        return sb.toString();
+    }
+
+    public String makeServiceCall(String reqUrl){
+        String response = null;
+
+        try{
+            URL url = new URL (reqUrl);
+            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            InputStream in = new BufferedInputStream(conn.getInputStream());
+            response = convertStreamToString(in);
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public class DetailQueryTask extends AsyncTask<String, Void, ArrayList<String>>{
+
+        @Override
+        protected ArrayList<String> doInBackground(String... urls){
+
+            String responseKey = null;
+            ArrayList<String> resultslist = new ArrayList<String>();
+            try{
+                String resp = makeServiceCall(urls[0]);
+                Log.v(TAG, "what is url in doInBAckground-DetailActivity.."+urls[0].toString());
+
+                JSONObject results = new JSONObject(resp);
+
+                JSONArray detailResults = results.getJSONArray("results");
+                for (int i=0; i<detailResults.length(); i++){
+                    JSONObject jsonobject = detailResults.getJSONObject(i);
+                    String movieKey = jsonobject.getString("key");
+                    resultslist.add(movieKey);
+                    //String resp_movieKey = makeServiceCall("");
+                }
+
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+
+
+            Log.v(TAG, "what is resultslist in trailer key.."+resultslist.get(0).toString());
+            return resultslist;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> result){
+            super.onPostExecute(result);
+
+            if(result != null){
+
+
+
+            }
+        }
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -38,6 +137,7 @@ public class DetailActivity extends AppCompatActivity {
         TextView movieSynopsis = (TextView)findViewById(R.id.detail_overview);
         TextView movieRating = (TextView)findViewById(R.id.detail_vote);
         TextView movieReleaseDate = (TextView)findViewById(R.id.detail_date);
+        TextView movieReviews = (TextView)findViewById(R.id.detail_review);
 
         Intent movieIntent = getIntent();
         Bundle movieBundle = movieIntent.getExtras();
@@ -55,17 +155,40 @@ public class DetailActivity extends AppCompatActivity {
             String textDate =(String) movieBundle.get("release_date");
             movieReleaseDate.setText("Release Date: "+textDate);
 
+
             String moviePath = "http://image.tmdb.org/t/p/w185/" + textLink;
             Log.v(TAG, "what is moviePath in detail.."+moviePath);
-
+            Log.v(TAG, "what is movieID in detail.."+movieID);
             trailerPath = "https://api.themoviedb.org/3/movie/" + movieID + "/videos?api_key=bad34c8d38b0750ab6bef23cb64440ba";
+            reviewPath = "https://api.themoviedb.org/3/movie/" + movieID + "/reviews?api_key=bad34c8d38b0750ab6bef23cb64440ba";
+
+            movieReviews.setText("Reviews: "+ reviewPath);
 
             Picasso.with(getApplicationContext())
                     .load(moviePath)
                     .placeholder(R.drawable.placeholder)
                     .into(imageView);
 
+            new DetailQueryTask().execute(trailerPath);
+
+            /*
+            try{
+
+                URL url = new URL(trailerPath);
+                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                InputStream in = new BufferedInputStream(conn.getInputStream());
+                String response = convertStreamToString(in);
+
+            }catch(MalformedURLException e){
+                e.printStackTrace();
+            }catch(IOException e){
+                e.printStackTrace();
+            }*/
+            
         }
+
+
 
         trailerBtn.setOnClickListener(new View.OnClickListener() {
             @Override

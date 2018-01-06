@@ -36,11 +36,16 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/detail_date"
                 android:layout_below="@+id/detail_vote"/>
+            <TextView
+                android:id="@+id/detail_review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/detail_date"/>
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/detail_trailer"
-                android:layout_below="@+id/detail_date"
+                android:layout_below="@+id/detail_review"
                 android:src="@drawable/play_button"/>
 
         </RelativeLayout>
