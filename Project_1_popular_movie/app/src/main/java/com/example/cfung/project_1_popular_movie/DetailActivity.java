@@ -1,6 +1,9 @@
 package com.example.cfung.project_1_popular_movie;
 
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -40,12 +43,16 @@ import javax.net.ssl.HttpsURLConnection;
  *    -release date
  */
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<MovieModel>{
 
     private static final String TAG = "MyActivity";
     private String trailerPath = null;
     private String trailerKey = null;
     private String reviewPath = null;
+
+    private static final int TRAILER_LOADER = 1;
+    private static final int REVIEW_LOADER = 2;
+
 
     private String convertStreamToString(InputStream is){
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -84,6 +91,56 @@ public class DetailActivity extends AppCompatActivity {
         return response;
     }
 
+    @Override
+    public Loader<MovieModel> onCreateLoader(int i, final Bundle bundle) {
+        return  new AsyncTaskLoader<MovieModel>(this) {
+            @Override
+            public MovieModel loadInBackground() {
+                String responseKey = null;
+                String resultKey = null;
+                try{
+                    String resp = makeServiceCall(urls[0]);
+                    Log.v(TAG, "what is url in doInBAckground-DetailActivity.."+urls[0].toString());
+
+                    JSONObject results = new JSONObject(resp);
+
+                    JSONArray detailResults = results.getJSONArray("results");
+                    for (int i=0; i<detailResults.length(); i++){
+                        JSONObject jsonobject = detailResults.getJSONObject(i);
+                        // TODO:  1 case is "key", 1 case is "content"
+                        String movieKey = jsonobject.getString("key");
+                        resultKey = movieKey;
+                        //String resp_movieKey = makeServiceCall("");
+                    }
+
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+
+                //Log.v(TAG, "what is resultslist in trailer key.."+resultKey.toString());
+                return resultKey;
+            }
+
+            @Override
+            public void onStartLoading(){
+                if (bundle == null){
+                    return;
+                }
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<MovieModel> loader, MovieModel movieModel) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<MovieModel> loader) {
+
+    }
+
     public class DetailQueryTask extends AsyncTask<String, Void, String>{
 
         @Override
@@ -100,6 +157,7 @@ public class DetailActivity extends AppCompatActivity {
                 JSONArray detailResults = results.getJSONArray("results");
                 for (int i=0; i<detailResults.length(); i++){
                     JSONObject jsonobject = detailResults.getJSONObject(i);
+                    // TODO:  1 case is "key", 1 case is "content"
                     String movieKey = jsonobject.getString("key");
                     resultKey = movieKey;
                     //String resp_movieKey = makeServiceCall("");
@@ -110,14 +168,14 @@ public class DetailActivity extends AppCompatActivity {
             }
 
 
-            Log.v(TAG, "what is resultslist in trailer key.."+resultKey.toString());
+            //Log.v(TAG, "what is resultslist in trailer key.."+resultKey.toString());
             return resultKey;
         }
 
         @Override
         protected void onPostExecute(String result){
             super.onPostExecute(result);
-
+            Log.v(TAG, "result in onPostExecute..."+result);
             if(result != null){
 
                 trailerKey = result;
@@ -163,6 +221,8 @@ public class DetailActivity extends AppCompatActivity {
             trailerPath = "https://api.themoviedb.org/3/movie/" + movieID + "/videos?api_key=bad34c8d38b0750ab6bef23cb64440ba";
             reviewPath = "https://api.themoviedb.org/3/movie/" + movieID + "/reviews?api_key=bad34c8d38b0750ab6bef23cb64440ba";
 
+            Log.v(TAG, "what is reviewPath.."+reviewPath);
+
             movieReviews.setText("Reviews: "+ reviewPath);
 
             Picasso.with(getApplicationContext())
@@ -171,6 +231,7 @@ public class DetailActivity extends AppCompatActivity {
                     .into(imageView);
 
             new DetailQueryTask().execute(trailerPath);
+            new DetailQueryTask().execute(reviewPath);
 
             /*
             try{
