@@ -118,8 +118,12 @@ public class MainActivity extends AppCompatActivity {
                     String overview = jsonobject.getString("overview");
                     String vote_average = jsonobject.getString("vote_average");
                     String release_date = jsonobject.getString("release_date");
+                    // TODO:  how to implement review and trailer in MainActivity?
+                    ArrayList<String> mReview = new ArrayList<String>();
+                    String trailer = null;
+
                     // completed:  add movie to movieArray
-                    MovieModel movie = new MovieModel(title, popularity, poster_path, overview, vote_average, release_date, id);
+                    MovieModel movie = new MovieModel(title, popularity, poster_path, overview, vote_average, release_date, id, mReview, trailer );
                     resultslist.add(movie);
 
                 }

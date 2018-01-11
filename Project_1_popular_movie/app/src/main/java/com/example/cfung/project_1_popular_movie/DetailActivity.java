@@ -96,20 +96,36 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         return  new AsyncTaskLoader<MovieModel>(this) {
             @Override
             public MovieModel loadInBackground() {
+                Log.v(TAG, "inside loadInBackground..");
+                String mID = null;
+
+                String myStr = "Bundle{";
+                for (String key : bundle.keySet()){
+                    myStr += " " + key + " => " + bundle.get(key) + ";";
+                    if (key.equals("id")){
+                        mID = bundle.get(key).toString();
+                    }
+                }
+                myStr += " }Bundle";
+                Log.v(TAG, "bundle contains..."+ myStr);
                 String responseKey = null;
                 String resultKey = null;
                 try{
-                    String resp = makeServiceCall(urls[0]);
-                    Log.v(TAG, "what is url in doInBAckground-DetailActivity.."+urls[0].toString());
+                    Log.v(TAG, "what is bundle.get.." + mID);
+                    String reviewURL = "https://api.themoviedb.org/3/movie/" + bundle.get("id") + "/reviews?api_key=bad34c8d38b0750ab6bef23cb64440ba";
+                    String resp = makeServiceCall(reviewURL);
+                    Log.v(TAG, "what is resp (URL)..."+resp);
+                    //Log.v(TAG, "what is url in loadInBAckground-DetailActivity.."+urls[0].toString());
 
                     JSONObject results = new JSONObject(resp);
 
                     JSONArray detailResults = results.getJSONArray("results");
                     for (int i=0; i<detailResults.length(); i++){
                         JSONObject jsonobject = detailResults.getJSONObject(i);
-                        // TODO:  1 case is "key", 1 case is "content"
-                        String movieKey = jsonobject.getString("key");
-                        resultKey = movieKey;
+
+                        String movieReview = jsonobject.getString("content");
+                        Log.v(TAG, "what is movieReview: "+movieReview);
+                        //resultKey = movieKey;
                         //String resp_movieKey = makeServiceCall("");
                     }
 
@@ -119,7 +135,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
 
                 //Log.v(TAG, "what is resultslist in trailer key.."+resultKey.toString());
-                return resultKey;
+                //return resultKey;
+                return null;
             }
 
             @Override
@@ -141,7 +158,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     }
 
-    public class DetailQueryTask extends AsyncTask<String, Void, String>{
+    /*public class DetailQueryTask extends AsyncTask<String, Void, String>{
 
         @Override
         protected String doInBackground(String... urls){
@@ -183,7 +200,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             }
         }
 
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -230,9 +247,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                     .placeholder(R.drawable.placeholder)
                     .into(imageView);
 
-            new DetailQueryTask().execute(trailerPath);
-            new DetailQueryTask().execute(reviewPath);
-
+            //new DetailQueryTask().execute(trailerPath);
+            //new DetailQueryTask().execute(reviewPath);
+            getLoaderManager().initLoader(REVIEW_LOADER, movieBundle, this).forceLoad();
             /*
             try{
 
