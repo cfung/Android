@@ -43,7 +43,7 @@ import javax.net.ssl.HttpsURLConnection;
  *    -release date
  */
 
-public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<MovieModel>{
+public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<String>>{
 
     private static final String TAG = "MyActivity";
     private String trailerPath = null;
@@ -52,6 +52,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     private static final int TRAILER_LOADER = 1;
     private static final int REVIEW_LOADER = 2;
+
+
 
 
     private String convertStreamToString(InputStream is){
@@ -92,12 +94,13 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     @Override
-    public Loader<MovieModel> onCreateLoader(int i, final Bundle bundle) {
-        return  new AsyncTaskLoader<MovieModel>(this) {
+    public Loader<ArrayList<String>> onCreateLoader(int i, final Bundle bundle) {
+        return  new AsyncTaskLoader<ArrayList<String>>(this) {
             @Override
-            public MovieModel loadInBackground() {
+            public ArrayList<String> loadInBackground() {
                 Log.v(TAG, "inside loadInBackground..");
                 String mID = null;
+                ArrayList<String> reviewsList = new ArrayList<String>();
 
                 String myStr = "Bundle{";
                 for (String key : bundle.keySet()){
@@ -126,6 +129,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                         String movieReview = jsonobject.getString("content");
                         Log.v(TAG, "what is movieReview: "+movieReview);
                         //resultKey = movieKey;
+                        reviewsList.add(movieReview);
                         //String resp_movieKey = makeServiceCall("");
                     }
 
@@ -136,7 +140,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
                 //Log.v(TAG, "what is resultslist in trailer key.."+resultKey.toString());
                 //return resultKey;
-                return null;
+                return reviewsList;
             }
 
             @Override
@@ -149,14 +153,30 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     @Override
-    public void onLoadFinished(Loader<MovieModel> loader, MovieModel movieModel) {
+    public void onLoadFinished(Loader<ArrayList<String>> loader, ArrayList<String> strings) {
+
+        TextView movieReviews = (TextView)findViewById(R.id.detail_review);
+        Log.v(TAG, "onLoadFinished..."+strings);
+        for (String review: strings) {
+            movieReviews.setText("Reviews: "+review);
+        }
 
     }
 
     @Override
-    public void onLoaderReset(Loader<MovieModel> loader) {
+    public void onLoaderReset(Loader<ArrayList<String>> loader) {
 
     }
+
+    /*@Override
+    public void onLoadFinished(Loader<MovieModel> loader, MovieModel movieModel) {
+
+    }*/
+
+    /*@Override
+    public void onLoaderReset(Loader<MovieModel> loader) {
+
+    }*/
 
     /*public class DetailQueryTask extends AsyncTask<String, Void, String>{
 
@@ -213,7 +233,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         TextView movieSynopsis = (TextView)findViewById(R.id.detail_overview);
         TextView movieRating = (TextView)findViewById(R.id.detail_vote);
         TextView movieReleaseDate = (TextView)findViewById(R.id.detail_date);
-        TextView movieReviews = (TextView)findViewById(R.id.detail_review);
+
 
         Intent movieIntent = getIntent();
         Bundle movieBundle = movieIntent.getExtras();
@@ -240,7 +260,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
             Log.v(TAG, "what is reviewPath.."+reviewPath);
 
-            movieReviews.setText("Reviews: "+ reviewPath);
+            //movieReviews.setText("Reviews: "+ reviewPath);
 
             Picasso.with(getApplicationContext())
                     .load(moviePath)
