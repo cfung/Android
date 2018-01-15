@@ -7,6 +7,7 @@ import android.content.Loader;
 import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -234,6 +235,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         TextView movieRating = (TextView)findViewById(R.id.detail_vote);
         TextView movieReleaseDate = (TextView)findViewById(R.id.detail_date);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         Intent movieIntent = getIntent();
         Bundle movieBundle = movieIntent.getExtras();
@@ -303,5 +305,14 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
+        fab.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(DetailActivity.this,
+                        "Fab Fav button is clicked!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 }
