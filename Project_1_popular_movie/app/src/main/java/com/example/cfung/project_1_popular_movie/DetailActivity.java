@@ -333,14 +333,14 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
      * @param
      */
     public long addToMovieDB(String movieName){
-
+        Log.v(TAG, "addToMovies: "+movieName);
         ContentValues cv = new ContentValues();
         cv.put(MovieContract.MovieEntry.COLUMN_FAVORITE_MOVIE, movieName);
         long dbID = 0;
 
         try {
             mDB.beginTransaction();
-            dbID = mDB.insert(MovieContract.MovieEntry.TABLE_NAME, null, null);
+            dbID = mDB.insert(MovieContract.MovieEntry.TABLE_NAME, null, cv);
             mDB.setTransactionSuccessful();
         }catch (SQLException e) {
             e.printStackTrace();
