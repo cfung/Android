@@ -2,8 +2,11 @@ package com.example.cfung.project_1_popular_movie;
 
 import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.Loader;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.cfung.project_1_popular_movie.data.MovieContract;
+import com.example.cfung.project_1_popular_movie.data.MovieDBHelper;
 import com.squareup.picasso.Picasso;
 import android.net.Uri;
 
@@ -54,6 +60,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private static final int TRAILER_LOADER = 1;
     private static final int REVIEW_LOADER = 2;
 
+    private SQLiteDatabase mDB;
 
 
 
@@ -238,7 +245,10 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         Intent movieIntent = getIntent();
-        Bundle movieBundle = movieIntent.getExtras();
+        final Bundle movieBundle = movieIntent.getExtras();
+
+        MovieDBHelper dbHelper = new MovieDBHelper(this);
+        mDB = dbHelper.getWritableDatabase();
 
         if(movieBundle != null)
         {
@@ -311,8 +321,33 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             public void onClick(View view) {
                 Toast.makeText(DetailActivity.this,
                         "Fab Fav button is clicked!", Toast.LENGTH_SHORT).show();
+                addToMovieDB("testing");  //TODO remove hardcode
 
             }
         });
+    }
+
+    /**
+     * This method is called when user clicks on the Favorite Star button
+     *
+     * @param
+     */
+    public long addToMovieDB(String movieName){
+
+        ContentValues cv = new ContentValues();
+        cv.put(MovieContract.MovieEntry.COLUMN_FAVORITE_MOVIE, movieName);
+        long dbID = 0;
+
+        try {
+            mDB.beginTransaction();
+            dbID = mDB.insert(MovieContract.MovieEntry.TABLE_NAME, null, null);
+            mDB.setTransactionSuccessful();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            mDB.endTransaction();
+        }
+        return dbID;
+
     }
 }

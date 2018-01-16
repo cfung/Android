@@ -32,6 +32,8 @@ import java.util.ArrayList;
 
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.facebook.stetho.Stetho;
+
 import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private GridView gridView = null;
     private CustomAdapter movieAdapter = null;
     ArrayList<MovieModel> AllMovies = null;
+
+
 
     public String makeServiceCall(String reqUrl){
         Log.v(TAG, "starting makeServiceCall..");
@@ -177,6 +181,14 @@ public class MainActivity extends AppCompatActivity {
         gridView.setAdapter(movieAdapter);
         // completed 4:  call asynctask here
         new MovieQueryTask().execute(MOVIE_API_POPULAR);
+
+        Stetho.InitializerBuilder initializerBuilder = Stetho.newInitializerBuilder(this);
+
+        initializerBuilder.enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this));
+
+        Stetho.Initializer initializer = initializerBuilder.build();
+
+        Stetho.initialize(initializer);
 
         gridView.setOnItemClickListener(new OnItemClickListener(){
 
