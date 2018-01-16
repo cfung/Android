@@ -237,7 +237,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
         ImageView imageView = (ImageView)findViewById(R.id.detail_image);
         ImageButton trailerBtn = (ImageButton)findViewById(R.id.detail_trailer);
-        TextView movieTitle = (TextView)findViewById(R.id.detail_name);
+        final TextView movieTitle = (TextView)findViewById(R.id.detail_name);
         TextView movieSynopsis = (TextView)findViewById(R.id.detail_overview);
         TextView movieRating = (TextView)findViewById(R.id.detail_vote);
         TextView movieReleaseDate = (TextView)findViewById(R.id.detail_date);
@@ -255,7 +255,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             String movieID = (String) movieBundle.get("id");
             String textLink = (String) movieBundle.get("link");
             String textTitle =(String) movieBundle.get("name");
-            movieTitle.setText("Title: "+textTitle);
+            movieTitle.setText(textTitle);
             String textSynopsis =(String) movieBundle.get("overview");
             movieSynopsis.setText("Synopsis: "+textSynopsis);
             String textRating =(String) movieBundle.get("vote_average");
@@ -321,7 +321,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             public void onClick(View view) {
                 Toast.makeText(DetailActivity.this,
                         "Fab Fav button is clicked!", Toast.LENGTH_SHORT).show();
-                addToMovieDB("testing");  //TODO remove hardcode
+                addToMovieDB(movieTitle.getText().toString());  
 
             }
         });
