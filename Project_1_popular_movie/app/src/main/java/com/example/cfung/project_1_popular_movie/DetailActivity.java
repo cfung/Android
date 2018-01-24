@@ -56,12 +56,19 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private String trailerPath = null;
     private String trailerKey = null;
     private String reviewPath = null;
+    private String popularity = null;
+    private String textLink = null;
+    private String textOverview = null;
+    private String textRating = null;
+    private String textDate = null;
+    private String movieID = null;
 
     private static final int TRAILER_LOADER = 1;
     private static final int REVIEW_LOADER = 2;
 
     private SQLiteDatabase mDB;
 
+    ArrayList<String> reviewsList = new ArrayList<String>();
 
 
     private String convertStreamToString(InputStream is){
@@ -108,7 +115,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             public ArrayList<String> loadInBackground() {
                 Log.v(TAG, "inside loadInBackground..");
                 String mID = null;
-                ArrayList<String> reviewsList = new ArrayList<String>();
+
 
                 String myStr = "Bundle{";
                 for (String key : bundle.keySet()){
@@ -247,21 +254,23 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         Intent movieIntent = getIntent();
         final Bundle movieBundle = movieIntent.getExtras();
 
+
         MovieDBHelper dbHelper = new MovieDBHelper(this);
         mDB = dbHelper.getWritableDatabase();
 
         if(movieBundle != null)
         {
-            String movieID = (String) movieBundle.get("id");
-            String textLink = (String) movieBundle.get("link");
+            movieID = (String) movieBundle.get("id");
+            textLink = (String) movieBundle.get("link");
             String textTitle =(String) movieBundle.get("name");
             movieTitle.setText(textTitle);
-            String textSynopsis =(String) movieBundle.get("overview");
-            movieSynopsis.setText("Synopsis: "+textSynopsis);
-            String textRating =(String) movieBundle.get("vote_average");
+            textOverview =(String) movieBundle.get("overview");
+            movieSynopsis.setText("Synopsis: "+textOverview);
+            textRating =(String) movieBundle.get("vote_average");
             movieRating.setText("Rating: "+textRating);
-            String textDate =(String) movieBundle.get("release_date");
+            textDate =(String) movieBundle.get("release_date");
             movieReleaseDate.setText("Release Date: "+textDate);
+            popularity = (String) movieBundle.get("popularity");
 
 
             String moviePath = "http://image.tmdb.org/t/p/w185/" + textLink;
@@ -321,7 +330,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             public void onClick(View view) {
                 Toast.makeText(DetailActivity.this,
                         "Fab Fav button is clicked!", Toast.LENGTH_SHORT).show();
-                addToMovieDB(movieTitle.getText().toString());  
+                addToMovieDB(movieTitle.getText().toString(), popularity, textLink, textOverview,
+                        textRating, textDate, movieID, reviewsList, trailerPath);
 
             }
         });
@@ -332,10 +342,22 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
      *
      * @param
      */
-    public long addToMovieDB(String movieName){
+    // MovieModel movie = new MovieModel(title, popularity,
+    // poster_path, overview, vote_average, release_date, id, mReview, trailer );
+    public long addToMovieDB(String movieName, String popularity, String poster_path, String overview,
+                             String vote_average, String release_date, String id,
+                             ArrayList<String> reviews, String trailer){
         Log.v(TAG, "addToMovies: "+movieName);
         ContentValues cv = new ContentValues();
-        cv.put(MovieContract.MovieEntry.COLUMN_FAVORITE_MOVIE, movieName);
+        cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_NAME, movieName);
+        cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_POPULARITY, popularity);
+        cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH, poster_path);
+        cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_OVERVIEW, overview);
+        cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_VOTE_AVG, vote_average);
+        cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE, release_date);
+        cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, id);
+        cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_REVIEWS, reviews.get(0));
+        cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_TRAILER, trailer);
         long dbID = 0;
 
         try {

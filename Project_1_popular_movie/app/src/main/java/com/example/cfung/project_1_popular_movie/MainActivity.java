@@ -2,6 +2,7 @@ package com.example.cfung.project_1_popular_movie;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.example.cfung.project_1_popular_movie.data.MovieDBHelper;
 import com.facebook.stetho.Stetho;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -182,12 +184,10 @@ public class MainActivity extends AppCompatActivity {
         // completed 4:  call asynctask here
         new MovieQueryTask().execute(MOVIE_API_POPULAR);
 
+        //enable Facebook Stetho debugger
         Stetho.InitializerBuilder initializerBuilder = Stetho.newInitializerBuilder(this);
-
         initializerBuilder.enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this));
-
         Stetho.Initializer initializer = initializerBuilder.build();
-
         Stetho.initialize(initializer);
 
         gridView.setOnItemClickListener(new OnItemClickListener(){
@@ -208,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
                 startDetailActivityIntent.putExtra("vote_average", AllMovies.get(position).getVote_average());
                 startDetailActivityIntent.putExtra("release_date", AllMovies.get(position).getRelease_date());
                 startDetailActivityIntent.putExtra("id", AllMovies.get(position).getMovieID());
+                startDetailActivityIntent.putExtra("popularity", AllMovies.get(position).getPopularity());
                 startActivity(startDetailActivityIntent);
 
             }
@@ -241,6 +242,22 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_toprated:
                 Log.v(TAG, "onOptionsItemSelected - top rated");
                 new MovieQueryTask().execute(MOVIE_API_TOP);
+                return true;
+
+            case R.id.action_favorite:
+                Log.v(TAG, "onOptionsItemSelected - favorite");
+                MovieDBHelper dbHelper = new MovieDBHelper(this);
+                //Cursor cursor = dbHelper.getFavoriteMoviesFromDB();
+                ArrayList<MovieModel> result = dbHelper.getFavoriteMoviesFromDB();
+
+                if(result != null){
+
+                    //movieAdapter.clear();
+                    //for (int i=0; i<result.size();i++){
+                    //    movieAdapter.add(result.get(i));
+                    //}
+                }
+
                 return true;
 
             default:
