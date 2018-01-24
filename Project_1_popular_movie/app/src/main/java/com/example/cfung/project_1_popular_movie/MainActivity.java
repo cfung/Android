@@ -41,11 +41,12 @@ import javax.net.ssl.HttpsURLConnection;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MyActivity";
-    final static String MOVIE_API_POPULAR = "https://api.themoviedb.org/3/movie/popular?api_key=bad34c8d38b0750ab6bef23cb64440ba";
-    final static String MOVIE_API_TOP = "https://api.themoviedb.org/3/movie/top_rated?api_key=bad34c8d38b0750ab6bef23cb64440ba";
+    final static String MOVIE_API_POPULAR = "https://api.themoviedb.org/3/movie/popular?api_key=<REPLACE>";
+    final static String MOVIE_API_TOP = "https://api.themoviedb.org/3/movie/top_rated?api_key=<REPLACE>";
     private GridView gridView = null;
     private CustomAdapter movieAdapter = null;
     ArrayList<MovieModel> AllMovies = null;
+    ArrayList<MovieModel> result = null;
 
 
 
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                     String overview = jsonobject.getString("overview");
                     String vote_average = jsonobject.getString("vote_average");
                     String release_date = jsonobject.getString("release_date");
-                    // TODO:  how to implement review and trailer in MainActivity?
+
                     ArrayList<String> mReview = new ArrayList<String>();
                     String trailer = null;
 
@@ -248,14 +249,14 @@ public class MainActivity extends AppCompatActivity {
                 Log.v(TAG, "onOptionsItemSelected - favorite");
                 MovieDBHelper dbHelper = new MovieDBHelper(this);
                 //Cursor cursor = dbHelper.getFavoriteMoviesFromDB();
-                ArrayList<MovieModel> result = dbHelper.getFavoriteMoviesFromDB();
+                result = dbHelper.getFavoriteMoviesFromDB();
 
                 if(result != null){
 
-                    //movieAdapter.clear();
-                    //for (int i=0; i<result.size();i++){
-                    //    movieAdapter.add(result.get(i));
-                    //}
+                    movieAdapter.clear();
+                    for (int i=0; i<result.size();i++){
+                        movieAdapter.add(result.get(i));
+                    }
                 }
 
                 return true;
