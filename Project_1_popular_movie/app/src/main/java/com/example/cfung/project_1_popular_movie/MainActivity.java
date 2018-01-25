@@ -41,8 +41,8 @@ import javax.net.ssl.HttpsURLConnection;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MyActivity";
-    final static String MOVIE_API_POPULAR = "https://api.themoviedb.org/3/movie/popular?api_key=<REPLACE>";
-    final static String MOVIE_API_TOP = "https://api.themoviedb.org/3/movie/top_rated?api_key=<REPLACE>";
+    final static String MOVIE_API_POPULAR = "https://api.themoviedb.org/3/movie/popular?api_key="+BuildConfig.MY_API_KEY;
+    final static String MOVIE_API_TOP = "https://api.themoviedb.org/3/movie/top_rated?api_key="+BuildConfig.MY_API_KEY;
     private GridView gridView = null;
     private CustomAdapter movieAdapter = null;
     ArrayList<MovieModel> AllMovies = null;
