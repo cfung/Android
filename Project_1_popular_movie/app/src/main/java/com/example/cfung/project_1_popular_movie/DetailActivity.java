@@ -183,60 +183,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     }
 
-    /*@Override
-    public void onLoadFinished(Loader<MovieModel> loader, MovieModel movieModel) {
-
-    }*/
-
-    /*@Override
-    public void onLoaderReset(Loader<MovieModel> loader) {
-
-    }*/
-
-    /*public class DetailQueryTask extends AsyncTask<String, Void, String>{
-
-        @Override
-        protected String doInBackground(String... urls){
-
-            String responseKey = null;
-            String resultKey = null;
-            try{
-                String resp = makeServiceCall(urls[0]);
-                Log.v(TAG, "what is url in doInBAckground-DetailActivity.."+urls[0].toString());
-
-                JSONObject results = new JSONObject(resp);
-
-                JSONArray detailResults = results.getJSONArray("results");
-                for (int i=0; i<detailResults.length(); i++){
-                    JSONObject jsonobject = detailResults.getJSONObject(i);
-                    // TODO:  1 case is "key", 1 case is "content"
-                    String movieKey = jsonobject.getString("key");
-                    resultKey = movieKey;
-                    //String resp_movieKey = makeServiceCall("");
-                }
-
-            } catch (JSONException e){
-                e.printStackTrace();
-            }
-
-
-            //Log.v(TAG, "what is resultslist in trailer key.."+resultKey.toString());
-            return resultKey;
-        }
-
-        @Override
-        protected void onPostExecute(String result){
-            super.onPostExecute(result);
-            Log.v(TAG, "result in onPostExecute..."+result);
-            if(result != null){
-
-                trailerKey = result;
-
-            }
-        }
-
-    }*/
-
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -288,23 +234,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                     .placeholder(R.drawable.placeholder)
                     .into(imageView);
 
-            //new DetailQueryTask().execute(trailerPath);
-            //new DetailQueryTask().execute(reviewPath);
             getLoaderManager().initLoader(REVIEW_LOADER, movieBundle, this).forceLoad();
-            /*
-            try{
-
-                URL url = new URL(trailerPath);
-                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                InputStream in = new BufferedInputStream(conn.getInputStream());
-                String response = convertStreamToString(in);
-
-            }catch(MalformedURLException e){
-                e.printStackTrace();
-            }catch(IOException e){
-                e.printStackTrace();
-            }*/
 
         }
 

@@ -75,8 +75,6 @@ public class MovieDBHelper extends SQLiteOpenHelper{
         cursor.moveToFirst();
         if (!cursor.isAfterLast()){
             do{
-                // MovieModel movie = new MovieModel(title, popularity,
-                // poster_path, overview, vote_average, release_date, id, mReview, trailer );
                 String movieTitle = cursor.getString(cursor.getColumnIndex("name"));
                 String moviePopularity= cursor.getString(cursor.getColumnIndex("popularity"));
                 String moviePosterPath= cursor.getString(cursor.getColumnIndex("poster_path"));
@@ -89,7 +87,7 @@ public class MovieDBHelper extends SQLiteOpenHelper{
 
                 MovieModel movie = new MovieModel(movieTitle, moviePopularity, moviePosterPath, movieOvervuew, movieVote, movieReleaseDate, movieID, reviewList, trailer );
                 movieList.add(movie);
-                //Log.v(TAG, "movie from cursor..."+data);
+
             } while(cursor.moveToNext());
         }
         cursor.close();
