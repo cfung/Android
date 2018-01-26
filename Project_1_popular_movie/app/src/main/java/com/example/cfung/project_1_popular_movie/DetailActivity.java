@@ -238,12 +238,11 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
         }
 
-
-
         trailerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String youtubePath = "https://www.youtube.com/watch?v=" + trailerKey;
+                Log.v(TAG, "what is youtube path.." + youtubePath);
                 Uri uri = Uri.parse(youtubePath);
                 uri = Uri.parse("vnd.youtube:" + uri.getQueryParameter("v"));
                 Intent movieIntent = new Intent (Intent.ACTION_VIEW, uri);
