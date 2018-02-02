@@ -81,7 +81,7 @@ public class MovieContentProvider extends ContentProvider {
 
         // set a notification URI on the Cursor and return that Cursor
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
-        
+
         return retCursor;
     }
 
@@ -94,6 +94,7 @@ public class MovieContentProvider extends ContentProvider {
 
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
+
         //Get access to the task database for write access
         final SQLiteDatabase db = movieDBHelper.getWritableDatabase();
         int match = sUriMatcher.match(uri);
@@ -122,8 +123,36 @@ public class MovieContentProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
+
+        //Get access to the task database for write access
+        final SQLiteDatabase db = movieDBHelper.getWritableDatabase();
+
+        int match = sUriMatcher.match(uri);
+        int taskDeleted = 0;
+
+        switch (match){
+
+            case MOVIE_WITH_ID:
+
+                String id = uri.getPathSegments().get(1);
+                String mSelection = "_id=?";
+                String [] mSelectionArgs = new String[]{id};
+
+                taskDeleted = db.delete(TABLE_NAME,
+                        mSelection,
+                        mSelectionArgs);
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if (taskDeleted != 0) {
+
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return taskDeleted;
     }
 
     @Override
