@@ -24,9 +24,9 @@
             android:label="Detail Activity">
         </activity>
         <provider
-            android:authorities="com.example.cfung.project_1_popular_movie"
-            android:name="com.example.cfung.project_1_popular_movie.data.MovieContentProvider"
-            android:exported="false" />
+            android:authorities="com.example.cfung.project_1_popular_movie.data.MovieContentProvider"
+            android:name=".data.MovieContentProvider"
+            android:exported="true" />
     </application>
 
 </manifest>

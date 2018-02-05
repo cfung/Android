@@ -37,9 +37,10 @@ public class MovieContentProvider extends ContentProvider {
 
         //Initialize with NO_MATCH
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-
-        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.PATH_MOVIE, MOVIES);
-        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.PATH_MOVIE, MOVIE_WITH_ID);
+        //uriMatcher1.addURI(contentAuthority,MovieContract.MovieEntry.TABLE_NAME,MOVIE);
+        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.MovieEntry.TABLE_NAME, MOVIES);
+        //uriMatcher.add
+        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.MovieEntry.TABLE_NAME, MOVIE_WITH_ID);
 
         return uriMatcher;
     }

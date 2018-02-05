@@ -259,8 +259,24 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             public void onClick(View view) {
                 Toast.makeText(DetailActivity.this,
                         "Fab Fav button is clicked!", Toast.LENGTH_SHORT).show();
-                addToMovieDB(movieTitle.getText().toString(), popularity, textLink, textOverview,
-                        textRating, textDate, movieID, reviewsList, trailerPath);
+                //addToMovieDB(movieTitle.getText().toString(), popularity, textLink, textOverview,
+                //        textRating, textDate, movieID, reviewsList, trailerPath);
+                ContentValues contentValues = new ContentValues();
+                // Put the task description and selected mPriority into the ContentValues
+                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_NAME, movieTitle.getText().toString());
+                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_POPULARITY, popularity);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH, textLink);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_OVERVIEW, textOverview);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_VOTE_AVG, textRating);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE, textRating);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, movieID);
+                //contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_REVIEWS, reviewsList);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_TRAILER, trailerPath);
+
+
+                // Insert the content values via a ContentResolver
+                Log.v(TAG, "what is CONTENT_URI.." + MovieContract.MovieEntry.CONTENT_URI);
+                Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
 
             }
         });
