@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.cfung.project_1_popular_movie.data.MovieContract;
 import com.example.cfung.project_1_popular_movie.data.MovieDBHelper;
+import com.example.cfung.project_1_popular_movie.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 import android.net.Uri;
 
@@ -69,45 +70,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private SQLiteDatabase mDB;
 
     ArrayList<String> reviewsList = new ArrayList<String>();
-
-
-    private String convertStreamToString(InputStream is){
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        try {
-            while ((line = reader.readLine()) != null){
-                sb.append(line).append('\n');
-            }
-        } catch (IOException e){
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-
-        return sb.toString();
-    }
-
-    public String makeServiceCall(String reqUrl){
-        String response = null;
-
-        try{
-            URL url = new URL (reqUrl);
-            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            InputStream in = new BufferedInputStream(conn.getInputStream());
-            response = convertStreamToString(in);
-
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        return response;
-    }
-
+    
     @Override
     public Loader<ArrayList<String>> onCreateLoader(int i, final Bundle bundle) {
         return  new AsyncTaskLoader<ArrayList<String>>(this) {
@@ -131,7 +94,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 try{
                     Log.v(TAG, "what is bundle.get.." + mID);
                     String reviewURL = "https://api.themoviedb.org/3/movie/" + bundle.get("id") + "/reviews?api_key=bad34c8d38b0750ab6bef23cb64440ba";
-                    String resp = makeServiceCall(reviewURL);
+                    String resp = NetworkUtils.getResponseFromHttpUrl(new URL(reviewURL));
                     Log.v(TAG, "what is resp (URL)..."+resp);
                     //Log.v(TAG, "what is url in loadInBAckground-DetailActivity.."+urls[0].toString());
 
@@ -149,6 +112,11 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                     }
 
                 } catch (JSONException e){
+                    e.printStackTrace();
+
+                } catch (MalformedURLException e){
+                    e.printStackTrace();
+                } catch (IOException e){
                     e.printStackTrace();
                 }
 

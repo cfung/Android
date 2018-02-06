@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.example.cfung.project_1_popular_movie.data.MovieDBHelper;
+import com.example.cfung.project_1_popular_movie.utils.NetworkUtils;
 import com.facebook.stetho.Stetho;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -41,8 +42,8 @@ import javax.net.ssl.HttpsURLConnection;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MyActivity";
-    final static String MOVIE_API_POPULAR = "https://api.themoviedb.org/3/movie/popular?api_key="+BuildConfig.MY_API_KEY;
-    final static String MOVIE_API_TOP = "https://api.themoviedb.org/3/movie/top_rated?api_key="+BuildConfig.MY_API_KEY;
+    //final static String MOVIE_API_POPULAR = "https://api.themoviedb.org/3/movie/popular?api_key="+BuildConfig.MY_API_KEY;
+    //final static String MOVIE_API_TOP = "https://api.themoviedb.org/3/movie/top_rated?api_key="+BuildConfig.MY_API_KEY;
     private GridView gridView = null;
     private CustomAdapter movieAdapter = null;
     ArrayList<MovieModel> AllMovies = null;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public String makeServiceCall(String reqUrl){
+    /*public String makeServiceCall(String reqUrl){
         Log.v(TAG, "starting makeServiceCall..");
         String response = null;
         try{
@@ -68,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
         Log.v(TAG, "response in makeSeriviceCall.."+response);
         return response;
 
-    }
+    }*/
 
-    private String convertStreamToString(InputStream is){
+    /*private String convertStreamToString(InputStream is){
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
         String line;
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return sb.toString();
-    }
+    }*/
 
     // AsyncTask to perform network operation in a separate thread than mainUI thread
     public class MovieQueryTask extends AsyncTask<String, Void, ArrayList<MovieModel>> {
@@ -103,11 +104,11 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Log.v(TAG, "what is URL in doInBackground.."+urls[0].toString());
                 URL url = new URL(urls[0]);
-                HttpsURLConnection httpconn = (HttpsURLConnection) url.openConnection();
+                /*HttpsURLConnection httpconn = (HttpsURLConnection) url.openConnection();
                 httpconn.setRequestMethod("GET");
                 InputStream in = new BufferedInputStream((httpconn.getInputStream()));
-                response = convertStreamToString(in);
-                Log.v(TAG, "json response: "+ response);
+                response = convertStreamToString(in);*/
+                response = NetworkUtils.getResponseFromHttpUrl(url);
 
                 JSONObject results = new JSONObject(response);
 
@@ -183,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         movieAdapter = new CustomAdapter(MainActivity.this, 0, AllMovies);
         gridView.setAdapter(movieAdapter);
         // completed 4:  call asynctask here
-        new MovieQueryTask().execute(MOVIE_API_POPULAR);
+        new MovieQueryTask().execute(NetworkUtils.MOVIE_API_POPULAR);
 
         //enable Facebook Stetho debugger
         Stetho.InitializerBuilder initializerBuilder = Stetho.newInitializerBuilder(this);
@@ -237,12 +238,12 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_popular:
                 Log.v(TAG, "onOptionsItemSelected - popular");
-                new MovieQueryTask().execute(MOVIE_API_POPULAR);
+                new MovieQueryTask().execute(NetworkUtils.MOVIE_API_POPULAR);
                 return true;
 
             case R.id.action_toprated:
                 Log.v(TAG, "onOptionsItemSelected - top rated");
-                new MovieQueryTask().execute(MOVIE_API_TOP);
+                new MovieQueryTask().execute(NetworkUtils.MOVIE_API_TOP);
                 return true;
 
             case R.id.action_favorite:
