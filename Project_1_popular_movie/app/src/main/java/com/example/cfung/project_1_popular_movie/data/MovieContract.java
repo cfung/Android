@@ -11,17 +11,17 @@ import android.util.Log;
 public class MovieContract {
 
 
-        public static final String AUTHORITY = "com.example.cfung.project_1_popular_movie.data.MovieContentProvider";
+        public static final String AUTHORITY = "com.example.cfung.project_1_popular_movie";
         // public static final Uri BASE_CONTENT_URI=Uri.parse("content://"+CONTENT_AUTHORITY);
-        public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+        public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY );
 
-        //public static  final String PATH_MOVIE = "movie"; // TODO:  is this correct?
+        public static  final String PATH_MOVIE = "movie"; // TODO:  is this correct?
 
         public static final class MovieEntry implements BaseColumns {
 
             public static final String TABLE_NAME = "movie";
             // public static final Uri CONTENT_URI=BASE_CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
-            public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
+            public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE).build();
             //Log.v("popularmovie", "what is content uri: ");
             //BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE) .build();
 

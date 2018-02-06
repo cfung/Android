@@ -11,6 +11,7 @@ import android.graphics.Movie;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import static com.example.cfung.project_1_popular_movie.data.MovieContract.MovieEntry.TABLE_NAME;
 
@@ -38,9 +39,9 @@ public class MovieContentProvider extends ContentProvider {
         //Initialize with NO_MATCH
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         //uriMatcher1.addURI(contentAuthority,MovieContract.MovieEntry.TABLE_NAME,MOVIE);
-        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.MovieEntry.TABLE_NAME, MOVIES);
+        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.PATH_MOVIE, MOVIES);
         //uriMatcher.add
-        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.MovieEntry.TABLE_NAME, MOVIE_WITH_ID);
+        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.PATH_MOVIE + "/#", MOVIE_WITH_ID);
 
         return uriMatcher;
     }
@@ -98,7 +99,10 @@ public class MovieContentProvider extends ContentProvider {
 
         //Get access to the task database for write access
         final SQLiteDatabase db = movieDBHelper.getWritableDatabase();
+        Log.v("MyActivity", "what is uri.."+uri.toString());
+
         int match = sUriMatcher.match(uri);
+        Log.v("MyActivity", "what is match.." + match);
         Uri returnUri;
 
         switch (match){
