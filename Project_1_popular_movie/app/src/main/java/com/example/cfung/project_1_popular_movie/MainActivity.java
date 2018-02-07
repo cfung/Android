@@ -42,55 +42,10 @@ import javax.net.ssl.HttpsURLConnection;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MyActivity";
-    //final static String MOVIE_API_POPULAR = "https://api.themoviedb.org/3/movie/popular?api_key="+BuildConfig.MY_API_KEY;
-    //final static String MOVIE_API_TOP = "https://api.themoviedb.org/3/movie/top_rated?api_key="+BuildConfig.MY_API_KEY;
     private GridView gridView = null;
     private CustomAdapter movieAdapter = null;
     ArrayList<MovieModel> AllMovies = null;
     ArrayList<MovieModel> result = null;
-
-
-
-    /*public String makeServiceCall(String reqUrl){
-        Log.v(TAG, "starting makeServiceCall..");
-        String response = null;
-        try{
-            Log.v(TAG, "in makeServiceCall - try..");
-            URL url = new URL (reqUrl);
-            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            InputStream in = new BufferedInputStream(conn.getInputStream());
-            Log.v("resp in makeService: ", in.toString());
-            response = convertStreamToString(in);
-
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        Log.v(TAG, "response in makeSeriviceCall.."+response);
-        return response;
-
-    }*/
-
-    /*private String convertStreamToString(InputStream is){
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        try {
-            while ((line = reader.readLine()) != null){
-                sb.append(line).append('\n');
-            }
-        } catch (IOException e){
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-
-        return sb.toString();
-    }*/
 
     // AsyncTask to perform network operation in a separate thread than mainUI thread
     public class MovieQueryTask extends AsyncTask<String, Void, ArrayList<MovieModel>> {
@@ -204,6 +159,10 @@ public class MainActivity extends AppCompatActivity {
                 Class detailActivity = DetailActivity.class;
 
                 Intent startDetailActivityIntent = new Intent(context, detailActivity);
+                startDetailActivityIntent.putExtra("movie", AllMovies.get(position));
+                //Bundle bundle = new Bundle();
+                //bundle.putParcelable();
+                //startDetailActivityIntent.putExtra(AllMovies.get(position).getMovieName(), );
                 startDetailActivityIntent.putExtra("name", AllMovies.get(position).getMovieName());
                 startDetailActivityIntent.putExtra("link", AllMovies.get(position).getMovieLink());
                 startDetailActivityIntent.putExtra("overview", AllMovies.get(position).getOverview());

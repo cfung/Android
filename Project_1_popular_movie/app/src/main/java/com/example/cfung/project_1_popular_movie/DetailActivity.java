@@ -70,7 +70,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private SQLiteDatabase mDB;
 
     ArrayList<String> reviewsList = new ArrayList<String>();
-    
+
     @Override
     public Loader<ArrayList<String>> onCreateLoader(int i, final Bundle bundle) {
         return  new AsyncTaskLoader<ArrayList<String>>(this) {
@@ -168,34 +168,35 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         Intent movieIntent = getIntent();
         final Bundle movieBundle = movieIntent.getExtras();
 
+        MovieModel movie = getIntent().getParcelableExtra("movie");
 
         MovieDBHelper dbHelper = new MovieDBHelper(this);
         mDB = dbHelper.getWritableDatabase();
 
-        if(movieBundle != null)
+        //if(movieBundle != null)
+        if (movie != null)
         {
-            movieID = (String) movieBundle.get("id");
-            textLink = (String) movieBundle.get("link");
-            String textTitle =(String) movieBundle.get("name");
-            movieTitle.setText(textTitle);
-            textOverview =(String) movieBundle.get("overview");
-            movieSynopsis.setText("Synopsis: "+textOverview);
-            textRating =(String) movieBundle.get("vote_average");
-            movieRating.setText("Rating: "+textRating);
-            textDate =(String) movieBundle.get("release_date");
-            movieReleaseDate.setText("Release Date: "+textDate);
+            //movieID = (String) movieBundle.get("id");
+            //textLink = (String) movieBundle.get("link");
+            //String textTitle =(String) movieBundle.get("name");
+            //movieTitle.setText(textTitle);
+            movieTitle.setText(movie.getMovieName());
+            //textOverview =(String) movieBundle.get("overview");
+            movieSynopsis.setText("Synopsis: "+ movie.getOverview());
+            //textRating =(String) movieBundle.get("vote_average");
+            movieRating.setText("Rating: "+ movie.getVote_average());
+            //textDate =(String) movieBundle.get("release_date");
+            movieReleaseDate.setText("Release Date: "+ movie.getRelease_date());
             popularity = (String) movieBundle.get("popularity");
 
 
-            String moviePath = "http://image.tmdb.org/t/p/w185/" + textLink;
+            String moviePath = "http://image.tmdb.org/t/p/w185/" + movie.getMovieLink();
             Log.v(TAG, "what is moviePath in detail.."+moviePath);
-            Log.v(TAG, "what is movieID in detail.."+movieID);
-            trailerPath = "https://api.themoviedb.org/3/movie/" + movieID + "/videos?api_key=bad34c8d38b0750ab6bef23cb64440ba";
-            reviewPath = "https://api.themoviedb.org/3/movie/" + movieID + "/reviews?api_key=bad34c8d38b0750ab6bef23cb64440ba";
+            Log.v(TAG, "what is movieID in detail.."+ movie.getMovieID());
+            trailerPath = "https://api.themoviedb.org/3/movie/" + movie.getMovieID() + "/videos?api_key=bad34c8d38b0750ab6bef23cb64440ba";
+            reviewPath = "https://api.themoviedb.org/3/movie/" + movie.getMovieID() + "/reviews?api_key=bad34c8d38b0750ab6bef23cb64440ba";
 
             Log.v(TAG, "what is reviewPath.."+reviewPath);
-
-            //movieReviews.setText("Reviews: "+ reviewPath);
 
             Picasso.with(getApplicationContext())
                     .load(moviePath)

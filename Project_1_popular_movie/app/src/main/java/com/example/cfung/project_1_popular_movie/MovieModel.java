@@ -1,12 +1,15 @@
 package com.example.cfung.project_1_popular_movie;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 /**
  * Created by cfung on 10/4/17.
  */
 
-public class MovieModel {
+public class MovieModel implements Parcelable{
 
     private String movieName;
     private String popularity;
@@ -32,6 +35,30 @@ public class MovieModel {
         this.trailer = mTrailer;
     }
 
+    protected MovieModel(Parcel in) {
+        movieName = in.readString();
+        popularity = in.readString();
+        movieLink = in.readString();
+        overview = in.readString();
+        vote_average = in.readString();
+        release_date = in.readString();
+        id = in.readString();
+        reviews = in.createStringArrayList();
+        trailer = in.readString();
+    }
+
+    public static final Creator<MovieModel> CREATOR = new Creator<MovieModel>() {
+        @Override
+        public MovieModel createFromParcel(Parcel in) {
+            return new MovieModel(in);
+        }
+
+        @Override
+        public MovieModel[] newArray(int size) {
+            return new MovieModel[size];
+        }
+    };
+
     public String getMovieName(){ return this.movieName;}
     public String getPopularity(){ return this.popularity;}
     public String getMovieLink(){return this.movieLink;}
@@ -42,4 +69,21 @@ public class MovieModel {
     public ArrayList<String> getMovieReviews(){return this.reviews;}
     public String getTrailer(){return this.trailer;}
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(movieName);
+        parcel.writeString(popularity);
+        parcel.writeString(movieLink);
+        parcel.writeString(overview);
+        parcel.writeString(vote_average);
+        parcel.writeString(release_date);
+        parcel.writeString(id);
+        parcel.writeStringList(reviews);
+        parcel.writeString(trailer);
+    }
 }
