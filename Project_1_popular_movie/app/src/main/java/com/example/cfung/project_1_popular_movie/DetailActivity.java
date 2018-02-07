@@ -168,7 +168,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         Intent movieIntent = getIntent();
         final Bundle movieBundle = movieIntent.getExtras();
 
-        MovieModel movie = getIntent().getParcelableExtra("movie");
+        final MovieModel movie = getIntent().getParcelableExtra("movie");
 
         MovieDBHelper dbHelper = new MovieDBHelper(this);
         mDB = dbHelper.getWritableDatabase();
@@ -230,23 +230,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                         "Fab Fav button is clicked!", Toast.LENGTH_SHORT).show();
                 //addToMovieDB(movieTitle.getText().toString(), popularity, textLink, textOverview,
                 //        textRating, textDate, movieID, reviewsList, trailerPath);
-                ContentValues contentValues = new ContentValues();
-                // Put the task description and selected mPriority into the ContentValues
-                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_NAME, movieTitle.getText().toString());
-                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_POPULARITY, popularity);
-                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH, textLink);
-                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_OVERVIEW, textOverview);
-                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_VOTE_AVG, textRating);
-                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE, textRating);
-                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, movieID);
-                //contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_REVIEWS, reviewsList);
-                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_TRAILER, trailerPath);
-
-
-                // Insert the content values via a ContentResolver
-                Log.v(TAG, "what is CONTENT_URI.." + MovieContract.MovieEntry.CONTENT_URI);
-                Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
-
+                addToMovieDB(movie.getMovieName(), movie.getPopularity(), movie.getMovieLink(),
+                        movie.getOverview(), movie.getVote_average(), movie.getRelease_date(),
+                        movie.getMovieID(), movie.getTrailer());
             }
         });
     }
@@ -258,9 +244,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
      */
     // MovieModel movie = new MovieModel(title, popularity,
     // poster_path, overview, vote_average, release_date, id, mReview, trailer );
-    public long addToMovieDB(String movieName, String popularity, String poster_path, String overview,
+    public void addToMovieDB(String movieName, String popularity, String poster_path, String overview,
                              String vote_average, String release_date, String id,
-                             ArrayList<String> reviews, String trailer){
+                             String trailer){
         Log.v(TAG, "addToMovies: "+movieName);
         ContentValues cv = new ContentValues();
         cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_NAME, movieName);
@@ -270,20 +256,16 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_VOTE_AVG, vote_average);
         cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE, release_date);
         cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, id);
-        cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_REVIEWS, reviews.get(0));
+        //cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_REVIEWS, reviews);
         cv.put(MovieContract.MovieEntry.COLUMN_MOVIE_TRAILER, trailer);
         long dbID = 0;
 
-        try {
-            mDB.beginTransaction();
-            dbID = mDB.insert(MovieContract.MovieEntry.TABLE_NAME, null, cv);
-            mDB.setTransactionSuccessful();
-        }catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            mDB.endTransaction();
+        Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, cv);
+        Log.v(TAG, "what is uri in addToMovieDB.."+uri.toString());
+
+        if (uri != null){
+            Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
         }
-        return dbID;
 
     }
 }
