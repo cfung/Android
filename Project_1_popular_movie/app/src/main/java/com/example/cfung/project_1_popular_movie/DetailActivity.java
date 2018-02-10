@@ -51,11 +51,28 @@ import javax.net.ssl.HttpsURLConnection;
  *    -release date
  */
 
-public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<String>>{
+//for the activity to contain two LoaderCallbacks implementations.
+/*
+private LoaderCallbacks<GetSyncListDataResult> dataResultLoaderListener
+  = new LoaderCallbacks<GetSyncListDataResult>() { ...methods here... };
+
+private LoaderCallbacks<ErrorResult> errorResultLoaderListener
+  = new LoaderCallbacks<ErrorResult>() { ...methods here... };
+
+private static final int DATA_RESULT_LOADER_ID = 1;
+private static final int ERROR_RESULT_LOADER_ID = 2;
+
+getLoaderManager().initLoader(DATA_RESULT_LOADER_ID, dataResultBundle, dataResultLoaderListener);
+getLoaderManager().initLoader(ERROR_RESULT_LOADER_ID, errorResultBundle, errorResultLoaderListener);
+
+*/
+
+public class DetailActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<ArrayList<String>>{
 
     private static final String TAG = "MyActivity";
     private String trailerPath = null;
-    private String trailerKey = null;
+    private ArrayList<String> trailerKeyList = null;
     private String reviewPath = null;
     private String popularity = null;
     private String textLink = null;
@@ -71,69 +88,103 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     ArrayList<String> reviewsList = new ArrayList<String>();
 
+    //getLoaderManager.initLoader();
+    //getLoaderManager.initLoader();
+
     @Override
-    public Loader<ArrayList<String>> onCreateLoader(int i, final Bundle bundle) {
+    public Loader<ArrayList<String>> onCreateLoader(final int id, final Bundle bundle) {
         return  new AsyncTaskLoader<ArrayList<String>>(this) {
             @Override
             public ArrayList<String> loadInBackground() {
-                Log.v(TAG, "inside loadInBackground..");
-                String mID = null;
+
+                ArrayList<String> resultList = new ArrayList<String>();
+
+                if (id == REVIEW_LOADER) {
+
+                    Log.v(TAG, "inside loadInBackground..");
+                    String mID = null;
 
 
-                String myStr = "Bundle{";
-                for (String key : bundle.keySet()){
-                    myStr += " " + key + " => " + bundle.get(key) + ";";
-                    if (key.equals("id")){
-                        mID = bundle.get(key).toString();
+                    String myStr = "Bundle{";
+                    for (String key : bundle.keySet()) {
+                        myStr += " " + key + " => " + bundle.get(key) + ";";
+                        if (key.equals("id")) {
+                            mID = bundle.get(key).toString();
+                        }
                     }
-                }
-                myStr += " }Bundle";
-                Log.v(TAG, "bundle contains..."+ myStr);
-                String responseKey = null;
-                String resultKey = null;
-                try{
-                    Log.v(TAG, "what is bundle.get.." + mID);
-                    String reviewURL = "https://api.themoviedb.org/3/movie/" + bundle.get("id") + "/reviews?api_key=bad34c8d38b0750ab6bef23cb64440ba";
-                    String resp = NetworkUtils.getResponseFromHttpUrl(new URL(reviewURL));
-                    Log.v(TAG, "what is resp (URL)..."+resp);
-                    //Log.v(TAG, "what is url in loadInBAckground-DetailActivity.."+urls[0].toString());
+                    myStr += " }Bundle";
+                    Log.v(TAG, "bundle contains..." + myStr);
+                    String responseKey = null;
+                    String resultKey = null;
+                    try {
+                        Log.v(TAG, "what is bundle.get.." + mID);
+                        String reviewURL = "https://api.themoviedb.org/3/movie/" + bundle.get("id") + "/reviews?api_key=" + BuildConfig.MY_API_KEY;
+                        String resp = NetworkUtils.getResponseFromHttpUrl(new URL(reviewURL));
+                        Log.v(TAG, "what is resp (URL)..." + resp);
 
-                    JSONObject results = new JSONObject(resp);
+                        JSONObject results = new JSONObject(resp);
 
-                    JSONArray detailResults = results.getJSONArray("results");
-                    for (int i=0; i<detailResults.length(); i++){
-                        JSONObject jsonobject = detailResults.getJSONObject(i);
+                        JSONArray detailResults = results.getJSONArray("results");
+                        for (int i = 0; i < detailResults.length(); i++) {
+                            JSONObject jsonobject = detailResults.getJSONObject(i);
 
-                        String movieReview = jsonobject.getString("content");
-                        Log.v(TAG, "what is movieReview: "+movieReview);
-                        //resultKey = movieKey;
-                        reviewsList.add(movieReview);
-                        //String resp_movieKey = makeServiceCall("");
+                            String movieReview = jsonobject.getString("content");
+                            Log.v(TAG, "what is movieReview: " + movieReview);
+
+                            reviewsList.add(movieReview);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
 
-                } catch (JSONException e){
-                    e.printStackTrace();
+                    //return reviewsList;
+                    resultList = reviewsList;
 
-                } catch (MalformedURLException e){
-                    e.printStackTrace();
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
+                } else if (id == TRAILER_LOADER) {
+
+                    String response = null;
+                    trailerKeyList = new ArrayList<String>();
+
+                    try {
+
+                        response = NetworkUtils.getResponseFromHttpUrl(new URL(trailerPath));
+
+                        JSONObject results = new JSONObject(response);
+
+                        JSONArray trailerResults = results.getJSONArray("results");
+                        for (int i = 0; i < trailerResults.length(); i++) {
+                            JSONObject jsonObject = trailerResults.getJSONObject(i);
+                            trailerKeyList.add(jsonObject.getString("key"));
+
+                        }
+
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+                    }
+                    //return trailerKeyList;
+                    reviewsList = trailerKeyList;
+                } //end else if
+                return resultList;
+                }; //end loadInBackground
 
 
-                //Log.v(TAG, "what is resultslist in trailer key.."+resultKey.toString());
-                //return resultKey;
-                return reviewsList;
-            }
 
-            @Override
-            public void onStartLoading(){
-                if (bundle == null){
-                    return;
-                }
-            }
-        };
-    }
+
+            }; //end AsyncTaskLoader
+
+
+        } //end onCreateLoader
 
     @Override
     public void onLoadFinished(Loader<ArrayList<String>> loader, ArrayList<String> strings) {
@@ -143,7 +194,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         for (String review: strings) {
             movieReviews.setText("Reviews: "+review);
         }
-
     }
 
     @Override
@@ -173,7 +223,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         MovieDBHelper dbHelper = new MovieDBHelper(this);
         mDB = dbHelper.getWritableDatabase();
 
-        //if(movieBundle != null)
+        String response = null;
+
         if (movie != null)
         {
             //movieID = (String) movieBundle.get("id");
@@ -193,10 +244,15 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             String moviePath = "http://image.tmdb.org/t/p/w185/" + movie.getMovieLink();
             Log.v(TAG, "what is moviePath in detail.."+moviePath);
             Log.v(TAG, "what is movieID in detail.."+ movie.getMovieID());
-            trailerPath = "https://api.themoviedb.org/3/movie/" + movie.getMovieID() + "/videos?api_key=bad34c8d38b0750ab6bef23cb64440ba";
-            reviewPath = "https://api.themoviedb.org/3/movie/" + movie.getMovieID() + "/reviews?api_key=bad34c8d38b0750ab6bef23cb64440ba";
+            //"https://api.themoviedb.org/3/movie/popular?api_key="+ BuildConfig.MY_API_KEY;
+            trailerPath = "https://api.themoviedb.org/3/movie/" + movie.getMovieID() +
+                    "/videos?api_key=" + BuildConfig.MY_API_KEY;
+            reviewPath = "https://api.themoviedb.org/3/movie/" + movie.getMovieID() +
+                    "/reviews?api_key=" + BuildConfig.MY_API_KEY;
 
             Log.v(TAG, "what is reviewPath.."+reviewPath);
+            
+            getLoaderManager().initLoader(TRAILER_LOADER, null, this).forceLoad();
 
             Picasso.with(getApplicationContext())
                     .load(moviePath)
@@ -210,7 +266,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         trailerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String youtubePath = "https://www.youtube.com/watch?v=" + trailerKey;
+                // "trailerKey is retireved in the videos call, there could be multiple trailers
+                String youtubePath = "https://www.youtube.com/watch?v=" + trailerKeyList.get(0);
                 Log.v(TAG, "what is youtube path.." + youtubePath);
                 Uri uri = Uri.parse(youtubePath);
                 uri = Uri.parse("vnd.youtube:" + uri.getQueryParameter("v"));
@@ -228,8 +285,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             public void onClick(View view) {
                 Toast.makeText(DetailActivity.this,
                         "Fab Fav button is clicked!", Toast.LENGTH_SHORT).show();
-                //addToMovieDB(movieTitle.getText().toString(), popularity, textLink, textOverview,
-                //        textRating, textDate, movieID, reviewsList, trailerPath);
                 addToMovieDB(movie.getMovieName(), movie.getPopularity(), movie.getMovieLink(),
                         movie.getOverview(), movie.getVote_average(), movie.getRelease_date(),
                         movie.getMovieID(), movie.getTrailer());
