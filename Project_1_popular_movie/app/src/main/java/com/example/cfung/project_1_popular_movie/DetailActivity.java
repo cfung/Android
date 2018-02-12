@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -83,6 +84,9 @@ public class DetailActivity extends AppCompatActivity implements
 
     private static final int TRAILER_LOADER = 1;
     private static final int REVIEW_LOADER = 2;
+
+    private RecyclerView recyclerView;
+    private RecyclerAdapter recyclerAdapter;
 
     private SQLiteDatabase mDB;
 
@@ -192,7 +196,8 @@ public class DetailActivity extends AppCompatActivity implements
         TextView movieReviews = (TextView)findViewById(R.id.detail_review);
         Log.v(TAG, "onLoadFinished..."+strings);
         for (String review: strings) {
-            movieReviews.setText("Reviews: "+review);
+            movieReviews.setText("Reviews: ");
+            Log.v(TAG, "reviews.."+review);
         }
     }
 
@@ -212,6 +217,8 @@ public class DetailActivity extends AppCompatActivity implements
         TextView movieSynopsis = (TextView)findViewById(R.id.detail_overview);
         TextView movieRating = (TextView)findViewById(R.id.detail_vote);
         TextView movieReleaseDate = (TextView)findViewById(R.id.detail_date);
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_layout);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -251,7 +258,7 @@ public class DetailActivity extends AppCompatActivity implements
                     "/reviews?api_key=" + BuildConfig.MY_API_KEY;
 
             Log.v(TAG, "what is reviewPath.."+reviewPath);
-            
+
             getLoaderManager().initLoader(TRAILER_LOADER, null, this).forceLoad();
 
             Picasso.with(getApplicationContext())

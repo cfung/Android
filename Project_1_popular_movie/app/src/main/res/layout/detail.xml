@@ -56,7 +56,7 @@
                 android:src="@android:drawable/btn_star" />
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/movieReviews"
+                android:id="@+id/recycler_view_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
