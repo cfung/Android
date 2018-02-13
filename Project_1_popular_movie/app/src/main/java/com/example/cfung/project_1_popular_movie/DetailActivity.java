@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
@@ -87,6 +88,9 @@ public class DetailActivity extends AppCompatActivity implements
 
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
+    private TextView movieReviews;
 
     private SQLiteDatabase mDB;
 
@@ -193,12 +197,19 @@ public class DetailActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<ArrayList<String>> loader, ArrayList<String> strings) {
 
-        TextView movieReviews = (TextView)findViewById(R.id.detail_review);
+        //TextView movieReviews = (TextView)findViewById(R.id.detail_review);
+        //TextView movieReviews = (TextView)findViewById(R.id.recycler_review);
         Log.v(TAG, "onLoadFinished..."+strings);
-        for (String review: strings) {
-            movieReviews.setText("Reviews: ");
-            Log.v(TAG, "reviews.."+review);
+
+        if (strings.size()>0){
+            Log.v(TAG, "inside is empty...");
+            /*for (String review: strings) {
+                movieReviews.setText("Reviews: " + review);
+                Log.v(TAG, "Reivews in onCreateLoader.."+review);
+            }*/
+            recyclerView.setAdapter(new RecyclerAdapter(strings));
         }
+
     }
 
     @Override
@@ -210,6 +221,7 @@ public class DetailActivity extends AppCompatActivity implements
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail);
+        //setContentView(R.layout.reviews);
 
         ImageView imageView = (ImageView)findViewById(R.id.detail_image);
         ImageButton trailerBtn = (ImageButton)findViewById(R.id.detail_trailer);
@@ -219,6 +231,12 @@ public class DetailActivity extends AppCompatActivity implements
         TextView movieReleaseDate = (TextView)findViewById(R.id.detail_date);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_layout);
+        recyclerAdapter = new RecyclerAdapter(reviewsList);
+        mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(recyclerAdapter);
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 

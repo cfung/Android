@@ -2,6 +2,7 @@ package com.example.cfung.project_1_popular_movie;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter <RecyclerAdapter.MyVie
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView reviewsText;
+        public TextView reviewsTextIndex;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            reviewsText = (TextView) itemView.findViewById(R.id.recycler_view_layout);
+            reviewsText = (TextView) itemView.findViewById(R.id.recycler_review);
+            reviewsTextIndex = (TextView) itemView.findViewById(R.id.recycler_review_index);
+        }
+
+        void bind(int listIndex) {
+            reviewsTextIndex.setText("review " + (String.valueOf(listIndex)) + ":");
+            reviewsText.setText(reviewsList.get(listIndex).toString());
         }
     }
 
@@ -32,18 +40,26 @@ public class RecyclerAdapter extends RecyclerView.Adapter <RecyclerAdapter.MyVie
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.reviews, parent, false);
-        return new MyViewHolder(itemView);
+        Context context = viewGroup.getContext();
+        int layoutIdForListItem = R.layout.reviews;
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.reviews, viewGroup, false);
+        MyViewHolder viewHolder = new MyViewHolder(view);
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        String review = reviewsList.get(position);
-        holder.reviewsText.setText(review.toString());
+        Log.v("MyActivity", "what is holder: "+holder.reviewsText.getText());
+        Log.v("MyActivity", "what is reviewsList <position>" + reviewsList.get(position).toString());
+        //Log.v("MyActivity", "what is reviewsText"+holder.reviewsText.toString());
+        //String review = reviewsList.get(position);
+        //holder.reviewsText.setText(review.toString());
+        holder.bind(position);
+
     }
 
 
