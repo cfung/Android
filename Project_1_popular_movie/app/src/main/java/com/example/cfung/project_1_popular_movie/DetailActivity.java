@@ -53,22 +53,6 @@ import javax.net.ssl.HttpsURLConnection;
  *    -release date
  */
 
-//for the activity to contain two LoaderCallbacks implementations.
-/*
-private LoaderCallbacks<GetSyncListDataResult> dataResultLoaderListener
-  = new LoaderCallbacks<GetSyncListDataResult>() { ...methods here... };
-
-private LoaderCallbacks<ErrorResult> errorResultLoaderListener
-  = new LoaderCallbacks<ErrorResult>() { ...methods here... };
-
-private static final int DATA_RESULT_LOADER_ID = 1;
-private static final int ERROR_RESULT_LOADER_ID = 2;
-
-getLoaderManager().initLoader(DATA_RESULT_LOADER_ID, dataResultBundle, dataResultLoaderListener);
-getLoaderManager().initLoader(ERROR_RESULT_LOADER_ID, errorResultBundle, errorResultLoaderListener);
-
-*/
-
 public class DetailActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<ArrayList<String>>{
 
@@ -86,15 +70,19 @@ public class DetailActivity extends AppCompatActivity implements
     private static final int TRAILER_LOADER = 1;
     private static final int REVIEW_LOADER = 2;
 
-    private RecyclerView recyclerView;
-    private RecyclerAdapter recyclerAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView reviewView;
+    private ReviewAdapter recyclerAdapter;
+    private RecyclerView.LayoutManager reviewLayoutManager;
+    private RecyclerView.LayoutManager trailerLayoutManager;
+    private RecyclerView trailerView;
+    private TrailerAdapter trailerAdapter;
 
     private TextView movieReviews;
 
     private SQLiteDatabase mDB;
 
     ArrayList<String> reviewsList = new ArrayList<String>();
+    ArrayList<String> trailersList = new ArrayList<String>();
 
     //getLoaderManager.initLoader();
     //getLoaderManager.initLoader();
@@ -156,8 +144,9 @@ public class DetailActivity extends AppCompatActivity implements
 
                 } else if (id == TRAILER_LOADER) {
 
+                    Log.v(TAG, "inside TRAILER_LOADER");
                     String response = null;
-                    trailerKeyList = new ArrayList<String>();
+                    //trailerKeyList = new ArrayList<String>();
 
                     try {
 
@@ -168,7 +157,7 @@ public class DetailActivity extends AppCompatActivity implements
                         JSONArray trailerResults = results.getJSONArray("results");
                         for (int i = 0; i < trailerResults.length(); i++) {
                             JSONObject jsonObject = trailerResults.getJSONObject(i);
-                            trailerKeyList.add(jsonObject.getString("key"));
+                            trailersList.add(jsonObject.getString("key"));
 
                         }
 
@@ -181,17 +170,17 @@ public class DetailActivity extends AppCompatActivity implements
 
                     }
                     //return trailerKeyList;
-                    reviewsList = trailerKeyList;
+                    for (String key: trailersList){
+                        Log.v(TAG, "trailersList..."+key);
+                    }
+                    Log.v(TAG, "what is size of trailerKeyList.."+trailersList.size());
+                    resultList = trailersList;
                 } //end else if
+                Log.v(TAG, "What is being returned in resultsList.."+resultList);
                 return resultList;
                 }; //end loadInBackground
 
-
-
-
             }; //end AsyncTaskLoader
-
-
         } //end onCreateLoader
 
     @Override
@@ -200,14 +189,19 @@ public class DetailActivity extends AppCompatActivity implements
         //TextView movieReviews = (TextView)findViewById(R.id.detail_review);
         //TextView movieReviews = (TextView)findViewById(R.id.recycler_review);
         Log.v(TAG, "onLoadFinished..."+strings);
+        Log.v(TAG, "onLoadFinished loader ID: "+loader.getId());
+        Log.v(TAG, "what is strings.size().."+strings.size());
 
-        if (strings.size()>0){
-            Log.v(TAG, "inside is empty...");
+        if ((strings.size()>0) && (loader.getId()== REVIEW_LOADER)){
+            Log.v(TAG, "inside is review_loader...");
             /*for (String review: strings) {
                 movieReviews.setText("Reviews: " + review);
                 Log.v(TAG, "Reivews in onCreateLoader.."+review);
             }*/
-            recyclerView.setAdapter(new RecyclerAdapter(strings));
+            reviewView.setAdapter(new ReviewAdapter(strings));
+        } else if((strings.size()>0) && (loader.getId() == TRAILER_LOADER)){
+            Log.v(TAG, "inside trailer_loader-onLoadFinished");
+            trailerView.setAdapter(new TrailerAdapter(strings));
         }
 
     }
@@ -224,18 +218,25 @@ public class DetailActivity extends AppCompatActivity implements
         //setContentView(R.layout.reviews);
 
         ImageView imageView = (ImageView)findViewById(R.id.detail_image);
-        ImageButton trailerBtn = (ImageButton)findViewById(R.id.detail_trailer);
+        //ImageButton trailerBtn = (ImageButton)findViewById(R.id.detail_trailer);
         final TextView movieTitle = (TextView)findViewById(R.id.detail_name);
         TextView movieSynopsis = (TextView)findViewById(R.id.detail_overview);
         TextView movieRating = (TextView)findViewById(R.id.detail_vote);
         TextView movieReleaseDate = (TextView)findViewById(R.id.detail_date);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_layout);
-        recyclerAdapter = new RecyclerAdapter(reviewsList);
-        mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(recyclerAdapter);
+        // Setup layout for Reviews
+        reviewView = (RecyclerView) findViewById(R.id.recycler_reviews);
+        recyclerAdapter = new ReviewAdapter(reviewsList);
+        reviewLayoutManager = new LinearLayoutManager(getApplicationContext());
+        reviewView.setLayoutManager(reviewLayoutManager);
+        reviewView.setAdapter(recyclerAdapter);
 
+        // Setup layout for Trailers
+        trailerView = (RecyclerView) findViewById(R.id.recycler_trailer);
+        trailerAdapter = new TrailerAdapter(trailersList);
+        trailerLayoutManager = new LinearLayoutManager(getApplicationContext());
+        trailerView.setLayoutManager(trailerLayoutManager);
+        trailerView.setAdapter(trailerAdapter);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -252,16 +253,9 @@ public class DetailActivity extends AppCompatActivity implements
 
         if (movie != null)
         {
-            //movieID = (String) movieBundle.get("id");
-            //textLink = (String) movieBundle.get("link");
-            //String textTitle =(String) movieBundle.get("name");
-            //movieTitle.setText(textTitle);
             movieTitle.setText(movie.getMovieName());
-            //textOverview =(String) movieBundle.get("overview");
             movieSynopsis.setText("Synopsis: "+ movie.getOverview());
-            //textRating =(String) movieBundle.get("vote_average");
             movieRating.setText("Rating: "+ movie.getVote_average());
-            //textDate =(String) movieBundle.get("release_date");
             movieReleaseDate.setText("Release Date: "+ movie.getRelease_date());
             popularity = (String) movieBundle.get("popularity");
 
@@ -277,8 +271,6 @@ public class DetailActivity extends AppCompatActivity implements
 
             Log.v(TAG, "what is reviewPath.."+reviewPath);
 
-            getLoaderManager().initLoader(TRAILER_LOADER, null, this).forceLoad();
-
             Picasso.with(getApplicationContext())
                     .load(moviePath)
                     .placeholder(R.drawable.placeholder)
@@ -286,9 +278,11 @@ public class DetailActivity extends AppCompatActivity implements
 
             getLoaderManager().initLoader(REVIEW_LOADER, movieBundle, this).forceLoad();
 
+            getLoaderManager().initLoader(TRAILER_LOADER, null, this).forceLoad();
+
         }
 
-        trailerBtn.setOnClickListener(new View.OnClickListener() {
+        /*trailerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // "trailerKey is retireved in the videos call, there could be multiple trailers
@@ -302,7 +296,7 @@ public class DetailActivity extends AppCompatActivity implements
                         "ImageButton is clicked!", Toast.LENGTH_SHORT).show();
                 Log.v(TAG, "what is trailerPath: "+trailerPath);
             }
-        });
+        });*/
 
         fab.setOnClickListener(new View.OnClickListener(){
 

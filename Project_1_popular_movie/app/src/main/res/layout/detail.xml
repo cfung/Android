@@ -41,12 +41,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/detail_date"/>
-            <ImageButton
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_trailer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/detail_trailer"
-                android:layout_below="@+id/detail_review"
-                android:src="@drawable/play_button"/>
+                android:layout_below="@+id/detail_date"
+                />
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
@@ -56,10 +56,10 @@
                 android:src="@android:drawable/btn_star" />
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/detail_trailer"/>
+                android:id="@+id/recycler_reviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recycler_trailer"/>
 
         </RelativeLayout>
     </LinearLayout>

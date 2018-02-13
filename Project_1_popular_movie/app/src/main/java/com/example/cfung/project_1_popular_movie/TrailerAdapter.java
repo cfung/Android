@@ -1,11 +1,16 @@
 package com.example.cfung.project_1_popular_movie;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -15,20 +20,24 @@ import java.util.ArrayList;
 
 public class TrailerAdapter extends RecyclerView.Adapter <TrailerAdapter.MyViewHolder>{
 
+    private static final String TAG = "TrailerAdapter";
 
     private ArrayList<String> trailerList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        public ImageView trailerImage;
+        public ImageButton trailerImageBtn;
 
         public MyViewHolder(View itemView){
 
             super(itemView);
-            trailerImage = (ImageView) itemView.findViewById(R.id.recycler_trailer);
+            trailerImageBtn = (ImageButton) itemView.findViewById(R.id.recycler_trailer_btn);
+
         }
 
         void bind(int listIndex){
+
+            Log.v("TrailerAdapter", "inside bind() - what is trailerList: "+trailerList.get(listIndex).toString());
 
         }
     }
