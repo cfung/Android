@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         if ((savedInstanceState ==null) || (!savedInstanceState.containsKey(getString(R.string.movie_key))) ){
 
             AllMovies = new ArrayList<MovieModel>();
-
+            
             movieAdapter = new CustomAdapter(MainActivity.this, 0, AllMovies);
             gridView.setAdapter(movieAdapter);
             // completed 4:  call asynctask here
@@ -138,7 +138,10 @@ public class MainActivity extends AppCompatActivity {
         // recovering the instance state
         // if (savedInstanceState != null)
         else {
+
             AllMovies = savedInstanceState.getParcelableArrayList(getString(R.string.movie_key));
+            movieAdapter = new CustomAdapter(MainActivity.this, 0, AllMovies);
+            gridView.setAdapter(movieAdapter);
         }
 
         //enable Facebook Stetho debugger
