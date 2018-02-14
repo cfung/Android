@@ -53,7 +53,7 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        Log.v(TAG, "what is getView position"+position);
+
         MovieModel mMovies = getItem(position);
 
         if (convertView == null){
@@ -63,9 +63,7 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
         ImageView imageView = (ImageView) convertView.findViewById(R.id.list_item_icon);
         Picasso.with(getContext()).setLoggingEnabled(true);
 
-        Log.v(TAG, "mMovies link is..."+mMovies.getMovieLink());
         String moviePostPath1 = "http://image.tmdb.org/t/p/w185/"+mMovies.getMovieLink();
-        Log.v(TAG, "what is moviePostPath1.."+moviePostPath1);
         Picasso.with(getContext())
                 .load(moviePostPath1)
                 .placeholder(R.drawable.placeholder)

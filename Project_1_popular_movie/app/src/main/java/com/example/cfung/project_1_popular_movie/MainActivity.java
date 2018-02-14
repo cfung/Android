@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -52,22 +53,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected ArrayList<MovieModel> doInBackground(String... urls) {
-            Log.v(TAG, "starting doInBackground...");
+
             String response = null;
             ArrayList<MovieModel> resultslist = new ArrayList<MovieModel>();
 
             try {
-                Log.v(TAG, "what is URL in doInBackground.."+urls[0].toString());
+
                 URL url = new URL(urls[0]);
-                /*HttpsURLConnection httpconn = (HttpsURLConnection) url.openConnection();
-                httpconn.setRequestMethod("GET");
-                InputStream in = new BufferedInputStream((httpconn.getInputStream()));
-                response = convertStreamToString(in);*/
+
                 response = NetworkUtils.getResponseFromHttpUrl(url);
 
                 JSONObject results = new JSONObject(response);
-
-                Log.v(TAG, "results response: " + results);
 
                 JSONArray movieResults = results.getJSONArray("results");
                 for (int i=0; i<movieResults.length(); i++){
@@ -75,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jsonobject = movieResults.getJSONObject(i);
                     String id = jsonobject.getString("id");
                     String poster_path = jsonobject.getString("poster_path");
-                    Log.v(TAG, "movieResults poster_path...:" + poster_path);
                     String title = jsonobject.getString("original_title");
                     String popularity = jsonobject.getString("popularity");
                     String overview = jsonobject.getString("overview");
@@ -96,22 +91,18 @@ public class MainActivity extends AppCompatActivity {
             } catch(JSONException e){
                 e.printStackTrace();
             }
-            Log.v(TAG, "returning results in doInbackground.."+resultslist);
+
             return resultslist;
         }
 
         @Override
         protected void onPostExecute(ArrayList<MovieModel> result){
             super.onPostExecute(result);
-            Log.v(TAG, "what is result in onPostExecute.." +result);
-            //ArrayList<MovieModel> AllMovies = new ArrayList<MovieModel>();
 
             if(result != null){
 
                 movieAdapter.clear();
                 for (int i=0; i<result.size();i++){
-                    Log.v(TAG, "i is..."+i);
-                    Log.v(TAG, "what is result in onPostExecute..:"+result.get(i).getMovieName());
                     movieAdapter.add(result.get(i));
                 }
             }
@@ -121,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.main);
-        Log.v(TAG, "inside onCreate");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar == null){
@@ -134,12 +125,21 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(false);
 
         GridView gridView = (GridView) findViewById(R.id.movie_grid);
-        AllMovies = new ArrayList<MovieModel>();
-        // TODO 2:  What should resources be set to??
-        movieAdapter = new CustomAdapter(MainActivity.this, 0, AllMovies);
-        gridView.setAdapter(movieAdapter);
-        // completed 4:  call asynctask here
-        new MovieQueryTask().execute(NetworkUtils.MOVIE_API_POPULAR);
+
+        if ((savedInstanceState ==null) || (!savedInstanceState.containsKey(getString(R.string.movie_key))) ){
+
+            AllMovies = new ArrayList<MovieModel>();
+
+            movieAdapter = new CustomAdapter(MainActivity.this, 0, AllMovies);
+            gridView.setAdapter(movieAdapter);
+            // completed 4:  call asynctask here
+            new MovieQueryTask().execute(NetworkUtils.MOVIE_API_POPULAR);
+        }
+        // recovering the instance state
+        // if (savedInstanceState != null)
+        else {
+            AllMovies = savedInstanceState.getParcelableArrayList(getString(R.string.movie_key));
+        }
 
         //enable Facebook Stetho debugger
         Stetho.InitializerBuilder initializerBuilder = Stetho.newInitializerBuilder(this);
@@ -160,9 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent startDetailActivityIntent = new Intent(context, detailActivity);
                 startDetailActivityIntent.putExtra("movie", AllMovies.get(position));
-                //Bundle bundle = new Bundle();
-                //bundle.putParcelable();
-                //startDetailActivityIntent.putExtra(AllMovies.get(position).getMovieName(), );
+
                 startDetailActivityIntent.putExtra("name", AllMovies.get(position).getMovieName());
                 startDetailActivityIntent.putExtra("link", AllMovies.get(position).getMovieLink());
                 startDetailActivityIntent.putExtra("overview", AllMovies.get(position).getOverview());
@@ -225,5 +223,11 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    public void onSaveInstanceState(Bundle outState){
+
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("movie", AllMovies);
     }
 }

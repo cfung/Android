@@ -97,7 +97,6 @@ public class DetailActivity extends AppCompatActivity implements
 
                 if (id == REVIEW_LOADER) {
 
-                    Log.v(TAG, "inside loadInBackground..");
                     String mID = null;
 
 
@@ -109,14 +108,13 @@ public class DetailActivity extends AppCompatActivity implements
                         }
                     }
                     myStr += " }Bundle";
-                    Log.v(TAG, "bundle contains..." + myStr);
+
                     String responseKey = null;
                     String resultKey = null;
                     try {
-                        Log.v(TAG, "what is bundle.get.." + mID);
+
                         String reviewURL = "https://api.themoviedb.org/3/movie/" + bundle.get("id") + "/reviews?api_key=" + BuildConfig.MY_API_KEY;
                         String resp = NetworkUtils.getResponseFromHttpUrl(new URL(reviewURL));
-                        Log.v(TAG, "what is resp (URL)..." + resp);
 
                         JSONObject results = new JSONObject(resp);
 
@@ -125,8 +123,6 @@ public class DetailActivity extends AppCompatActivity implements
                             JSONObject jsonobject = detailResults.getJSONObject(i);
 
                             String movieReview = jsonobject.getString("content");
-                            Log.v(TAG, "what is movieReview: " + movieReview);
-
                             reviewsList.add(movieReview);
                         }
 
@@ -144,7 +140,6 @@ public class DetailActivity extends AppCompatActivity implements
 
                 } else if (id == TRAILER_LOADER) {
 
-                    Log.v(TAG, "inside TRAILER_LOADER");
                     String response = null;
                     //trailerKeyList = new ArrayList<String>();
 
@@ -158,7 +153,6 @@ public class DetailActivity extends AppCompatActivity implements
                         for (int i = 0; i < trailerResults.length(); i++) {
                             JSONObject jsonObject = trailerResults.getJSONObject(i);
                             trailersList.add(jsonObject.getString("key"));
-
                         }
 
                     } catch (MalformedURLException e) {
@@ -186,22 +180,13 @@ public class DetailActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<ArrayList<String>> loader, ArrayList<String> strings) {
 
-        //TextView movieReviews = (TextView)findViewById(R.id.detail_review);
-        //TextView movieReviews = (TextView)findViewById(R.id.recycler_review);
-        Log.v(TAG, "onLoadFinished..."+strings);
-        Log.v(TAG, "onLoadFinished loader ID: "+loader.getId());
-        Log.v(TAG, "what is strings.size().."+strings.size());
-
         if ((strings.size()>0) && (loader.getId()== REVIEW_LOADER)){
-            Log.v(TAG, "inside is review_loader...");
-            /*for (String review: strings) {
-                movieReviews.setText("Reviews: " + review);
-                Log.v(TAG, "Reivews in onCreateLoader.."+review);
-            }*/
+
             reviewView.setAdapter(new ReviewAdapter(strings));
+
         } else if((strings.size()>0) && (loader.getId() == TRAILER_LOADER)){
-            Log.v(TAG, "inside trailer_loader-onLoadFinished");
-            trailerView.setAdapter(new TrailerAdapter(strings));
+
+            trailerView.setAdapter(new TrailerAdapter(strings, getApplicationContext()));
         }
 
     }
@@ -233,7 +218,7 @@ public class DetailActivity extends AppCompatActivity implements
 
         // Setup layout for Trailers
         trailerView = (RecyclerView) findViewById(R.id.recycler_trailer);
-        trailerAdapter = new TrailerAdapter(trailersList);
+        trailerAdapter = new TrailerAdapter(trailersList, getApplicationContext());
         trailerLayoutManager = new LinearLayoutManager(getApplicationContext());
         trailerView.setLayoutManager(trailerLayoutManager);
         trailerView.setAdapter(trailerAdapter);
@@ -261,15 +246,11 @@ public class DetailActivity extends AppCompatActivity implements
 
 
             String moviePath = "http://image.tmdb.org/t/p/w185/" + movie.getMovieLink();
-            Log.v(TAG, "what is moviePath in detail.."+moviePath);
-            Log.v(TAG, "what is movieID in detail.."+ movie.getMovieID());
-            //"https://api.themoviedb.org/3/movie/popular?api_key="+ BuildConfig.MY_API_KEY;
+
             trailerPath = "https://api.themoviedb.org/3/movie/" + movie.getMovieID() +
                     "/videos?api_key=" + BuildConfig.MY_API_KEY;
             reviewPath = "https://api.themoviedb.org/3/movie/" + movie.getMovieID() +
                     "/reviews?api_key=" + BuildConfig.MY_API_KEY;
-
-            Log.v(TAG, "what is reviewPath.."+reviewPath);
 
             Picasso.with(getApplicationContext())
                     .load(moviePath)
@@ -281,22 +262,6 @@ public class DetailActivity extends AppCompatActivity implements
             getLoaderManager().initLoader(TRAILER_LOADER, null, this).forceLoad();
 
         }
-
-        /*trailerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // "trailerKey is retireved in the videos call, there could be multiple trailers
-                String youtubePath = "https://www.youtube.com/watch?v=" + trailerKeyList.get(0);
-                Log.v(TAG, "what is youtube path.." + youtubePath);
-                Uri uri = Uri.parse(youtubePath);
-                uri = Uri.parse("vnd.youtube:" + uri.getQueryParameter("v"));
-                Intent movieIntent = new Intent (Intent.ACTION_VIEW, uri);
-                startActivity(movieIntent);
-                Toast.makeText(DetailActivity.this,
-                        "ImageButton is clicked!", Toast.LENGTH_SHORT).show();
-                Log.v(TAG, "what is trailerPath: "+trailerPath);
-            }
-        });*/
 
         fab.setOnClickListener(new View.OnClickListener(){
 
@@ -316,8 +281,6 @@ public class DetailActivity extends AppCompatActivity implements
      *
      * @param
      */
-    // MovieModel movie = new MovieModel(title, popularity,
-    // poster_path, overview, vote_average, release_date, id, mReview, trailer );
     public void addToMovieDB(String movieName, String popularity, String poster_path, String overview,
                              String vote_average, String release_date, String id,
                              String trailer){
@@ -335,7 +298,6 @@ public class DetailActivity extends AppCompatActivity implements
         long dbID = 0;
 
         Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, cv);
-        Log.v(TAG, "what is uri in addToMovieDB.."+uri.toString());
 
         if (uri != null){
             Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();

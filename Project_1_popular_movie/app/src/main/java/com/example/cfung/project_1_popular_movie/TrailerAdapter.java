@@ -23,6 +23,14 @@ public class TrailerAdapter extends RecyclerView.Adapter <TrailerAdapter.MyViewH
     private static final String TAG = "TrailerAdapter";
 
     private ArrayList<String> trailerList;
+    private Context context;
+
+    public TrailerAdapter (ArrayList<String> trailersList, Context context){
+
+        this.trailerList = trailersList;
+        this.context = context;
+
+    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
@@ -35,17 +43,28 @@ public class TrailerAdapter extends RecyclerView.Adapter <TrailerAdapter.MyViewH
 
         }
 
-        void bind(int listIndex){
+        void bind(final int listIndex){
 
             Log.v("TrailerAdapter", "inside bind() - what is trailerList: "+trailerList.get(listIndex).toString());
+            trailerImageBtn.setOnClickListener(new View.OnClickListener(){
 
+
+                @Override
+                public void onClick(View view) {
+                    String youtubePath = "https://www.youtube.com/watch?v=" + trailerList.get(listIndex).toString();
+                    Log.v(TAG, "what is youtube path.." + youtubePath);
+                    Uri uri = Uri.parse(youtubePath);
+                    uri = Uri.parse("vnd.youtube:" + uri.getQueryParameter("v"));
+                    Intent movieIntent = new Intent (Intent.ACTION_VIEW, uri);
+                    context.startActivity(movieIntent);
+                    //Toast.makeText(DetailActivity.this,
+                    //        "ImageButton is clicked!", Toast.LENGTH_SHORT).show();
+                    //Log.v(TAG, "what is trailerPath: "+trailerPath);
+                }
+            });
         }
     }
 
-
-    public TrailerAdapter (ArrayList<String> trailersList){
-        this.trailerList = trailersList;
-    }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
