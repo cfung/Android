@@ -39,26 +39,56 @@ public class MainActivity extends AppCompatActivity {
 
                 response = NetworkUtils.getResponseFromHttpUrl(url);
 
-                JSONObject results = new JSONObject(response);
+                JSONArray recipeResults = new JSONArray(response);
 
-                JSONArray recipeResults = results.getJSONArray("");
+                //JSONArray recipeResults = results.getJSONArray("");
                 Log.v(TAG, "what is size of recipeResutls..." + recipeResults.length());
                 for (int i = 0; i < recipeResults.length(); i++){
                     //ArrayList<String> movieArray = new ArrayList<String>();
                     JSONObject jsonobject = recipeResults.getJSONObject(i);
-                    String id = jsonobject.getString("id");
-                    String poster_path = jsonobject.getString("poster_path");
-                    String title = jsonobject.getString("original_title");
-                    String popularity = jsonobject.getString("popularity");
-                    String overview = jsonobject.getString("overview");
-                    String vote_average = jsonobject.getString("vote_average");
-                    String release_date = jsonobject.getString("release_date");
+                    int id = jsonobject.getInt("id");
+                    String name = jsonobject.getString("name");
+                    String servings = jsonobject.getString("servings");
+                    String image = jsonobject.getString("image");
+                    ArrayList<String> ingredientsList = new ArrayList<>();
+                    JSONArray ingredients = jsonobject.getJSONArray("ingredients");
+
+                    for (int x = 0; x < ingredients.length(); x++){
+                        JSONObject json = ingredients.getJSONObject(x);
+                        ingredientsList.add(json.getString("quantity"));
+                        ingredientsList.add(json.getString("measure"));
+                        ingredientsList.add(json.getString("ingredient"));
+                    }
+
+                    ArrayList<String> stepsList = new ArrayList<>();
+                    JSONArray steps = jsonobject.getJSONArray("steps");
+
+                    for (int y = 0; y < steps.length(); y++){
+
+                        JSONObject jsonStep = steps.getJSONObject(y);
+                        int stepId = jsonStep.getInt("id");
+                        /*if(stepId instanceof Integer){
+                            Log.v(TAG, "stepID is an integer!!");
+                        }else{
+                            Log.v(TAG, "stepID is NOT an integer!");
+                        }*/
+                        stepsList.add(Integer.toString(stepId));
+                        stepsList.add(jsonStep.getString("shortDescription"));
+                        stepsList.add(jsonStep.getString("description"));
+                        stepsList.add(jsonStep.getString("videoURL"));
+                        stepsList.add(jsonStep.getString("thumbnailURL"));
+
+                    }
+
+                    //String overview = jsonobject.getString("overview");
+                    //String vote_average = jsonobject.getString("vote_average");
+                    //String release_date = jsonobject.getString("release_date");
 
                     ArrayList<String> mReview = new ArrayList<String>();
                     String trailer = null;
 
                     // completed:  add recipe recipeArray
-                    //RecipeModel movie = new RecipeModel(title, popularity, poster_path, overview, vote_average, release_date, id, mReview, trailer );
+                    RecipeModel movie = new RecipeModel(title, popularity, poster_path, overview, vote_average, release_date, id, mReview, trailer );
                     //resultslist.add(movie);
 
                 }
@@ -91,6 +121,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        AllRecipes = new ArrayList<RecipeModel>();
+        recipeAdapter = new RecipeAdapter(MainActivity.this, 0, AllRecipes);
         new RecipeQueryTask().execute();
     }
 }
