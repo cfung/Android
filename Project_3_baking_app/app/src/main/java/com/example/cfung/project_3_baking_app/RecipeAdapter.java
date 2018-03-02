@@ -1,6 +1,7 @@
 package com.example.cfung.project_3_baking_app;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class RecipeAdapter extends ArrayAdapter<RecipeModel> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
 
-        RecipeModel mMovies = getItem(position);
+        RecipeModel mRecipe = getItem(position);
 
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_recipe, parent, false);
@@ -51,6 +52,9 @@ public class RecipeAdapter extends ArrayAdapter<RecipeModel> {
         movieNameView.setText(AllMovies.get(position).getMovieName());
         */
 
+        TextView recipeNameView = (TextView) convertView.findViewById(R.id.list_item_recipe_name);
+        Log.v(TAG, "what is getRecipeName: " + AllRecipes.get(position).getRecipeName());
+        recipeNameView.setText(AllRecipes.get(position).getRecipeName());
 
         return convertView;
     }

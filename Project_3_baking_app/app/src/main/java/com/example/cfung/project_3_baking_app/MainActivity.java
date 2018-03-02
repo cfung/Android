@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jsonobject = recipeResults.getJSONObject(i);
                     int id = jsonobject.getInt("id");
                     String name = jsonobject.getString("name");
-                    String servings = jsonobject.getString("servings");
+                    int servings = jsonobject.getInt("servings");
                     String image = jsonobject.getString("image");
                     ArrayList<String> ingredientsList = new ArrayList<>();
                     JSONArray ingredients = jsonobject.getJSONArray("ingredients");
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     String trailer = null;
 
                     // completed:  add recipe recipeArray
-                    RecipeModel movie = new RecipeModel(title, popularity, poster_path, overview, vote_average, release_date, id, mReview, trailer );
+                    RecipeModel movie = new RecipeModel(id, name, ingredientsList, stepsList, servings, image);
                     //resultslist.add(movie);
 
                 }
@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
                 recipeAdapter.clear();
                 for (int i=0; i<result.size();i++){
+                    Log.v(TAG, "what is result..." + result.get(i));
                     recipeAdapter.add(result.get(i));
                 }
             }
@@ -122,8 +123,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        GridView gridView = (GridView) findViewById(R.id.recipe_grid);
+
         AllRecipes = new ArrayList<RecipeModel>();
         recipeAdapter = new RecipeAdapter(MainActivity.this, 0, AllRecipes);
+        gridView.setAdapter(recipeAdapter);
         new RecipeQueryTask().execute();
     }
 }
