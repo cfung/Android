@@ -3,6 +3,7 @@ package com.example.cfung.project_3_baking_app;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.GridView;
 
 import org.json.JSONArray;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<RecipeModel> result = null;
 
     // AsyncTask to perform network operation in a separate thread than mainUI thread
-    public class MovieQueryTask extends AsyncTask<String, Void, ArrayList<RecipeModel>> {
+    public class RecipeQueryTask extends AsyncTask<String, Void, ArrayList<RecipeModel>> {
 
         @Override
         protected ArrayList<RecipeModel> doInBackground(String... urls) {
@@ -34,16 +35,17 @@ public class MainActivity extends AppCompatActivity {
 
             try {
 
-                URL url = new URL(urls[0]);
+                URL url = new URL(NetworkUtils.BAKING_APP_JSON);
 
                 response = NetworkUtils.getResponseFromHttpUrl(url);
 
                 JSONObject results = new JSONObject(response);
 
-                JSONArray movieResults = results.getJSONArray("results");
-                for (int i=0; i<movieResults.length(); i++){
+                JSONArray recipeResults = results.getJSONArray("");
+                Log.v(TAG, "what is size of recipeResutls..." + recipeResults.length());
+                for (int i = 0; i < recipeResults.length(); i++){
                     //ArrayList<String> movieArray = new ArrayList<String>();
-                    JSONObject jsonobject = movieResults.getJSONObject(i);
+                    JSONObject jsonobject = recipeResults.getJSONObject(i);
                     String id = jsonobject.getString("id");
                     String poster_path = jsonobject.getString("poster_path");
                     String title = jsonobject.getString("original_title");
@@ -89,5 +91,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        new RecipeQueryTask().execute();
     }
 }
