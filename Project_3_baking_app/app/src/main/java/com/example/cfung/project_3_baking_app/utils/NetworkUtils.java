@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import javax.net.ssl.HttpsURLConnection;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -48,10 +49,10 @@ public class NetworkUtils {
     }
 
     public static String makeServiceCall(String reqUrl){
-        Log.v(TAG, "starting makeServiceCall..");
+
         String response = null;
         try{
-            Log.v(TAG, "in makeServiceCall - try..");
+
             URL url = new URL (reqUrl);
             HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -62,26 +63,26 @@ public class NetworkUtils {
         } catch (IOException e){
             e.printStackTrace();
         }
-        Log.v(TAG, "response in makeSeriviceCall.."+response);
+
         return response;
 
     }
 
     /**
-     * This method returns the entire result from the HTTP response.
+     * This method returns the entire result from the HTTPS response.
      *
-     * @param url The URL to fetch the HTTP response from.
-     * @return The contents of the HTTP response.
+     * @param url The URL to fetch the HTTPS response from.
+     * @return The contents of the HTTPS response.
      * @throws IOException Related to network and stream reading
      */
     public static String getResponseFromHttpUrl(URL url) throws IOException, MalformedURLException {
 
         String response = null;
 
-        HttpURLConnection httpconn = (HttpURLConnection) url.openConnection();
+        HttpsURLConnection httpURLConnection = (HttpsURLConnection) url.openConnection();
 
-        httpconn.setRequestMethod("GET");
-        InputStream in = new BufferedInputStream((httpconn.getInputStream()));
+        httpURLConnection.setRequestMethod("GET");
+        InputStream in = new BufferedInputStream((httpURLConnection.getInputStream()));
         response = convertStreamToString(in);
 
         Log.v(TAG, "json response: "+ response);

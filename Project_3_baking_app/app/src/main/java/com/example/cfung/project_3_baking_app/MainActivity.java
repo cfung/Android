@@ -79,17 +79,13 @@ public class MainActivity extends AppCompatActivity {
                         stepsList.add(jsonStep.getString("thumbnailURL"));
 
                     }
-
-                    //String overview = jsonobject.getString("overview");
-                    //String vote_average = jsonobject.getString("vote_average");
-                    //String release_date = jsonobject.getString("release_date");
-
+                    
                     ArrayList<String> mReview = new ArrayList<String>();
                     String trailer = null;
 
                     // completed:  add recipe recipeArray
-                    RecipeModel movie = new RecipeModel(id, name, ingredientsList, stepsList, servings, image);
-                    //resultslist.add(movie);
+                    RecipeModel recipe = new RecipeModel(id, name, ingredientsList, stepsList, servings, image);
+                    resultslist.add(recipe);
 
                 }
 
@@ -105,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<RecipeModel> result){
             super.onPostExecute(result);
+
+            Log.v(TAG, "what is onPostExecute result: " + result);
 
             if(result != null){
 
@@ -122,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.v(TAG, "onCreate");
         GridView gridView = (GridView) findViewById(R.id.recipe_grid);
 
         AllRecipes = new ArrayList<RecipeModel>();
