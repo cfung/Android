@@ -1,9 +1,13 @@
 package com.example.cfung.project_3_baking_app;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import org.json.JSONArray;
@@ -79,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         stepsList.add(jsonStep.getString("thumbnailURL"));
 
                     }
-                    
+
                     ArrayList<String> mReview = new ArrayList<String>();
                     String trailer = null;
 
@@ -127,5 +131,25 @@ public class MainActivity extends AppCompatActivity {
         recipeAdapter = new RecipeAdapter(MainActivity.this, 0, AllRecipes);
         gridView.setAdapter(recipeAdapter);
         new RecipeQueryTask().execute();
+
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String selectedItem = adapterView.getItemAtPosition(i).toString();
+
+                Log.v(TAG, "selectedItem..." + selectedItem);
+                Class detailActivity = DetailActivity.class;
+
+                Context context = MainActivity.this;
+                Intent startDetailActivityIntent = new Intent(context, detailActivity);
+                startActivity(startDetailActivityIntent);
+            }
+        });
+
     }
+
+
+
 }
