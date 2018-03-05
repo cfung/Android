@@ -135,15 +135,21 @@ public class MainActivity extends AppCompatActivity {
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                String selectedItem = adapterView.getItemAtPosition(i).toString();
+                String selectedItem = adapterView.getItemAtPosition(position).toString();
 
                 Log.v(TAG, "selectedItem..." + selectedItem);
                 Class detailActivity = DetailActivity.class;
 
                 Context context = MainActivity.this;
                 Intent startDetailActivityIntent = new Intent(context, detailActivity);
+                startDetailActivityIntent.putExtra("id", AllRecipes.get(position).getid());
+                startDetailActivityIntent.putExtra("name", AllRecipes.get(position).getRecipeName());
+                startDetailActivityIntent.putExtra("ingridients", AllRecipes.get(position).getIngridients());
+                startDetailActivityIntent.putExtra("steps", AllRecipes.get(position).getSteps());
+                startDetailActivityIntent.putExtra("servings", AllRecipes.get(position).getServings());
+                startDetailActivityIntent.putExtra("image", AllRecipes.get(position).getImage());
                 startActivity(startDetailActivityIntent);
             }
         });
