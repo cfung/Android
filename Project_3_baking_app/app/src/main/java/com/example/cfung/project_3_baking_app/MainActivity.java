@@ -139,11 +139,11 @@ public class MainActivity extends AppCompatActivity {
 
                 String selectedItem = adapterView.getItemAtPosition(position).toString();
 
-                Log.v(TAG, "selectedItem..." + selectedItem);
                 Class detailActivity = DetailActivity.class;
 
                 Context context = MainActivity.this;
                 Intent startDetailActivityIntent = new Intent(context, detailActivity);
+                startDetailActivityIntent.putExtra("recipe", AllRecipes.get(position));
                 startDetailActivityIntent.putExtra("id", AllRecipes.get(position).getid());
                 startDetailActivityIntent.putExtra("name", AllRecipes.get(position).getRecipeName());
                 startDetailActivityIntent.putExtra("ingridients", AllRecipes.get(position).getIngridients());
