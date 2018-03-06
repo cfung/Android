@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // completed:  add recipe recipeArray
                     RecipeModel recipe = new RecipeModel(id, name, ingredientsList, stepsList, servings, image);
+
                     resultslist.add(recipe);
 
                 }
