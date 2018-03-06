@@ -54,33 +54,37 @@ public class MainActivity extends AppCompatActivity {
                     String name = jsonobject.getString("name");
                     int servings = jsonobject.getInt("servings");
                     String image = jsonobject.getString("image");
-                    ArrayList<String> ingredientsList = new ArrayList<>();
+                    ArrayList<Ingredient> ingredientsList = new ArrayList<>();
                     JSONArray ingredients = jsonobject.getJSONArray("ingredients");
 
                     for (int x = 0; x < ingredients.length(); x++){
                         JSONObject json = ingredients.getJSONObject(x);
-                        ingredientsList.add(json.getString("quantity"));
-                        ingredientsList.add(json.getString("measure"));
-                        ingredientsList.add(json.getString("ingredient"));
+                        int quantity = json.getInt("quantity");
+                        String measure = json.getString("measure");
+                        String ingredientStr = json.getString("ingredient");
+
+                        Ingredient ingredient = new Ingredient(quantity, measure, ingredientStr);
+                        ingredientsList.add(ingredient);
+
                     }
 
-                    ArrayList<String> stepsList = new ArrayList<>();
+                    ArrayList<Steps> stepsList = new ArrayList<>();
                     JSONArray steps = jsonobject.getJSONArray("steps");
 
                     for (int y = 0; y < steps.length(); y++){
 
                         JSONObject jsonStep = steps.getJSONObject(y);
+
+                        //ArrayList<RecipeModel.Steps> step = new ArrayList<>();
+
                         int stepId = jsonStep.getInt("id");
-                        /*if(stepId instanceof Integer){
-                            Log.v(TAG, "stepID is an integer!!");
-                        }else{
-                            Log.v(TAG, "stepID is NOT an integer!");
-                        }*/
-                        stepsList.add(Integer.toString(stepId));
-                        stepsList.add(jsonStep.getString("shortDescription"));
-                        stepsList.add(jsonStep.getString("description"));
-                        stepsList.add(jsonStep.getString("videoURL"));
-                        stepsList.add(jsonStep.getString("thumbnailURL"));
+                        //stepsList.add(Integer.toString(stepId));
+                        String shortDesc = jsonStep.getString("shortDescription");
+                        String desc = (jsonStep.getString("description"));
+                        String videoURL = jsonStep.getString("videoURL");
+                        String thumbnailURL = jsonStep.getString("thumbnailURL");
+                        Steps step = new Steps(stepId, shortDesc, desc, videoURL, thumbnailURL);
+                        stepsList.add(step);
 
                     }
 

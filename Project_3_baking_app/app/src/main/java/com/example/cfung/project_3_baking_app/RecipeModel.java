@@ -13,12 +13,12 @@ public class RecipeModel implements Parcelable{
 
     private int id;
     private String name;
-    private ArrayList<Ingredients> ingredients;
+    private ArrayList<Ingredient> ingredients;
     private ArrayList<Steps> steps;
     private int servings;
     private String image;
 
-    public RecipeModel(int id, String name, ArrayList<Ingredients> ingredients, ArrayList<Steps> steps,
+    public RecipeModel(int id, String name, ArrayList<Ingredient> ingredients, ArrayList<Steps> steps,
                        int servings, String image){
 
         this.id = id;
@@ -30,6 +30,7 @@ public class RecipeModel implements Parcelable{
 
     }
 
+    /*
     public class Ingredients{
 
         private int quantity;
@@ -71,7 +72,7 @@ public class RecipeModel implements Parcelable{
         public String getVideoURL(){return this.videoURL;}
         public String getThumbnailURL(){return this.thumbnailURL;}
 
-    }
+    }*/
 
     protected RecipeModel(Parcel in) {
         id = in.readInt();
@@ -107,7 +108,7 @@ public class RecipeModel implements Parcelable{
 
     public int getid(){ return this.id;}
     public String getRecipeName(){ return this.name;}
-    public ArrayList<Ingredients> getIngridients(){ return this.ingredients;}
+    public ArrayList<Ingredient> getIngridients(){ return this.ingredients;}
     public ArrayList<Steps> getSteps(){ return this.steps;}
     public int getServings(){ return this.servings;}
     public String getImage(){ return this.image;}
