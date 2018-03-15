@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 startDetailActivityIntent.putExtra("recipe", AllRecipes.get(position));
                 startDetailActivityIntent.putExtra("id", AllRecipes.get(position).getid());
                 startDetailActivityIntent.putExtra("name", AllRecipes.get(position).getRecipeName());
-                startDetailActivityIntent.putExtra("ingridients", AllRecipes.get(position).getIngridients());
+                startDetailActivityIntent.putExtra("ingridients", AllRecipes.get(position).getIngredients());
                 startDetailActivityIntent.putExtra("steps", AllRecipes.get(position).getSteps());
                 startDetailActivityIntent.putExtra("servings", AllRecipes.get(position).getServings());
                 startDetailActivityIntent.putExtra("image", AllRecipes.get(position).getImage());
