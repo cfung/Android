@@ -29,7 +29,7 @@ public class RecipeModel implements Parcelable{
         this.image = image;
 
     }
-    
+
     protected RecipeModel(Parcel in) {
         id = in.readInt();
         name = in.readString();
