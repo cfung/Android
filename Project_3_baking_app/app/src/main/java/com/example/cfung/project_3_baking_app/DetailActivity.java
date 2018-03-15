@@ -30,10 +30,10 @@ public class DetailActivity extends AppCompatActivity{
         if (recipe != null){
 
             // TODO:  currently it's using Array's first element
-            ingredientsView.setText(recipe.getIngridients().get(0));
-            stepsView.setText(recipe.getSteps().get(0));
-            Log.v("DetailActivity", "what is ingridient.." + recipe.getIngridients().get(0));
-            Log.v("DetailActivity", "what is step.." + recipe.getSteps().get(0));
+            //ingredientsView.setText(recipe.getIngridients().get(0).toString());
+            //stepsView.setText(recipe.getSteps().get(0).toString());
+            Log.v("DetailActivity", "what is ingridient.." + recipe.getIngridients());
+            Log.v("DetailActivity", "what is step.." + recipe.getSteps());
             Log.v("DetailActivity", "what is name.." + recipe.getRecipeName());
 
         }
