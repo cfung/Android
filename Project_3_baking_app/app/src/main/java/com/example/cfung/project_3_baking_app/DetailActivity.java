@@ -3,8 +3,12 @@ package com.example.cfung.project_3_baking_app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * Created by cfung on 3/5/18.
@@ -12,6 +16,10 @@ import android.widget.TextView;
 
 public class DetailActivity extends AppCompatActivity{
 
+    private RecyclerView.LayoutManager ingredientLayoutManager;
+    private RecyclerView ingredientView;
+    private IngredientsAdapter ingredientAdapter;
+    ArrayList<String> ingredientList = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState){
 
@@ -21,8 +29,16 @@ public class DetailActivity extends AppCompatActivity{
         // 1. Recipe ingredients
         // 2. Recipe step 1
         // 3. Recipe step 2....
-        TextView ingredientsView = (TextView) findViewById(R.id.ingredients);
-        TextView stepsView = (TextView) findViewById(R.id.step);
+        //TextView ingredientsView = (TextView) findViewById(R.id.ingredients);
+        //TextView stepsView = (TextView) findViewById(R.id.step);
+        //TextView idView = (TextView) findViewById(R.id.recpieID);
+        ingredientLayoutManager = new LinearLayoutManager(getApplicationContext());
+        Log.v("Myactivity", "createing new IngredientsAdapter..");
+        ingredientAdapter = new IngredientsAdapter(ingredientList);
+        ingredientView = (RecyclerView)findViewById(R.id.recycler_ingredient);
+        ingredientView.setLayoutManager(ingredientLayoutManager);
+        ingredientView.setAdapter(ingredientAdapter);
+
 
         Intent recipeIntent = getIntent();
         final RecipeModel recipe = recipeIntent.getParcelableExtra("recipe");
@@ -36,6 +52,11 @@ public class DetailActivity extends AppCompatActivity{
             Log.v("DetailActivity", "what is step.." + recipe.getSteps());
             Log.v("DetailActivity", "what is name.." + recipe.getRecipeName());
             Log.v("DetailActivity", "what is id.." + recipe.getid());
+
+            //ingredientsView.setText(recipe.getIngredients().get(0).getIngredient());
+            //stepsView.setText(recipe.getSteps().get(0).getShortDescription());
+            //idView.setText("ID: " + Integer.toString(recipe.getid()));
+
 
         }
 
