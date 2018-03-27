@@ -33,6 +33,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         void bind(int listIndex){
 
             ingredientText.setText("ingredient " + listIndex + ": " + ingredientList.get(listIndex).toString());
+            Log.v("Myactivity",  "bind() -" + ingredientList.get(listIndex).toString());
         }
     }
 

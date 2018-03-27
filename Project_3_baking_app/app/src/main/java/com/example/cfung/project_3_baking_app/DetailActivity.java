@@ -19,6 +19,7 @@ public class DetailActivity extends AppCompatActivity{
     private RecyclerView.LayoutManager ingredientLayoutManager;
     private RecyclerView ingredientView;
     private IngredientsAdapter ingredientAdapter;
+    private TextView ingredientText;
     ArrayList<String> ingredientList = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState){
@@ -33,11 +34,12 @@ public class DetailActivity extends AppCompatActivity{
         //TextView stepsView = (TextView) findViewById(R.id.step);
         //TextView idView = (TextView) findViewById(R.id.recpieID);
         ingredientLayoutManager = new LinearLayoutManager(getApplicationContext());
-        Log.v("Myactivity", "createing new IngredientsAdapter..");
+        Log.v("Myactivity", "creating new IngredientsAdapter..");
         ingredientAdapter = new IngredientsAdapter(ingredientList);
         ingredientView = (RecyclerView)findViewById(R.id.recycler_ingredient);
         ingredientView.setLayoutManager(ingredientLayoutManager);
         ingredientView.setAdapter(ingredientAdapter);
+        ingredientText = (TextView) findViewById(R.id.list_item_ingredient_name);
 
 
         Intent recipeIntent = getIntent();
@@ -48,7 +50,7 @@ public class DetailActivity extends AppCompatActivity{
             // TODO:  currently it's using Array's first element
             //ingredientsView.setText(recipe.getIngridients().get(0).toString());
             //stepsView.setText(recipe.getSteps().get(0).toString());
-            Log.v("DetailActivity", "what is ingridient.." + recipe.getIngredients());
+            Log.v("DetailActivity", "what is ingredient.." + recipe.getIngredients());
             Log.v("DetailActivity", "what is step.." + recipe.getSteps());
             Log.v("DetailActivity", "what is name.." + recipe.getRecipeName());
             Log.v("DetailActivity", "what is id.." + recipe.getid());
@@ -56,6 +58,10 @@ public class DetailActivity extends AppCompatActivity{
             //ingredientsView.setText(recipe.getIngredients().get(0).getIngredient());
             //stepsView.setText(recipe.getSteps().get(0).getShortDescription());
             //idView.setText("ID: " + Integer.toString(recipe.getid()));
+            for (int i=0; i < recipe.getIngredients().size(); i++){
+                Log.v("Myactivity", "size..." + recipe.getIngredients().get(i).toString());
+                ingredientText.setText(recipe.getIngredients().get(i).toString());
+            }
 
 
         }
