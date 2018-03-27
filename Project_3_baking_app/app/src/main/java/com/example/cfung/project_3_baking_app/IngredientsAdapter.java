@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.MyViewHolder>{
 
-    private ArrayList<String> ingredientList;
+    private ArrayList<Ingredient> ingredientList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -32,12 +32,12 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
         void bind(int listIndex){
 
-            ingredientText.setText("ingredient " + listIndex + ": " + ingredientList.get(listIndex).toString());
-            Log.v("Myactivity",  "bind() -" + ingredientList.get(listIndex).toString());
+            ingredientText.setText("ingredient " + listIndex + ": " + ingredientList.get(listIndex).getIngredient());
+            Log.v("Myactivity",  "bind() -" + ingredientList.get(listIndex).getIngredient());
         }
     }
 
-    public IngredientsAdapter(ArrayList<String> ingredientsList) {this.ingredientList = ingredientsList;}
+    public IngredientsAdapter(ArrayList<Ingredient> ingredientsList) {this.ingredientList = ingredientsList;}
 
     @Override
     public IngredientsAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {

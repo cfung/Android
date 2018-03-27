@@ -33,13 +33,7 @@ public class DetailActivity extends AppCompatActivity{
         //TextView ingredientsView = (TextView) findViewById(R.id.ingredients);
         //TextView stepsView = (TextView) findViewById(R.id.step);
         //TextView idView = (TextView) findViewById(R.id.recpieID);
-        ingredientLayoutManager = new LinearLayoutManager(getApplicationContext());
-        Log.v("Myactivity", "creating new IngredientsAdapter..");
-        ingredientAdapter = new IngredientsAdapter(ingredientList);
-        ingredientView = (RecyclerView)findViewById(R.id.recycler_ingredient);
-        ingredientView.setLayoutManager(ingredientLayoutManager);
-        ingredientView.setAdapter(ingredientAdapter);
-        ingredientText = (TextView) findViewById(R.id.list_item_ingredient_name);
+
 
 
         Intent recipeIntent = getIntent();
@@ -48,6 +42,14 @@ public class DetailActivity extends AppCompatActivity{
         if (recipe != null){
 
             // TODO:  currently it's using Array's first element
+            Log.v("Myactivity", "creating new IngredientsAdapter..in DetailActivity");
+            ingredientAdapter = new IngredientsAdapter(recipe.getIngredients());
+            ingredientLayoutManager = new LinearLayoutManager(getApplicationContext());
+
+            ingredientView = (RecyclerView)findViewById(R.id.recycler_ingredient);
+            ingredientView.setLayoutManager(ingredientLayoutManager);
+            ingredientView.setAdapter(ingredientAdapter);
+            //ingredientText = (TextView) findViewById(R.id.list_item_ingredient_name);
             //ingredientsView.setText(recipe.getIngridients().get(0).toString());
             //stepsView.setText(recipe.getSteps().get(0).toString());
             Log.v("DetailActivity", "what is ingredient.." + recipe.getIngredients());
@@ -60,7 +62,7 @@ public class DetailActivity extends AppCompatActivity{
             //idView.setText("ID: " + Integer.toString(recipe.getid()));
             for (int i=0; i < recipe.getIngredients().size(); i++){
                 Log.v("Myactivity", "size..." + recipe.getIngredients().get(i).toString());
-                ingredientText.setText(recipe.getIngredients().get(i).toString());
+                //ingredientText.setText(recipe.getIngredients().get(i).toString());
             }
 
 
