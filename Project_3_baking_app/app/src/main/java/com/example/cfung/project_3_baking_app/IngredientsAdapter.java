@@ -17,15 +17,18 @@ import java.util.ArrayList;
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.MyViewHolder>{
 
     private ArrayList<Ingredient> ingredientList;
+    private ArrayList<Steps> stepsList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView ingredientText;
+        public TextView stepText;
         //public TextView getIngredientTextIndex;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             ingredientText = (TextView) itemView.findViewById(R.id.list_item_ingredient_name);
+            stepText = (TextView) itemView.findViewById(R.id.list_item_step_name);
             //ingredientTextIndex = (TextView) itemView.findViewById(R.id.);
 
         }
@@ -33,6 +36,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         void bind(int listIndex){
 
             ingredientText.setText("ingredient " + listIndex + ": " + ingredientList.get(listIndex).getIngredient());
+            //stepText.setText("Step " + listIndex + ": " + stepsList.get(listIndex).getShortDescription());
             Log.v("Myactivity",  "bind() -" + ingredientList.get(listIndex).getIngredient());
         }
     }

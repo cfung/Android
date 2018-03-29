@@ -20,7 +20,13 @@ public class DetailActivity extends AppCompatActivity{
     private RecyclerView ingredientView;
     private IngredientsAdapter ingredientAdapter;
     private TextView ingredientText;
-    ArrayList<String> ingredientList = new ArrayList<>();
+    private StepAdapter stepAdapter;
+    private TextView stepText;
+    private RecyclerView.LayoutManager stepLayoutManager;
+    private RecyclerView stepView;
+
+
+    //ArrayList<String> ingredientList = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState){
 
@@ -41,7 +47,6 @@ public class DetailActivity extends AppCompatActivity{
 
         if (recipe != null){
 
-            // TODO:  currently it's using Array's first element
             Log.v("Myactivity", "creating new IngredientsAdapter..in DetailActivity");
             ingredientAdapter = new IngredientsAdapter(recipe.getIngredients());
             ingredientLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -49,6 +54,13 @@ public class DetailActivity extends AppCompatActivity{
             ingredientView = (RecyclerView)findViewById(R.id.recycler_ingredient);
             ingredientView.setLayoutManager(ingredientLayoutManager);
             ingredientView.setAdapter(ingredientAdapter);
+
+            stepView = (RecyclerView)findViewById(R.id.recycler_step);
+            stepAdapter = new StepAdapter(recipe.getSteps());
+            stepLayoutManager = new LinearLayoutManager(getApplicationContext());
+            stepView.setLayoutManager(stepLayoutManager);
+            stepView.setAdapter(stepAdapter);
+            //stepView = (RecyclerView)findViewById(R.id.)
             //ingredientText = (TextView) findViewById(R.id.list_item_ingredient_name);
             //ingredientsView.setText(recipe.getIngridients().get(0).toString());
             //stepsView.setText(recipe.getSteps().get(0).toString());

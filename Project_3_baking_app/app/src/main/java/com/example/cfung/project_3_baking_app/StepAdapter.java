@@ -2,6 +2,7 @@ package com.example.cfung.project_3_baking_app;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -14,11 +15,16 @@ import java.util.ArrayList;
 
 public class StepAdapter extends RecyclerView.Adapter <StepAdapter.MyViewHolder>{
 
-    private ArrayList<String> stepsList;
+    private ArrayList<Steps> stepList;
 
     @Override
-    public StepAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+    public StepAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+
+        Context context = viewGroup.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.step, viewGroup, false);
+        MyViewHolder viewHolder = new MyViewHolder(view);
+        return viewHolder;
     }
 
     @Override
@@ -28,12 +34,12 @@ public class StepAdapter extends RecyclerView.Adapter <StepAdapter.MyViewHolder>
 
     @Override
     public int getItemCount() {
-        return stepsList.size();
+        return stepList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView stepsText;
+        public TextView stepText;
 
         public MyViewHolder(View itemView){
 
@@ -42,12 +48,13 @@ public class StepAdapter extends RecyclerView.Adapter <StepAdapter.MyViewHolder>
         }
 
         void bind(int listIndex){
-            stepsText.setText("step " + String.valueOf(listIndex) + ":"  );
+
+            stepText.setText("Step " + listIndex + ": " + stepList.get(listIndex).getShortDescription());
             //
         }
     }
 
-    public StepAdapter (ArrayList<String> stepsList) { this.stepsList = stepsList;}
+    public StepAdapter (ArrayList<Steps> stepsList) { this.stepList = stepsList;}
 
 
 }
