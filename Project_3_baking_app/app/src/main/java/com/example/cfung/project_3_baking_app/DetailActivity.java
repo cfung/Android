@@ -48,7 +48,7 @@ public class DetailActivity extends AppCompatActivity{
         if (recipe != null){
 
             Log.v("Myactivity", "creating new IngredientsAdapter..in DetailActivity");
-            ingredientAdapter = new IngredientsAdapter(recipe.getIngredients());
+            ingredientAdapter = new IngredientsAdapter(recipe.getIngredients(), recipe.getSteps());
             ingredientLayoutManager = new LinearLayoutManager(getApplicationContext());
 
             ingredientView = (RecyclerView)findViewById(R.id.recycler_ingredient);

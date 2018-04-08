@@ -30,18 +30,25 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
             ingredientText = (TextView) itemView.findViewById(R.id.list_item_ingredient_name);
             stepText = (TextView) itemView.findViewById(R.id.list_item_step_name);
             //ingredientTextIndex = (TextView) itemView.findViewById(R.id.);
+            for (int x = 0; x < ingredientList.size(); x++){
+                ingredientText.setText("ingredient " + (x + 1)  + ": " + ingredientList.get(x).getIngredient());
+            }
 
         }
 
         void bind(int listIndex){
 
-            ingredientText.setText("ingredient " + listIndex + ": " + ingredientList.get(listIndex).getIngredient());
-            //stepText.setText("Step " + listIndex + ": " + stepsList.get(listIndex).getShortDescription());
+            //ingredientText.setText("ingredient " + (listIndex + 1)  + ": " + ingredientList.get(listIndex).getIngredient());
+            stepText.setText("Step " + (listIndex + 1) + ": " + stepsList.get(listIndex).getShortDescription());
             Log.v("Myactivity",  "bind() -" + ingredientList.get(listIndex).getIngredient());
         }
     }
 
-    public IngredientsAdapter(ArrayList<Ingredient> ingredientsList) {this.ingredientList = ingredientsList;}
+    public IngredientsAdapter(ArrayList<Ingredient> ingredientsList, ArrayList<Steps> stepsList) {
+
+        this.ingredientList = ingredientsList;
+        this.stepsList = stepsList;
+    }
 
     @Override
     public IngredientsAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -58,6 +65,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     public void onBindViewHolder(IngredientsAdapter.MyViewHolder holder, int position) {
         Log.v("MyActivity", "IngredientsAdapter - onBindViewHolder..");
         holder.bind(position);
+
     }
 
     @Override
