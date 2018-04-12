@@ -1,11 +1,17 @@
 package com.example.cfung.project_3_baking_app;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,7 +32,27 @@ public class DetailActivity extends AppCompatActivity{
     private RecyclerView stepView;
 
 
-    //ArrayList<String> ingredientList = new ArrayList<>();
+    /*public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState){
+
+        View view = inflater.inflate(R.layout.detail, container, false);
+
+        Intent recipeIntent = getIntent();
+
+        return view;
+    }*/
+
+    private void loadFragment(Fragment fragment){
+
+        FragmentManager fm = getFragmentManager();
+
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        //fragmentTransaction.replace(R.id.de);
+        fragmentTransaction.commit();
+
+
+    }
 
     public void onCreate(Bundle savedInstanceState){
 
@@ -60,6 +86,9 @@ public class DetailActivity extends AppCompatActivity{
             stepLayoutManager = new LinearLayoutManager(getApplicationContext());
             stepView.setLayoutManager(stepLayoutManager);
             stepView.setAdapter(stepAdapter);
+
+            TextView textView = (TextView) findViewById(R.id.list_item_ingredient_name);
+            textView.setText("haha");
             //stepView = (RecyclerView)findViewById(R.id.)
             //ingredientText = (TextView) findViewById(R.id.list_item_ingredient_name);
             //ingredientsView.setText(recipe.getIngridients().get(0).toString());
