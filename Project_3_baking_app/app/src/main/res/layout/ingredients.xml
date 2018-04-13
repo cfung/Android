@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -9,14 +9,7 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:padding="16dp">
 
-
-    <TextView
-        android:id="@+id/list_item_ingredient_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:id="@+id/card_view"
         android:layout_width="fill_parent"
         android:layout_height="100dp"
@@ -26,21 +19,15 @@
         card_view:contentPadding="10dp"
         >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-
             <TextView
-                android:id="@+id/list_item_step_name"
+                android:id="@+id/list_item_ingredient_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 />
 
-        </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
-</LinearLayout>
+</android.support.v7.widget.CardView>
 
