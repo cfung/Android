@@ -28,7 +28,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         public MyViewHolder(View itemView) {
             super(itemView);
             ingredientText = (TextView) itemView.findViewById(R.id.list_item_ingredient_name);
-            stepText = (TextView) itemView.findViewById(R.id.list_item_step_name);
+            stepText = (TextView) itemView.findViewById(R.id.list_item_step_name);// TODO: fix nullpointer exception
             //ingredientTextIndex = (TextView) itemView.findViewById(R.id.);
             /*for (int x = 0; x < ingredientList.size(); x++){
                 ingredientText.setText("ingredient " + (x + 1)  + ":: " + ingredientList.get(x).getIngredient());
