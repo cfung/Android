@@ -22,14 +22,15 @@ public class DetailActivity extends AppCompatActivity {
     private static final int DEFAULT_POSITION = -1;
     private static final String TAG = DetailActivity.class.getSimpleName();
 
-    TextView origin_tv = findViewById(R.id.origin_tv);
-    TextView also_known_as_text = findViewById(R.id.also_known_as_text);
-    TextView ingredients_text = findViewById(R.id.ingredients_text);
-    TextView place_of_origin_text = findViewById(R.id.place_of_origin_text);
-    TextView description_tv = findViewById(R.id.description_tv);
-    TextView ingredients_tv = findViewById(R.id.ingredients_tv);
-    TextView also_known_tv = findViewById(R.id.also_known_tv);
-    TextView description_text = findViewById(R.id.description_text);
+    private TextView origin_tv;
+
+    private TextView also_known_as_text;// = findViewById(R.id.also_known_as_text);
+    private TextView ingredients_text;// = findViewById(R.id.ingredients_text);
+    private TextView place_of_origin_text;// = findViewById(R.id.place_of_origin_text);
+    private TextView description_tv;// = findViewById(R.id.description_tv);
+    private TextView ingredients_tv;// = findViewById(R.id.ingredients_tv);
+    private TextView also_known_tv;// = findViewById(R.id.also_known_tv);
+    private TextView description_text;// = findViewById(R.id.description_text);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,14 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         ImageView ingredientsIv = findViewById(R.id.image_iv);
+        origin_tv = (TextView)findViewById(R.id.origin_tv);
+        also_known_as_text = findViewById(R.id.also_known_as_text);
+        ingredients_text = findViewById(R.id.ingredients_text);
+        place_of_origin_text = findViewById(R.id.place_of_origin_text);
+        description_tv = findViewById(R.id.description_tv);
+        ingredients_tv = findViewById(R.id.ingredients_tv);
+        also_known_tv = findViewById(R.id.also_known_tv);
+        description_text = findViewById(R.id.description_text);
 
 
         Intent intent = getIntent();
