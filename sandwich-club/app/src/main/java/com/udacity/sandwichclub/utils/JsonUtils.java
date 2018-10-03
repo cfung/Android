@@ -41,7 +41,7 @@ public class JsonUtils {
         Log.v(TAG, "placeOfOrigin:" + placeOfOrigin);
         Log.v(TAG, "description:" + description);
         Log.v(TAG, "image:" + image);
-        Sandwich sandwich = null;
+        Sandwich sandwich = new Sandwich(mainName, null, placeOfOrigin, description, image, null);
 
         Log.v(TAG, "Json " + json);
 
