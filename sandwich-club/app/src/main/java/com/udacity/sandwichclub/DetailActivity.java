@@ -39,9 +39,10 @@ public class DetailActivity extends AppCompatActivity {
 
         ImageView ingredientsIv = findViewById(R.id.image_iv);
         origin_tv = (TextView)findViewById(R.id.origin_tv);
+        place_of_origin_text = findViewById(R.id.place_of_origin_text);
         also_known_as_text = findViewById(R.id.also_known_as_text);
         ingredients_text = findViewById(R.id.ingredients_text);
-        place_of_origin_text = findViewById(R.id.place_of_origin_text);
+
         description_tv = findViewById(R.id.description_tv);
         ingredients_tv = findViewById(R.id.ingredients_tv);
         also_known_tv = findViewById(R.id.also_known_tv);
@@ -91,14 +92,19 @@ public class DetailActivity extends AppCompatActivity {
 
     private void populateUI(Sandwich sandwich) {
 
-        origin_tv.setText(sandwich.getPlaceOfOrigin());
-        //also_known_as_text.setText(sandwich.getAlsoKnownAs());
-        //ingredients_text.setText(sandwich.getIngredients());
+        //origin_tv.setText(R.string.detail_place_of_origin_label);
         place_of_origin_text.setText(sandwich.getPlaceOfOrigin());
+
+        for (int x = 0; x < sandwich.getAlsoKnownAs().size(); x++){
+            also_known_as_text.append(sandwich.getAlsoKnownAs().get(x));
+        }
         description_tv.setText(sandwich.getDescription());
-        //ingredients_tv.setText(sandwich.getIngredients());
-        //also_known_tv.setText(sandwich.getAlsoKnownAs());
+
         description_text.setText(sandwich.getDescription());
+
+        for (int x = 0; x < sandwich.getIngredients().size(); x++){
+            ingredients_tv.append(sandwich.getIngredients().get(x));
+        }
 
     }
 }
