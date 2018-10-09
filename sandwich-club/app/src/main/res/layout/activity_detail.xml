@@ -14,46 +14,46 @@
         android:contentDescription="@string/sandwich_picture_content_description"
         android:scaleType="centerCrop"/>
 
+
     <LinearLayout
-        android:id="@+id/linear_origin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/image_iv"
         android:orientation="horizontal"
-        android:layout_below="@id/image_iv">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="202dp">
 
         <TextView
             android:id="@+id/place_of_origin_text"
-            android:layout_width="match_parent"
+            android:layout_width="37dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+
             android:text="@string/detail_place_of_origin_label"
-            android:textStyle="bold"
-            android:gravity="left"
-            android:layout_gravity="left"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/origin_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"/>
-
-
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2" />
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/linear_alsoknownas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/linear_origin">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="221dp">
 
         <TextView
             android:id="@+id/also_known_as_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/detail_also_known_as_label"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/also_known_tv"
             android:layout_width="wrap_content"
@@ -65,22 +65,26 @@
 
     <LinearLayout
         android:id="@+id/linear_description"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/linear_alsoknownas"
         android:orientation="horizontal"
-        android:layout_below="@id/linear_alsoknownas">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="259dp">
 
         <TextView
             android:id="@+id/description_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/detail_description_label"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/description_tv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="2"/>
 
 
     </LinearLayout>
@@ -88,10 +92,12 @@
 
     <LinearLayout
         android:id="@+id/linear_ingredients"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_description"
         android:orientation="horizontal"
-        android:layout_below="@+id/linear_description" >
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="240dp">
 
         <TextView
             android:id="@+id/ingredients_text"
