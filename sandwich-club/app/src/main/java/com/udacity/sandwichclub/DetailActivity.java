@@ -20,13 +20,13 @@ public class DetailActivity extends AppCompatActivity {
 
     private TextView origin_tv;
 
-    private TextView also_known_as_text;// = findViewById(R.id.also_known_as_text);
-    private TextView ingredients_text;// = findViewById(R.id.ingredients_text);
-    private TextView place_of_origin_text;// = findViewById(R.id.place_of_origin_text);
-    private TextView description_tv;// = findViewById(R.id.description_tv);
-    private TextView ingredients_tv;// = findViewById(R.id.ingredients_tv);
-    private TextView also_known_tv;// = findViewById(R.id.also_known_tv);
-    private TextView description_text;// = findViewById(R.id.description_text);
+    private TextView also_known_as_text;
+    private TextView ingredients_text;
+    private TextView place_of_origin_text;
+    private TextView description_tv;
+    private TextView ingredients_tv;
+    private TextView also_known_tv;
+    private TextView description_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
