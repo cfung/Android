@@ -15,7 +15,7 @@ public class JsonUtils {
 
     private static final String TAG = JsonUtils.class.getSimpleName();
 
-    public static Sandwich parseSandwichJson(String json) throws JSONException{
+    public static Sandwich parseSandwichJson(String json) throws JSONException {
         /*
         private String mainName;
         private List<String> alsoKnownAs = null;
@@ -33,7 +33,7 @@ public class JsonUtils {
         JSONArray ingredients = sandwichJson.getJSONArray("ingredients");
         List<String> alsoKnownAsList = new ArrayList<String>();
         List<String> ingredientsList = new ArrayList<String>();
-        for (int i=0; i < alsoKnownAs.length(); i++){
+        for (int i = 0; i < alsoKnownAs.length(); i++) {
 
             alsoKnownAsList.add(alsoKnownAs.get(i).toString());
 
@@ -42,7 +42,7 @@ public class JsonUtils {
         String description = sandwichJson.getString("description");
         String image = sandwichJson.getString("image");
 
-        for (int i=0; i < ingredients.length(); i++){
+        for (int i = 0; i < ingredients.length(); i++) {
 
             ingredientsList.add(ingredients.get(i).toString());
 
