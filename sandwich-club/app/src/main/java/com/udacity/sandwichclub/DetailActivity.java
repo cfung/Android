@@ -111,7 +111,7 @@ public class DetailActivity extends AppCompatActivity {
         String alsoKnownAsStr = String.join(", ", alsoKnownAs);
         String ingredientsStr = String.join(", ", ingredients);
 
-        also_known_as_text.setText(alsoKnownAsStr);
+        also_known_tv.setText(alsoKnownAsStr);
         ingredients_tv.setText(ingredientsStr);
 
 
