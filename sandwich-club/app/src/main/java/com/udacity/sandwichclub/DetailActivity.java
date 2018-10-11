@@ -3,6 +3,7 @@ package com.udacity.sandwichclub;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -108,8 +109,8 @@ public class DetailActivity extends AppCompatActivity {
             ingredients.add(sandwich.getIngredients().get(x));
         }
 
-        String alsoKnownAsStr = String.join(", ", alsoKnownAs);
-        String ingredientsStr = String.join(", ", ingredients);
+        String alsoKnownAsStr = TextUtils.join(", ", alsoKnownAs);
+        String ingredientsStr = TextUtils.join(", ", ingredients);
 
         also_known_tv.setText(alsoKnownAsStr);
         ingredients_tv.setText(ingredientsStr);
