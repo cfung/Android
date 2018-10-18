@@ -1,9 +1,13 @@
 package com.example.cfung.project_3_baking_app;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import org.json.JSONArray;
@@ -50,46 +54,47 @@ public class MainActivity extends AppCompatActivity {
                     String name = jsonobject.getString("name");
                     int servings = jsonobject.getInt("servings");
                     String image = jsonobject.getString("image");
-                    ArrayList<String> ingredientsList = new ArrayList<>();
+                    ArrayList<Ingredient> ingredientsList = new ArrayList<>();
                     JSONArray ingredients = jsonobject.getJSONArray("ingredients");
 
                     for (int x = 0; x < ingredients.length(); x++){
                         JSONObject json = ingredients.getJSONObject(x);
-                        ingredientsList.add(json.getString("quantity"));
-                        ingredientsList.add(json.getString("measure"));
-                        ingredientsList.add(json.getString("ingredient"));
+                        int quantity = json.getInt("quantity");
+                        String measure = json.getString("measure");
+                        String ingredientStr = json.getString("ingredient");
+
+                        Ingredient ingredient = new Ingredient(quantity, measure, ingredientStr);
+                        ingredientsList.add(ingredient);
+
                     }
 
-                    ArrayList<String> stepsList = new ArrayList<>();
+                    ArrayList<Steps> stepsList = new ArrayList<>();
                     JSONArray steps = jsonobject.getJSONArray("steps");
 
                     for (int y = 0; y < steps.length(); y++){
 
                         JSONObject jsonStep = steps.getJSONObject(y);
+
+                        //ArrayList<RecipeModel.Steps> step = new ArrayList<>();
+
                         int stepId = jsonStep.getInt("id");
-                        /*if(stepId instanceof Integer){
-                            Log.v(TAG, "stepID is an integer!!");
-                        }else{
-                            Log.v(TAG, "stepID is NOT an integer!");
-                        }*/
-                        stepsList.add(Integer.toString(stepId));
-                        stepsList.add(jsonStep.getString("shortDescription"));
-                        stepsList.add(jsonStep.getString("description"));
-                        stepsList.add(jsonStep.getString("videoURL"));
-                        stepsList.add(jsonStep.getString("thumbnailURL"));
+                        //stepsList.add(Integer.toString(stepId));
+                        String shortDesc = jsonStep.getString("shortDescription");
+                        String desc = (jsonStep.getString("description"));
+                        String videoURL = jsonStep.getString("videoURL");
+                        String thumbnailURL = jsonStep.getString("thumbnailURL");
+                        Steps step = new Steps(stepId, shortDesc, desc, videoURL, thumbnailURL);
+                        stepsList.add(step);
 
                     }
-
-                    //String overview = jsonobject.getString("overview");
-                    //String vote_average = jsonobject.getString("vote_average");
-                    //String release_date = jsonobject.getString("release_date");
 
                     ArrayList<String> mReview = new ArrayList<String>();
                     String trailer = null;
 
                     // completed:  add recipe recipeArray
-                    RecipeModel movie = new RecipeModel(id, name, ingredientsList, stepsList, servings, image);
-                    //resultslist.add(movie);
+                    RecipeModel recipe = new RecipeModel(id, name, ingredientsList, stepsList, servings, image);
+
+                    resultslist.add(recipe);
 
                 }
 
@@ -124,12 +129,38 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.v(TAG, "onCreate");
         GridView gridView = (GridView) findViewById(R.id.recipe_grid);
 
         AllRecipes = new ArrayList<RecipeModel>();
         recipeAdapter = new RecipeAdapter(MainActivity.this, 0, AllRecipes);
         gridView.setAdapter(recipeAdapter);
         new RecipeQueryTask().execute();
+
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                String selectedItem = adapterView.getItemAtPosition(position).toString();
+
+                Class detailActivity = DetailActivity.class;
+
+                Context context = MainActivity.this;
+                Intent startDetailActivityIntent = new Intent(context, detailActivity);
+                startDetailActivityIntent.putExtra("recipe", AllRecipes.get(position));
+                //startDetailActivityIntent.putExtra("id", AllRecipes.get(position).getid());
+                //startDetailActivityIntent.putExtra("name", AllRecipes.get(position).getRecipeName());
+                //startDetailActivityIntent.putExtra("ingridients", AllRecipes.get(position).getIngredients());
+                //startDetailActivityIntent.putExtra("steps", AllRecipes.get(position).getSteps());
+                //startDetailActivityIntent.putExtra("servings", AllRecipes.get(position).getServings());
+                //startDetailActivityIntent.putExtra("image", AllRecipes.get(position).getImage());
+                startActivity(startDetailActivityIntent);
+            }
+        });
+
     }
+
+
+
 }
