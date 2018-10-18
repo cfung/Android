@@ -106,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<RecipeModel> result){
             super.onPostExecute(result);
 
+            Log.v(TAG, "what is onPostExecute result: " + result);
+
             if(result != null){
 
                 recipeAdapter.clear();
