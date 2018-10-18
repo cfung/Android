@@ -29,7 +29,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         // This is to retrieve API key
-        //buildCofigField 'String', 'bad34c8d38b0750ab6bef23cb64440ba', getApiKey()
+        //buildConfigField 'String', 'bad34c8d38b0750ab6bef23cb64440ba', getApiKey()
     }
     buildTypes {
         release {
@@ -64,5 +64,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile files('libs/json_simple.jar')
     compile 'com.android.support:recyclerview-v7:26.0.0'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
 
