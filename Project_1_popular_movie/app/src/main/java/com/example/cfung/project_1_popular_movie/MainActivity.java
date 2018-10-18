@@ -37,16 +37,24 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.example.cfung.project_1_popular_movie.data.MovieDBHelper;
 import com.example.cfung.project_1_popular_movie.utils.NetworkUtils;
 import com.facebook.stetho.Stetho;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import javax.net.ssl.HttpsURLConnection;
+
+
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MyActivity";
-    private GridView gridView = null;
+    //private GridView gridView = null;
     private CustomAdapter movieAdapter = null;
     ArrayList<MovieModel> AllMovies = null;
     ArrayList<MovieModel> result = null;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.movie_grid) GridView gridView;
+
+
 
     // AsyncTask to perform network operation in a separate thread than mainUI thread
     public class MovieQueryTask extends AsyncTask<String, Void, ArrayList<MovieModel>> {
@@ -112,24 +120,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.main);
+        ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar == null){
-            throw new Error("canot find toolbar..");
+            throw new Error("cannot find toolbar..");
         }
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(false);
 
-        GridView gridView = (GridView) findViewById(R.id.movie_grid);
+
 
         if ((savedInstanceState ==null) || (!savedInstanceState.containsKey(getString(R.string.movie_key))) ){
 
             AllMovies = new ArrayList<MovieModel>();
-            
+
             movieAdapter = new CustomAdapter(MainActivity.this, 0, AllMovies);
             gridView.setAdapter(movieAdapter);
             // completed 4:  call asynctask here
@@ -157,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Context context = MainActivity.this;
                 String message = AllMovies.get(position).getMovieName()+"Image clicked!\n";
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, message, Toast.LENGTH_LONG).show();
 
                 Class detailActivity = DetailActivity.class;
 
