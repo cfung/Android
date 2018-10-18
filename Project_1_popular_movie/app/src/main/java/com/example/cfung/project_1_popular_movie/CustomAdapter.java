@@ -33,6 +33,9 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * CustomAdapter which holds an ImageView and TextView
  */
@@ -44,6 +47,8 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
     String BASE_POSTER_URL= "http://image.tmdb.org/t/p/w185";
 
     ArrayList<MovieModel> AllMovies = new ArrayList<MovieModel>();
+    @BindView(R.id.list_item_icon) ImageView imageView;
+    @BindView(R.id.list_item_movie_name) TextView movieNameView;
 
     //completed 1: override this default constructor?
     public CustomAdapter(Activity context, int resources, ArrayList<MovieModel> movies){
@@ -59,8 +64,11 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_flavor, parent, false);
         }
+        ButterKnife.bind(this, convertView);
 
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.list_item_icon);
+        //ImageView imageView = (ImageView) convertView.findViewById(R.id.list_item_icon);
+
+
         Picasso.with(getContext()).setLoggingEnabled(true);
 
         String moviePostPath1 = "http://image.tmdb.org/t/p/w185/"+mMovies.getMovieLink();
@@ -69,7 +77,7 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
                 .placeholder(R.drawable.placeholder)
                 .into(imageView);
 
-        TextView movieNameView = (TextView) convertView.findViewById(R.id.list_item_movie_name);
+        //TextView movieNameView = (TextView) convertView.findViewById(R.id.list_item_movie_name);
         movieNameView.setText(AllMovies.get(position).getMovieName());
 
         return convertView;
