@@ -43,6 +43,9 @@ import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by cfung on 12/27/17.
  * This detail view should show the following info:
@@ -67,14 +70,28 @@ public class DetailActivity extends AppCompatActivity implements
     private String textDate = null;
     private String movieID = null;
 
+    @BindView(R.id.detail_image) ImageView imageView;
+    @BindView(R.id.detail_name) TextView movieTitle = null;
+    @BindView(R.id.detail_overview) TextView movieSynopsis ;
+    @BindView(R.id.detail_vote) TextView movieRating;
+    @BindView(R.id.detail_date) TextView movieReleaseDate;
+
+    // Setup layout for Reviews
+    @BindView(R.id.recycler_reviews) RecyclerView reviewView;
+
+    // Setup layout for Trailers
+    @BindView(R.id.recycler_trailer) RecyclerView trailerView;
+
+    @BindView(R.id.fab) FloatingActionButton fab;
+
     private static final int TRAILER_LOADER = 1;
     private static final int REVIEW_LOADER = 2;
 
-    private RecyclerView reviewView;
+    //private RecyclerView reviewView;
     private ReviewAdapter recyclerAdapter;
     private RecyclerView.LayoutManager reviewLayoutManager;
     private RecyclerView.LayoutManager trailerLayoutManager;
-    private RecyclerView trailerView;
+    //private RecyclerView trailerView;
     private TrailerAdapter trailerAdapter;
 
     private TextView movieReviews;
@@ -84,8 +101,6 @@ public class DetailActivity extends AppCompatActivity implements
     ArrayList<String> reviewsList = new ArrayList<String>();
     ArrayList<String> trailersList = new ArrayList<String>();
 
-    //getLoaderManager.initLoader();
-    //getLoaderManager.initLoader();
 
     @Override
     public Loader<ArrayList<String>> onCreateLoader(final int id, final Bundle bundle) {
@@ -200,31 +215,17 @@ public class DetailActivity extends AppCompatActivity implements
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail);
-        //setContentView(R.layout.reviews);
+        ButterKnife.bind(this);
 
-        ImageView imageView = (ImageView)findViewById(R.id.detail_image);
-        //ImageButton trailerBtn = (ImageButton)findViewById(R.id.detail_trailer);
-        final TextView movieTitle = (TextView)findViewById(R.id.detail_name);
-        TextView movieSynopsis = (TextView)findViewById(R.id.detail_overview);
-        TextView movieRating = (TextView)findViewById(R.id.detail_vote);
-        TextView movieReleaseDate = (TextView)findViewById(R.id.detail_date);
-
-        // Setup layout for Reviews
-        reviewView = (RecyclerView) findViewById(R.id.recycler_reviews);
         recyclerAdapter = new ReviewAdapter(reviewsList);
         reviewLayoutManager = new LinearLayoutManager(getApplicationContext());
         reviewView.setLayoutManager(reviewLayoutManager);
         reviewView.setAdapter(recyclerAdapter);
 
-        // Setup layout for Trailers
-        trailerView = (RecyclerView) findViewById(R.id.recycler_trailer);
         trailerAdapter = new TrailerAdapter(trailersList, getApplicationContext());
         trailerLayoutManager = new LinearLayoutManager(getApplicationContext());
         trailerView.setLayoutManager(trailerLayoutManager);
         trailerView.setAdapter(trailerAdapter);
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         Intent movieIntent = getIntent();
         final Bundle movieBundle = movieIntent.getExtras();
