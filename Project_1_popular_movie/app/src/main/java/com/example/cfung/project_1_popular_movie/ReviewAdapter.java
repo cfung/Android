@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+
 /**
  * Created by cfung on 2/10/18.
  */
@@ -20,13 +22,15 @@ public class ReviewAdapter extends RecyclerView.Adapter <ReviewAdapter.MyViewHol
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView reviewsText;
-        public TextView reviewsTextIndex;
+        //public TextView reviewsText;
+        //public TextView reviewsTextIndex;
+        @BindView(R.id.recycler_review) TextView reviewsText;
+        @BindView(R.id.recycler_review_index) TextView reviewsTextIndex;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            reviewsText = (TextView) itemView.findViewById(R.id.recycler_review);
-            reviewsTextIndex = (TextView) itemView.findViewById(R.id.recycler_review_index);
+            //reviewsText = (TextView) itemView.findViewById(R.id.recycler_review);
+            //reviewsTextIndex = (TextView) itemView.findViewById(R.id.recycler_review_index);
         }
 
         void bind(int listIndex) {

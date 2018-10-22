@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+
 /**
  * Created by cfung on 2/12/18.
  */
@@ -24,6 +26,7 @@ public class TrailerAdapter extends RecyclerView.Adapter <TrailerAdapter.MyViewH
 
     private ArrayList<String> trailerList;
     private Context context;
+    @BindView(R.id.recycler_trailer_btn) ImageButton trailerImageBtn;
 
     public TrailerAdapter (ArrayList<String> trailersList, Context context){
 
@@ -34,12 +37,13 @@ public class TrailerAdapter extends RecyclerView.Adapter <TrailerAdapter.MyViewH
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        public ImageButton trailerImageBtn;
+        //public ImageButton trailerImageBtn;
+        //@BindView(R.id.recycler_trailer_btn) ImageButton trailerImageBtn;
 
         public MyViewHolder(View itemView){
 
             super(itemView);
-            trailerImageBtn = (ImageButton) itemView.findViewById(R.id.recycler_trailer_btn);
+            //trailerImageBtn = (ImageButton) itemView.findViewById(R.id.recycler_trailer_btn);
 
         }
 
