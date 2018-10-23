@@ -34,7 +34,7 @@ public class ReviewAdapter extends RecyclerView.Adapter <ReviewAdapter.MyViewHol
         }
 
         void bind(int listIndex) {
-            reviewsTextIndex.setText("review " + (String.valueOf(listIndex)) + ":");
+            reviewsTextIndex.setText("review " + (String.valueOf(listIndex + 1)) + " : ");
             reviewsText.setText(reviewsList.get(listIndex).toString());
         }
     }
