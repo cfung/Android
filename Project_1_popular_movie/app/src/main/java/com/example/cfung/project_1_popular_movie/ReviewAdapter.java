@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by cfung on 2/10/18.
@@ -29,8 +30,7 @@ public class ReviewAdapter extends RecyclerView.Adapter <ReviewAdapter.MyViewHol
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            //reviewsText = (TextView) itemView.findViewById(R.id.recycler_review);
-            //reviewsTextIndex = (TextView) itemView.findViewById(R.id.recycler_review_index);
+            ButterKnife.bind(this, itemView);
         }
 
         void bind(int listIndex) {
