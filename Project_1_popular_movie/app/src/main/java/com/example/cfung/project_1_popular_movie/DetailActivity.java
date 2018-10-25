@@ -72,6 +72,7 @@ public class DetailActivity extends AppCompatActivity implements
 
     @BindView(R.id.detail_image) ImageView imageView;
     @BindView(R.id.detail_name) TextView movieTitle = null;
+    @BindView(R.id.movietitletop) TextView movieTitleTop = null;
     @BindView(R.id.detail_overview) TextView movieSynopsis ;
     @BindView(R.id.detail_vote) TextView movieRating;
     @BindView(R.id.detail_date) TextView movieReleaseDate;
@@ -240,6 +241,7 @@ public class DetailActivity extends AppCompatActivity implements
         if (movie != null)
         {
             movieTitle.setText(movie.getMovieName());
+            movieTitleTop.setText(movie.getMovieName());
             movieSynopsis.setText("Synopsis: "+ movie.getOverview());
             movieRating.setText("Rating: "+ movie.getVote_average());
             movieReleaseDate.setText("Release Date: "+ movie.getRelease_date());
