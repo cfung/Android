@@ -76,6 +76,7 @@ public class DetailActivity extends AppCompatActivity implements
     @BindView(R.id.detail_overview) TextView movieSynopsis ;
     @BindView(R.id.detail_vote) TextView movieRating;
     @BindView(R.id.detail_date) TextView movieReleaseDate;
+    @BindView(R.id.trailers_text) TextView trailerText;
 
     // Setup layout for Reviews
     @BindView(R.id.recycler_reviews) RecyclerView reviewView;
@@ -241,11 +242,12 @@ public class DetailActivity extends AppCompatActivity implements
         if (movie != null)
         {
             movieTitle.setText(movie.getMovieName());
-            movieTitleTop.setText(movie.getMovieName());
+            movieTitleTop.setText(movie.getMovieName() + "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
             movieSynopsis.setText("Synopsis: "+ movie.getOverview());
             movieRating.setText("Rating: "+ movie.getVote_average());
             movieReleaseDate.setText("Release Date: "+ movie.getRelease_date());
             popularity = (String) movieBundle.get("popularity");
+            trailerText.setText(R.string.trailers + ": ");
 
 
             String moviePath = "http://image.tmdb.org/t/p/w185/" + movie.getMovieLink();
