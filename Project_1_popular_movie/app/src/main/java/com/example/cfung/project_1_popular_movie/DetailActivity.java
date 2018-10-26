@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +15,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -242,13 +247,27 @@ public class DetailActivity extends AppCompatActivity implements
         if (movie != null)
         {
             movieTitle.setText(movie.getMovieName());
-            movieTitleTop.setText(movie.getMovieName() + "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
             movieSynopsis.setText("Synopsis: "+ movie.getOverview());
             movieRating.setText("Rating: "+ movie.getVote_average());
             movieReleaseDate.setText("Release Date: "+ movie.getRelease_date());
             popularity = (String) movieBundle.get("popularity");
-            trailerText.setText(R.string.trailers + ": ");
+            trailerText.setText(getString(R.string.trailers) + ": ");
 
+            SpannableStringBuilder spannable = new SpannableStringBuilder(movie.getMovieName());
+            spannable.setSpan(
+                    new ForegroundColorSpan(Color.WHITE),
+                    0, // start
+                    movie.getMovieName().length(), // end
+                    Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+            );
+            spannable.setSpan(
+                    new RelativeSizeSpan(3f),
+                    0,
+                    movie.getMovieName().length(),
+                    Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+            );
+            movieTitleTop.setText(spannable);
 
             String moviePath = "http://image.tmdb.org/t/p/w185/" + movie.getMovieLink();
 
