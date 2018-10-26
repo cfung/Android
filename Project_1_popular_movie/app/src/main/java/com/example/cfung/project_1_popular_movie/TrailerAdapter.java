@@ -10,7 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -38,6 +41,8 @@ public class TrailerAdapter extends RecyclerView.Adapter <TrailerAdapter.MyViewH
     public class MyViewHolder extends RecyclerView.ViewHolder{
         
         @BindView(R.id.recycler_trailer_btn) ImageButton trailerImageBtn;
+        @BindView(R.id.recycler_trailer_text) TextView trailerTextView;
+
 
         public MyViewHolder(View itemView){
 
@@ -50,6 +55,8 @@ public class TrailerAdapter extends RecyclerView.Adapter <TrailerAdapter.MyViewH
         void bind(final int listIndex){
 
             Log.v("TrailerAdapter", "inside bind() - what is trailerList: "+trailerList.get(listIndex).toString());
+            //trailerText.setText(getString(R.string.trailers) + ": ");
+            trailerTextView.setText("trailer " + (String.valueOf(listIndex + 1)));
             trailerImageBtn.setOnClickListener(new View.OnClickListener(){
 
 

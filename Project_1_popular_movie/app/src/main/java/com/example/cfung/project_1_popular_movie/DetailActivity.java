@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -50,6 +51,8 @@ import javax.net.ssl.HttpsURLConnection;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.support.v7.widget.RecyclerView.VERTICAL;
 
 /**
  * Created by cfung on 12/27/17.
@@ -233,6 +236,8 @@ public class DetailActivity extends AppCompatActivity implements
         trailerLayoutManager = new LinearLayoutManager(getApplicationContext());
         trailerView.setLayoutManager(trailerLayoutManager);
         trailerView.setAdapter(trailerAdapter);
+        DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), VERTICAL);
+        trailerView.addItemDecoration(decoration);
 
         Intent movieIntent = getIntent();
         final Bundle movieBundle = movieIntent.getExtras();
