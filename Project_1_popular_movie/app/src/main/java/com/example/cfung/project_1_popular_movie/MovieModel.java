@@ -1,5 +1,8 @@
 package com.example.cfung.project_1_popular_movie;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,8 +12,10 @@ import java.util.ArrayList;
  * Created by cfung on 10/4/17.
  */
 
+@Entity(tableName = "movie")
 public class MovieModel implements Parcelable{
 
+    @PrimaryKey
     private String movieName;
     private String popularity;
     private String movieLink;
@@ -22,6 +27,7 @@ public class MovieModel implements Parcelable{
     private String trailer;
     //private int image; // drawable reference id
 
+    //@Ignore
     public MovieModel(String mName, String poplularity, String mLink, String mOverview, String mVote_average, String mRelease_date, String mID, ArrayList<String> mReviews, String mTrailer)
     {
         this.movieName = mName;
