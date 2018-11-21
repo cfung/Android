@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public interface MovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void InsertMovie();
+    void InsertMovie(MovieModel movieModel);
 
     @Query("SELECT * FROM " + MovieContract.MovieEntry.TABLE_NAME)
     ArrayList<MovieModel> getFavoriteMoviesFromDB();
