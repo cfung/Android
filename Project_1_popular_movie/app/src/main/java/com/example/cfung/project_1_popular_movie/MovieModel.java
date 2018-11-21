@@ -1,10 +1,12 @@
 package com.example.cfung.project_1_popular_movie;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
@@ -16,20 +18,46 @@ import java.util.ArrayList;
 public class MovieModel implements Parcelable{
 
     @PrimaryKey
+    //@ColumnInfo(name = "moiveid")
+    //private String mId;
+    @NonNull
+    @ColumnInfo(name = "movieName")
     private String movieName;
+    @ColumnInfo(name = "popularity")
     private String popularity;
+    @ColumnInfo(name = "moiveLink")
     private String movieLink;
+    @ColumnInfo(name = "overview")
     private String overview;
+    @ColumnInfo(name = "vote_average")
     private String vote_average;
+    @ColumnInfo(name = "release_date")
     private String release_date;
+    @ColumnInfo(name = "id")
     private String id;
+    @ColumnInfo(name = "reviews")
     private ArrayList<String> reviews;
+    @ColumnInfo(name = "trailer")
     private String trailer;
     //private int image; // drawable reference id
 
     //@Ignore
-    public MovieModel(String mName, String poplularity, String mLink, String mOverview, String mVote_average, String mRelease_date, String mID, ArrayList<String> mReviews, String mTrailer)
+    public MovieModel(String movieName, String popularity, String movieLink, String overview, String vote_average, String release_date, String id, ArrayList<String> reviews, String trailer)
     {
+        this.movieName = movieName;
+        this.popularity = popularity;
+        this.movieLink = movieLink;
+        this.overview = overview;
+        this.vote_average = vote_average;
+        this.release_date = release_date;
+        this.id = id;
+        this.reviews = reviews;
+        this.trailer = trailer;
+    }
+    /*
+    public MovieModel(String id, String mName, String poplularity, String mLink, String mOverview, String mVote_average, String mRelease_date, String mID, ArrayList<String> mReviews, String mTrailer)
+    {
+        this.mId = id;
         this.movieName = mName;
         this.popularity = poplularity;
         this.movieLink = mLink;
@@ -39,7 +67,7 @@ public class MovieModel implements Parcelable{
         this.id = mID;
         this.reviews = mReviews;
         this.trailer = mTrailer;
-    }
+    }*/
 
     protected MovieModel(Parcel in) {
         movieName = in.readString();
@@ -71,7 +99,7 @@ public class MovieModel implements Parcelable{
     public String getOverview(){return this.overview;}
     public String getVote_average(){return this.vote_average;}
     public String getRelease_date(){return this.release_date;}
-    public String getMovieID(){return this.id;}
+    public String getId(){return this.id;}
     public ArrayList<String> getMovieReviews(){return this.reviews;}
     public String getTrailer(){return this.trailer;}
 
