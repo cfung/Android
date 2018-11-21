@@ -34,6 +34,7 @@ import java.util.ArrayList;
 
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.example.cfung.project_1_popular_movie.data.AppDatabase;
 import com.example.cfung.project_1_popular_movie.data.MovieDBHelper;
 import com.example.cfung.project_1_popular_movie.utils.NetworkUtils;
 import com.facebook.stetho.Stetho;
@@ -47,14 +48,12 @@ import javax.net.ssl.HttpsURLConnection;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MyActivity";
-    //private GridView gridView = null;
+    private AppDatabase mDb;
     private CustomAdapter movieAdapter = null;
     ArrayList<MovieModel> AllMovies = null;
     ArrayList<MovieModel> result = null;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.movie_grid) GridView gridView;
-
-
 
     // AsyncTask to perform network operation in a separate thread than mainUI thread
     public class MovieQueryTask extends AsyncTask<String, Void, ArrayList<MovieModel>> {
@@ -132,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(false);
 
-
+        mDb = AppDatabase.getsInstance(getApplicationContext());
 
         if ((savedInstanceState ==null) || (!savedInstanceState.containsKey(getString(R.string.movie_key))) ){
 
@@ -177,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 startDetailActivityIntent.putExtra("overview", AllMovies.get(position).getOverview());
                 startDetailActivityIntent.putExtra("vote_average", AllMovies.get(position).getVote_average());
                 startDetailActivityIntent.putExtra("release_date", AllMovies.get(position).getRelease_date());
-                startDetailActivityIntent.putExtra("id", AllMovies.get(position).getMovieID());
+                startDetailActivityIntent.putExtra("id", AllMovies.get(position).getId());
                 startDetailActivityIntent.putExtra("popularity", AllMovies.get(position).getPopularity());
                 startActivity(startDetailActivityIntent);
 
@@ -218,7 +217,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.v(TAG, "onOptionsItemSelected - favorite");
                 MovieDBHelper dbHelper = new MovieDBHelper(this);
                 //Cursor cursor = dbHelper.getFavoriteMoviesFromDB();
-                result = dbHelper.getFavoriteMoviesFromDB();
+                //result = dbHelper.getFavoriteMoviesFromDB();
+                result = mDb.movieDao().getFavoriteMoviesFromDB();
 
                 if(result != null){
 

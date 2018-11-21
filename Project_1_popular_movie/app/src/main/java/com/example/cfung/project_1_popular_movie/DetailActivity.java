@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.cfung.project_1_popular_movie.data.AppDatabase;
 import com.example.cfung.project_1_popular_movie.data.MovieContract;
 import com.example.cfung.project_1_popular_movie.data.MovieDBHelper;
 import com.example.cfung.project_1_popular_movie.utils.NetworkUtils;
@@ -107,6 +108,7 @@ public class DetailActivity extends AppCompatActivity implements
     private TextView movieReviews;
 
     private SQLiteDatabase mDB;
+    private AppDatabase mDb;
 
     ArrayList<String> reviewsList = new ArrayList<String>();
     ArrayList<String> trailersList = new ArrayList<String>();
@@ -246,6 +248,8 @@ public class DetailActivity extends AppCompatActivity implements
 
         MovieDBHelper dbHelper = new MovieDBHelper(this);
         mDB = dbHelper.getWritableDatabase();
+
+        mDb = AppDatabase.getsInstance(getApplicationContext());
 
         String response = null;
 
