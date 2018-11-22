@@ -4,11 +4,15 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.example.cfung.project_1_popular_movie.data.ReviewsTypeConverter;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cfung on 10/4/17.
@@ -36,6 +40,7 @@ public class MovieModel implements Parcelable{
     @ColumnInfo(name = "id")
     private String id;
     @ColumnInfo(name = "reviews")
+    @TypeConverters(ReviewsTypeConverter.class)
     private ArrayList<String> reviews;
     @ColumnInfo(name = "trailer")
     private String trailer;
