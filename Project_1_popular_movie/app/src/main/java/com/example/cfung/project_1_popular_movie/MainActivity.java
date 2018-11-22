@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private AppDatabase mDb;
     private CustomAdapter movieAdapter = null;
     ArrayList<MovieModel> AllMovies = null;
-    ArrayList<MovieModel> result = null;
+    List<MovieModel> result = null;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.movie_grid) GridView gridView;
 
@@ -218,7 +219,9 @@ public class MainActivity extends AppCompatActivity {
                 MovieDBHelper dbHelper = new MovieDBHelper(this);
                 //Cursor cursor = dbHelper.getFavoriteMoviesFromDB();
                 //result = dbHelper.getFavoriteMoviesFromDB();
+                Log.v(TAG, "getting Favorite using Room");
                 result = mDb.movieDao().getFavoriteMoviesFromDB();
+                Log.v(TAG, "Android Room result..: " + result );
 
                 if(result != null){
 

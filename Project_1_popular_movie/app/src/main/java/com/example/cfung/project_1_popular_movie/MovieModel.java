@@ -39,6 +39,7 @@ public class MovieModel implements Parcelable{
     private String release_date;
     @ColumnInfo(name = "id")
     private String id;
+
     @ColumnInfo(name = "reviews")
     @TypeConverters(ReviewsTypeConverter.class)
     private ArrayList<String> reviews;
@@ -106,6 +107,9 @@ public class MovieModel implements Parcelable{
     public String getRelease_date(){return this.release_date;}
     public String getId(){return this.id;}
     public ArrayList<String> getMovieReviews(){return this.reviews;}
+    public ArrayList<String> getReviews() {
+        return reviews;
+    }
     public String getTrailer(){return this.trailer;}
 
     @Override

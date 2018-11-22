@@ -24,7 +24,7 @@ public interface MovieDao {
     void InsertMovie(MovieModel movieModel);
 
     @Query("SELECT * FROM " + MovieContract.MovieEntry.TABLE_NAME)
-    ArrayList<MovieModel> getFavoriteMoviesFromDB();
+    List<MovieModel> getFavoriteMoviesFromDB();
 
     //@Update
 
