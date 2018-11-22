@@ -280,9 +280,9 @@ public class DetailActivity extends AppCompatActivity implements
 
             String moviePath = "http://image.tmdb.org/t/p/w185/" + movie.getMovieLink();
 
-            trailerPath = "https://api.themoviedb.org/3/movie/" + movie.getMovieID() +
+            trailerPath = "https://api.themoviedb.org/3/movie/" + movie.getId() +
                     "/videos?api_key=" + BuildConfig.MY_API_KEY;
-            reviewPath = "https://api.themoviedb.org/3/movie/" + movie.getMovieID() +
+            reviewPath = "https://api.themoviedb.org/3/movie/" + movie.getId() +
                     "/reviews?api_key=" + BuildConfig.MY_API_KEY;
 
             Picasso.with(getApplicationContext())
@@ -304,7 +304,7 @@ public class DetailActivity extends AppCompatActivity implements
                         "Fab Fav button is clicked!", Toast.LENGTH_SHORT).show();
                 addToMovieDB(movie.getMovieName(), movie.getPopularity(), movie.getMovieLink(),
                         movie.getOverview(), movie.getVote_average(), movie.getRelease_date(),
-                        movie.getMovieID(), movie.getTrailer());
+                        movie.getId(), movie.getTrailer());
             }
         });
     }
