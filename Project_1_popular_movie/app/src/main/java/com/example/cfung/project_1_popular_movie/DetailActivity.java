@@ -302,15 +302,22 @@ public class DetailActivity extends AppCompatActivity implements
             public void onClick(View view) {
                 Toast.makeText(DetailActivity.this,
                         "Fab Fav button is clicked!", Toast.LENGTH_SHORT).show();
-                addToMovieDB(movie.getMovieName(), movie.getPopularity(), movie.getMovieLink(),
+                //MovieModel movie = new MovieModel(movieTitle, moviePopularity, moviePosterPath, movieOvervuew, movieVote, movieReleaseDate, movieID, reviewList, trailer );
+
+
+                MovieModel FavoriteMovie = new MovieModel (movie.getMovieName(), movie.getPopularity(), movie.getMovieLink(),
                         movie.getOverview(), movie.getVote_average(), movie.getRelease_date(),
-                        movie.getId(), movie.getTrailer());
+                        movie.getId(), movie.getMovieReviews(), movie.getTrailer());
+                Log.v(TAG, "insert movie to Room...: ");
+                mDb.movieDao().InsertMovie(FavoriteMovie);
             }
         });
     }
 
     /**
      * This method is called when user clicks on the Favorite Star button
+     *
+     * Update:  Content Provider is no longer being used
      *
      * @param
      */
