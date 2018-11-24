@@ -19,7 +19,7 @@ public abstract class AppDatabase extends RoomDatabase{
 
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
     private static final Object LOCK = new Object();
-    private static final String DATABASE_NAME = "movielist";
+    private static final String DATABASE_NAME = "movielist.db";
     private static AppDatabase sInstance;
 
     public static AppDatabase getsInstance(Context context) {
@@ -36,6 +36,10 @@ public abstract class AppDatabase extends RoomDatabase{
         Log.d(LOG_TAG, "Getting the databae instance");
         return sInstance;
 
+    }
+
+    public static void destroyInstance() {
+        sInstance = null;
     }
 
     public abstract MovieDao movieDao();
