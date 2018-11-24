@@ -244,4 +244,11 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("movie", AllMovies);
     }
+
+    @Override
+    protected void onDestroy() {
+        AppDatabase.destroyInstance();
+        Log.v(TAG, "onDestroy is called...");
+        super.onDestroy();
+    }
 }
