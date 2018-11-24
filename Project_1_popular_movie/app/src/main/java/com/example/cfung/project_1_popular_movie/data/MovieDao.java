@@ -23,7 +23,7 @@ public interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void InsertMovie(MovieModel movieModel);
 
-    @Query("SELECT * FROM " + MovieContract.MovieEntry.TABLE_NAME)
+    @Query("SELECT * FROM movie")
     List<MovieModel> getFavoriteMoviesFromDB();
 
     //@Update
