@@ -1,5 +1,6 @@
 package com.example.cfung.project_1_popular_movie.data;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -24,7 +25,7 @@ public interface MovieDao {
     void InsertMovie(MovieModel movieModel);
 
     @Query("SELECT * FROM movie")
-    List<MovieModel> getFavoriteMoviesFromDB();
+    LiveData<List<MovieModel>> getFavoriteMoviesFromDB();
 
     //@Update
 
