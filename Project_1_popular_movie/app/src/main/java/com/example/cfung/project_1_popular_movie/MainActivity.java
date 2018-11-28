@@ -1,5 +1,8 @@
 package com.example.cfung.project_1_popular_movie;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -37,11 +40,13 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.example.cfung.project_1_popular_movie.data.AppDatabase;
 import com.example.cfung.project_1_popular_movie.data.MovieDBHelper;
+import com.example.cfung.project_1_popular_movie.data.MovieDao;
 import com.example.cfung.project_1_popular_movie.utils.NetworkUtils;
 import com.facebook.stetho.Stetho;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import javax.annotation.Nullable;
 import javax.net.ssl.HttpsURLConnection;
 
 
@@ -52,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private AppDatabase mDb;
     private CustomAdapter movieAdapter = null;
     ArrayList<MovieModel> AllMovies = null;
-    List<MovieModel> result = null;
+    //List<MovieModel> result = null;
+    LiveData<List<MovieModel>> result = null;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.movie_grid) GridView gridView;
 
@@ -219,17 +225,27 @@ public class MainActivity extends AppCompatActivity {
                 MovieDBHelper dbHelper = new MovieDBHelper(this);
                 //Cursor cursor = dbHelper.getFavoriteMoviesFromDB();
                 //result = dbHelper.getFavoriteMoviesFromDB();
-                Log.v(TAG, "getting Favorite using Room");
-                result = mDb.movieDao().getFavoriteMoviesFromDB();
-                Log.v(TAG, "Android Room result..: " + result );
 
-                if(result != null){
+                result = mDb.movieDao().getFavoriteMoviesFromDB();
+                AddMovieViewModelFactory factory = new AddMovieViewModelFactory(mDb);
+                final AddMovieViewModel viewModel = ViewModelProviders.of(this, factory).get(AddMovieViewModel.class);
+                final MovieDao movieDao = (MovieDao) AppDatabase.getsInstance(getApplicationContext()).movieDao();
+                viewModel.getMovies().observe(this, new Observer<List<MovieModel>>() {
+
+                    @Override
+                    public void onChanged(@Nullable List<MovieModel> movieModels) {
+
+                        movieAdapter.setMovies(movieModels);
+                    } // close onChanged
+                }); // close observer
+
+                /*if(result != null){
 
                     movieAdapter.clear();
-                    for (int i=0; i<result.size();i++){
+                    for (int i=0; i < result.size();i++){
                         movieAdapter.add(result.get(i));
                     }
-                }
+                }*/
 
                 return true;
 
