@@ -46,6 +46,8 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
 
     String BASE_POSTER_URL= "http://image.tmdb.org/t/p/w185";
 
+    private List<MovieModel> mMovies;
+
     ArrayList<MovieModel> AllMovies = new ArrayList<MovieModel>();
     @BindView(R.id.list_item_icon) ImageView imageView;
     @BindView(R.id.list_item_movie_name) TextView movieNameView;
@@ -81,5 +83,12 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
         movieNameView.setText(AllMovies.get(position).getMovieName());
 
         return convertView;
+    }
+
+    public void setMovies(List<MovieModel> movies) {
+
+        mMovies = movies;
+        notifyDataSetChanged();
+
     }
 }
