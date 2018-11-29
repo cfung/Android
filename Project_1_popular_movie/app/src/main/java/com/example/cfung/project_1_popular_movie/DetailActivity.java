@@ -1,6 +1,7 @@
 package com.example.cfung.project_1_popular_movie;
 
 import android.app.LoaderManager;
+import android.arch.lifecycle.LiveData;
 import android.content.AsyncTaskLoader;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -12,7 +13,9 @@ import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,6 +50,7 @@ import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -113,6 +117,8 @@ public class DetailActivity extends AppCompatActivity implements
     ArrayList<String> reviewsList = new ArrayList<String>();
     ArrayList<String> trailersList = new ArrayList<String>();
 
+    LiveData<List<MovieModel>> result = null;
+    Boolean movieInDB = false;
 
     @Override
     public Loader<ArrayList<String>> onCreateLoader(final int id, final Bundle bundle) {
@@ -308,8 +314,36 @@ public class DetailActivity extends AppCompatActivity implements
                 MovieModel FavoriteMovie = new MovieModel (movie.getMovieName(), movie.getPopularity(), movie.getMovieLink(),
                         movie.getOverview(), movie.getVote_average(), movie.getRelease_date(),
                         movie.getId(), movie.getMovieReviews(), movie.getTrailer());
-                Log.v(TAG, "insert movie to Room...: ");
-                mDb.movieDao().InsertMovie(FavoriteMovie);
+
+
+
+                result = mDb.movieDao().getFavoriteMoviesFromDB();
+                List<MovieModel> movieModelList = result.getValue();
+
+
+                for (int x = 0; x < movieModelList.size(); x ++) {
+
+                    if (movieModelList.get(x).getMovieName().equals(movie.getMovieName())) {
+                        movieInDB = true;
+                    }
+                }
+
+                if (movieInDB) {
+
+                    // if it's already in the DB, delete it
+                    Log.v(TAG, "deleting movie from Room... ");
+                    mDb.movieDao().DeleteMovie(FavoriteMovie);
+                    fab.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), android.R.drawable.btn_star_big_off));
+                }
+                else {
+
+                    // if it's not in the DB, then add it
+                    Log.v(TAG, "insert movie to Room...: ");
+                    mDb.movieDao().InsertMovie(FavoriteMovie);
+                    fab.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), android.R.drawable.btn_star_big_on));
+
+                }
+
             }
         });
     }
