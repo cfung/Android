@@ -84,11 +84,5 @@ public class CustomAdapter extends ArrayAdapter<MovieModel>{
 
         return convertView;
     }
-
-    public void setMovies(List<MovieModel> movies) {
-
-        mMovies = movies;
-        notifyDataSetChanged();
-
-    }
+    
 }
