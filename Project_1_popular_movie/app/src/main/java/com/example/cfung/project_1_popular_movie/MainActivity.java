@@ -234,8 +234,14 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onChanged(@Nullable List<MovieModel> movieModels) {
+                        Log.v(TAG, "inside onChanged - MainActivity");
+                        //movieAdapter.setMovies(movieModels);
+                        movieAdapter.clear();
+                        for (int x = 0; x < movieModels.size(); x++){
+                            Log.v(TAG, "inside for loop (onChanged)" + movieModels.get(x).getMovieName());
+                            movieAdapter.add(movieModels.get(x));
+                        }
 
-                        movieAdapter.setMovies(movieModels);
                     } // close onChanged
                 }); // close observer
 
