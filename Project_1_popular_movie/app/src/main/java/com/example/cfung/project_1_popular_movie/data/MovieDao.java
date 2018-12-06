@@ -30,8 +30,8 @@ public interface MovieDao {
     //@Update
 
 
-    @Delete
-    void DeleteMovie(MovieModel movieModel);
+    @Query("DELETE FROM movie WHERE movieName = :movieName")
+    void DeleteMovie(String movieName);
 
     @Query("SELECT * FROM movie WHERE id = :id")
     LiveData<MovieModel> loadMovieById(int id);
