@@ -21,4 +21,11 @@ public class AddMovieViewModel extends ViewModel {
     }
 
     public LiveData<List<MovieModel>> getMovies() { return movies; }
+
+    public void deleteMovie(AppDatabase database, String movieName){
+        database.movieDao().DeleteMovie(movieName);
+
+    }
+
+
 }
