@@ -25,7 +25,7 @@ public class MovieModel implements Parcelable{
         return movieID;
     }
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int movieID;
     @NonNull
     @ColumnInfo(name = "movieName")
