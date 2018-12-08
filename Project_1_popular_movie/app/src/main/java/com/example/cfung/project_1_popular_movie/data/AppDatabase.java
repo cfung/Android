@@ -15,7 +15,7 @@ import com.example.cfung.project_1_popular_movie.MovieModel;
  * Created by cfung on 11/20/18.
  */
 
-@Database(entities = {MovieModel.class}, version = 2, exportSchema = false)
+@Database(entities = {MovieModel.class}, version = 3, exportSchema = false)
 @TypeConverters({ReviewsTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase{
 
