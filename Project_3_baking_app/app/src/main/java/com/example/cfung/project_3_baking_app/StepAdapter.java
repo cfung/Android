@@ -22,7 +22,7 @@ public class StepAdapter extends RecyclerView.Adapter <StepAdapter.MyViewHolder>
 
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.step, viewGroup, false);
+        View view = inflater.inflate(R.layout.list_item_recipe, viewGroup, false);
         MyViewHolder viewHolder = new MyViewHolder(view);
         return viewHolder;
     }
