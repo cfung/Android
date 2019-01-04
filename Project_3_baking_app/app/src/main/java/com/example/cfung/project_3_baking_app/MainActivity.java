@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
             try {
 
+                Log.v(TAG, "inside try of doInbackground..");
+
                 URL url = new URL(NetworkUtils.BAKING_APP_JSON);
 
                 response = NetworkUtils.getResponseFromHttpUrl(url);
@@ -135,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         AllRecipes = new ArrayList<RecipeModel>();
         recipeAdapter = new RecipeAdapter(MainActivity.this, 0, AllRecipes);
         gridView.setAdapter(recipeAdapter);
-        new RecipeQueryTask().execute();
+        new RecipeQueryTask().execute(NetworkUtils.BAKING_APP_JSON);
 
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
