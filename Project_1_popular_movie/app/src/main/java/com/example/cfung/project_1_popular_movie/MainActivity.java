@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
                 //result = dbHelper.getFavoriteMoviesFromDB();
 
                 result = mDb.movieDao().getFavoriteMoviesFromDB();
-                AddMovieViewModelFactory factory = new AddMovieViewModelFactory(mDb);
+                AddMovieViewModelFactory factory = new AddMovieViewModelFactory(mDb, getApplication());
                 final AddMovieViewModel viewModel = ViewModelProviders.of(this, factory).get(AddMovieViewModel.class);
                 final MovieDao movieDao = (MovieDao) AppDatabase.getsInstance(getApplicationContext()).movieDao();
                 viewModel.getMovies().observe(this, new Observer<List<MovieModel>>() {

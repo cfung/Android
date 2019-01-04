@@ -1,5 +1,6 @@
 package com.example.cfung.project_1_popular_movie;
 
+import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.view.View;
@@ -16,9 +17,16 @@ public class AddMovieViewModel extends ViewModel {
 
     private LiveData<List<MovieModel>> movies;
 
-    public AddMovieViewModel(AppDatabase database) {
+    public AddMovieViewModel(AppDatabase database, Application mApplication) {
         movies = database.movieDao().getFavoriteMoviesFromDB();
     }
 
     public LiveData<List<MovieModel>> getMovies() { return movies; }
+
+    public void deleteMovie(AppDatabase database, String movieName){
+        database.movieDao().DeleteMovie(movieName);
+
+    }
+
+
 }

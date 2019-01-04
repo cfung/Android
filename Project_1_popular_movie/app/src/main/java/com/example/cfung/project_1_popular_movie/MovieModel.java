@@ -21,13 +21,48 @@ import java.util.List;
 @Entity(tableName = "movie")
 public class MovieModel implements Parcelable{
 
-    public int getMovieID() {
-        return movieID;
+    /*public String getMovieID() {
+        return id;
+    }*/
+
+    public void setId(String id) {
+        this.id = id;
     }
 
-    @PrimaryKey(autoGenerate = true)
-    private int movieID;
-    @NonNull
+    public void setMovieName(@NonNull String movieName) {
+        this.movieName = movieName;
+    }
+
+    public void setPopularity(String popularity) {
+        this.popularity = popularity;
+    }
+
+    public void setMovieLink(String movieLink) {
+        this.movieLink = movieLink;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public void setVote_average(String vote_average) {
+        this.vote_average = vote_average;
+    }
+
+    public void setRelease_date(String release_date) {
+        this.release_date = release_date;
+    }
+
+    public void setReviews(ArrayList<String> reviews) {
+        this.reviews = reviews;
+    }
+
+    public void setTrailer(String trailer) {
+        this.trailer = trailer;
+    }
+
+
+    //private int movieID;
     @ColumnInfo(name = "movieName")
     private String movieName;
     @ColumnInfo(name = "popularity")
@@ -40,9 +75,10 @@ public class MovieModel implements Parcelable{
     private String vote_average;
     @ColumnInfo(name = "release_date")
     private String release_date;
+    @PrimaryKey
+    @NonNull
     @ColumnInfo(name = "id")
     private String id;
-
     @ColumnInfo(name = "reviews")
     @TypeConverters(ReviewsTypeConverter.class)
     private ArrayList<String> reviews;
@@ -50,7 +86,7 @@ public class MovieModel implements Parcelable{
     private String trailer;
     //private int image; // drawable reference id
 
-    @Ignore
+    //@Ignore
     public MovieModel(String movieName, String popularity, String movieLink, String overview, String vote_average, String release_date, String id, ArrayList<String> reviews, String trailer)
     {
         this.movieName = movieName;
@@ -64,9 +100,10 @@ public class MovieModel implements Parcelable{
         this.trailer = trailer;
     }
 
+    /*
     public MovieModel(int movieID, String movieName, String popularity, String movieLink, String overview, String vote_average, String release_date, String id, ArrayList<String> reviews, String trailer)
     {
-        this.movieID = movieID;
+        //this.movieID = movieID;
         this.movieName = movieName;
         this.popularity = popularity;
         this.movieLink = movieLink;
@@ -76,7 +113,7 @@ public class MovieModel implements Parcelable{
         this.id = id;
         this.reviews = reviews;
         this.trailer = trailer;
-    }
+    }*/
 
     protected MovieModel(Parcel in) {
         movieName = in.readString();
@@ -103,9 +140,9 @@ public class MovieModel implements Parcelable{
     };
 
     //public int getmId(){ return this.mId;}
-    public int getmovieID_id() {
+    /*public int getmovieID_id() {
         return movieID;
-    }
+    }*/
     public String getMovieName(){ return this.movieName;}
     public String getPopularity(){ return this.popularity;}
     public String getMovieLink(){return this.movieLink;}

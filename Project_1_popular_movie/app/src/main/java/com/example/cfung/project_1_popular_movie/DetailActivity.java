@@ -2,6 +2,8 @@ package com.example.cfung.project_1_popular_movie;
 
 import android.app.LoaderManager;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.AsyncTaskLoader;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -12,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -119,6 +122,8 @@ public class DetailActivity extends AppCompatActivity implements
 
     LiveData<List<MovieModel>> result = null;
     Boolean movieInDB = false;
+    private AddMovieViewModel viewModel;
+    List<MovieModel> movieResult;
 
     @Override
     public Loader<ArrayList<String>> onCreateLoader(final int id, final Bundle bundle) {
@@ -258,6 +263,28 @@ public class DetailActivity extends AppCompatActivity implements
         mDb = AppDatabase.getsInstance(getApplicationContext());
 
         String response = null;
+        fab.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), android.R.drawable.btn_star_big_off));
+
+        viewModel = ViewModelProviders.of(this, new AddMovieViewModelFactory(
+                mDb ,this.getApplication())).get(AddMovieViewModel.class);
+        viewModel.getMovies().observe(this, new Observer<List<MovieModel>>() {
+            @Override
+            public void onChanged(@Nullable List<MovieModel> periods) {
+                Log.v(TAG, "inside observe!.. ");
+                movieResult = viewModel.getMovies().getValue();
+                Log.v(TAG, "observe - movieResult is.. " + movieResult);
+
+                for (int x = 0; x < movieResult.size(); x ++){
+                    Log.v(TAG, "getResultMovies name: " + movieResult.get(x).getMovieName());
+                    if (movieResult.get(x).getMovieName().equals(movie.getMovieName())){
+                        Log.v(TAG, "movie already in DB!.. ");
+                        fab.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), android.R.drawable.btn_star_big_on));
+                        movieInDB = true;
+                        Log.v(TAG, "movieInDB is now.. : " + movieInDB);
+                    }
+                }
+            }
+        });
 
         if (movie != null)
         {
@@ -306,33 +333,44 @@ public class DetailActivity extends AppCompatActivity implements
 
             @Override
             public void onClick(View view) {
+
+                //movieInDB = false;
+
                 Toast.makeText(DetailActivity.this,
                         "Fab Fav button is clicked!", Toast.LENGTH_SHORT).show();
                 //MovieModel movie = new MovieModel(movieTitle, moviePopularity, moviePosterPath, movieOvervuew, movieVote, movieReleaseDate, movieID, reviewList, trailer );
-
+                Log.v(TAG, "fav button is clicked.. ");
 
                 MovieModel FavoriteMovie = new MovieModel (movie.getMovieName(), movie.getPopularity(), movie.getMovieLink(),
                         movie.getOverview(), movie.getVote_average(), movie.getRelease_date(),
                         movie.getId(), movie.getMovieReviews(), movie.getTrailer());
 
+                List<MovieModel> movieModelList = getResultMovies();
+                Log.v(TAG, "movieModeList after getResultMovies..: " + movieModelList);
 
+                /*viewModel.getMovies().observe(getApplicationContext(), new Observer<List<MovieModel>>() {
+                    @Override
+                    public void onChanged(@Nullable List<MovieModel> periods) {
+                        Log.v(TAG, "inside observe!.. ");
+                        movieResult = viewModel.getMovies().getValue();
+                        Log.v(TAG, "observe - movieResult is.. " + movieResult);
 
-                result = mDb.movieDao().getFavoriteMoviesFromDB();
-                List<MovieModel> movieModelList = result.getValue();
-
-
-                for (int x = 0; x < movieModelList.size(); x ++) {
-
-                    if (movieModelList.get(x).getMovieName().equals(movie.getMovieName())) {
-                        movieInDB = true;
+                        for (int x = 0; x < movieResult.size(); x ++){
+                            Log.v(TAG, "getResultMovies name: " + movieResult.get(x).getMovieName());
+                            if (movieResult.get(x).getMovieName().equals(movie.getMovieName())){
+                                Log.v(TAG, "movie already in DB!.. ");
+                                fab.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), android.R.drawable.btn_star_big_on));
+                            }
+                        }
                     }
-                }
-
+                });*/
+                Log.v(TAG, "movieInDB is (inside OnClick()).. :" + movieInDB);
                 if (movieInDB) {
 
                     // if it's already in the DB, delete it
-                    Log.v(TAG, "deleting movie from Room... ");
-                    mDb.movieDao().DeleteMovie(FavoriteMovie);
+                    Log.v(TAG, "deleting movie from Room... " + movie.getMovieName());
+
+                    mDb.movieDao().DeleteMovie(FavoriteMovie.getMovieName());
                     fab.setImageDrawable(AppCompatResources.getDrawable(getApplicationContext(), android.R.drawable.btn_star_big_off));
                 }
                 else {
@@ -346,6 +384,47 @@ public class DetailActivity extends AppCompatActivity implements
 
             }
         });
+    }
+
+    private List<MovieModel> getResultMovies(){
+
+        viewModel = ViewModelProviders.of(this, new AddMovieViewModelFactory(
+                mDb ,this.getApplication())).get(AddMovieViewModel.class);
+        //viewModel = ViewModelProviders.of(this).get(AddMovieViewModel.class);
+        viewModel.getMovies().observe(this, new Observer<List<MovieModel>>() {
+            @Override
+            public void onChanged(@Nullable List<MovieModel> periods) {
+                Log.v(TAG, "inside observe!.. ");
+                movieResult = viewModel.getMovies().getValue();
+                Log.v(TAG, "observe - movieResult is.. " + movieResult);
+                for (int x = 0; x < movieResult.size(); x ++){
+                    Log.v(TAG, "getResultMovies name: " + movieResult.get(x).getMovieName());
+                }
+            }
+        });
+        Log.v(TAG, "returning movieResult.. " + movieResult);
+        return movieResult;
+    }
+
+    private Boolean ifMovieInDB(MovieModel movie) {
+
+        Boolean isMovieInDB = false;
+
+        result = mDb.movieDao().getFavoriteMoviesFromDB();
+
+        //Log.v(TAG, "inside ifMovieInDB - result...: " + result.toString());
+        List<MovieModel> movieModelList = getResultMovies();
+        Log.v(TAG, "inside ifMovieInDB - movieModelList...: " + movieModelList);
+        if (movieModelList != null) {
+            Log.v(TAG, "movieModelList is not null... ");
+            for (int x = 0; x < movieModelList.size(); x ++) {
+
+                if (movieModelList.get(x).getMovieName().equals(movie.getMovieName())) {
+                    isMovieInDB = true;
+                }
+            }
+        }
+        return isMovieInDB;
     }
 
     /**
