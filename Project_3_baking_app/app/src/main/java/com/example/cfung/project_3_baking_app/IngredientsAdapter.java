@@ -36,7 +36,9 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
         void bind(int listIndex){
 
-            ingredientText.setText("ingredient " + (listIndex + 1)  + ": " + ingredientList.get(listIndex).getIngredient());
+            ingredientText.setText(ingredientList.get(listIndex).getIngredient() +
+                    " (" + ingredientList.get(listIndex).getQuantity() + " " +
+                    ingredientList.get(listIndex).getMeasure() + ")");
             //stepText.setText("Step " + (listIndex + 1) + ": " + stepsList.get(listIndex).getShortDescription());
             Log.v("Myactivity",  "bind() -" + ingredientList.get(listIndex).getIngredient());
         }
