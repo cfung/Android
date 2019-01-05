@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import java.util.ArrayList;
 
 /**
@@ -19,27 +22,22 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     private ArrayList<Ingredient> ingredientList;
     private ArrayList<Steps> stepsList;
 
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView ingredientText;
-        public TextView stepText;
-        //public TextView getIngredientTextIndex;
+        @BindView(R.id.list_item_ingredient_name) TextView ingredientText;
+        //@BindView(R.id.recycler_step) TextView stepText;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            ingredientText = (TextView) itemView.findViewById(R.id.list_item_ingredient_name);
-            stepText = (TextView) itemView.findViewById(R.id.list_item_step_name);// TODO: fix nullpointer exception
-            //ingredientTextIndex = (TextView) itemView.findViewById(R.id.);
-            /*for (int x = 0; x < ingredientList.size(); x++){
-                ingredientText.setText("ingredient " + (x + 1)  + ":: " + ingredientList.get(x).getIngredient());
-            }*/
+            ButterKnife.bind(this, itemView);
 
         }
 
         void bind(int listIndex){
 
             ingredientText.setText("ingredient " + (listIndex + 1)  + ": " + ingredientList.get(listIndex).getIngredient());
-            stepText.setText("Step " + (listIndex + 1) + ": " + stepsList.get(listIndex).getShortDescription());
+            //stepText.setText("Step " + (listIndex + 1) + ": " + stepsList.get(listIndex).getShortDescription());
             Log.v("Myactivity",  "bind() -" + ingredientList.get(listIndex).getIngredient());
         }
     }
