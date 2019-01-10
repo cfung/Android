@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,13 +22,21 @@ import java.util.ArrayList;
 
 import com.example.cfung.project_3_baking_app.utils.NetworkUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecipeAdapter.ItemClickListener{
 
     private static final String TAG = "MyActivity";
     private GridView gridView = null;
     private RecipeAdapter recipeAdapter = null;
     ArrayList<RecipeModel> AllRecipes = null;
     ArrayList<RecipeModel> result = null;
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+        Toast.makeText(this, "You clicked " + recipeAdapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+
+
+    }
 
     // AsyncTask to perform network operation in a separate thread than mainUI thread
     public class RecipeQueryTask extends AsyncTask<String, Void, ArrayList<RecipeModel>> {
@@ -117,13 +127,14 @@ public class MainActivity extends AppCompatActivity {
 
             if(result != null){
 
-                recipeAdapter.clear();
+                //recipeAdapter.clear();
                 for (int i=0; i<result.size();i++){
                     Log.v(TAG, "what is result..." + result.get(i));
-                    recipeAdapter.add(result.get(i));
+                    //recipeAdapter.add(result.get(i));
                 }
             }
         }
+
     }
 
 
@@ -132,15 +143,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.v(TAG, "onCreate");
-        GridView gridView = (GridView) findViewById(R.id.recipe_grid);
+        //GridView gridView = (GridView) findViewById(R.id.recipe_grid);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_fragment_body);
 
         AllRecipes = new ArrayList<RecipeModel>();
-        recipeAdapter = new RecipeAdapter(MainActivity.this, 0, AllRecipes);
-        gridView.setAdapter(recipeAdapter);
+        recipeAdapter = new RecipeAdapter(MainActivity.this, AllRecipes);
+        recyclerView.setAdapter(recipeAdapter);
         new RecipeQueryTask().execute(NetworkUtils.BAKING_APP_JSON);
 
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*recyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
@@ -159,10 +171,9 @@ public class MainActivity extends AppCompatActivity {
                 //startDetailActivityIntent.putExtra("image", AllRecipes.get(position).getImage());
                 startActivity(startDetailActivityIntent);
             }
-        });
+        });*/
+
 
     }
-
-
 
 }
