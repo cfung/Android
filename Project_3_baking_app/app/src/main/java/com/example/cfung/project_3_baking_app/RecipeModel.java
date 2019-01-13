@@ -15,11 +15,11 @@ public class RecipeModel implements Parcelable{
     private String name;
     private ArrayList<Ingredient> ingredients;
     private ArrayList<Steps> steps;
-    private int servings;
+    private float servings;
     private String image;
 
     public RecipeModel(int id, String name, ArrayList<Ingredient> ingredients, ArrayList<Steps> steps,
-                       int servings, String image){
+                       float servings, String image){
 
         this.id = id;
         this.name = name;
@@ -55,7 +55,7 @@ public class RecipeModel implements Parcelable{
     public String getRecipeName(){ return this.name;}
     public ArrayList<Ingredient> getIngredients(){ return this.ingredients;}
     public ArrayList<Steps> getSteps(){ return this.steps;}
-    public int getServings(){ return this.servings;}
+    public double getServings(){ return this.servings;}
     public String getImage(){ return this.image;}
 
 
@@ -66,11 +66,11 @@ public class RecipeModel implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
+        parcel.writeFloat(id);
         parcel.writeString(name);
         parcel.writeTypedList(ingredients);
         parcel.writeTypedList(steps);
-        parcel.writeInt(servings);
+        parcel.writeFloat(servings);
         parcel.writeString(image);
     }
 }
