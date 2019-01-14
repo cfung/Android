@@ -104,8 +104,8 @@ public class DetailActivity extends AppCompatActivity{
             //stepView = (RecyclerView)findViewById(R.id.recycler_step);
             //stepAdapter = new StepAdapter(recipes.getSteps());
             stepLayoutManager = new LinearLayoutManager(getApplicationContext());
-            stepView.setLayoutManager(stepLayoutManager);
-            stepView.setAdapter(stepAdapter);
+            //stepView.setLayoutManager(stepLayoutManager);
+            //stepView.setAdapter(stepAdapter);
 
             //TextView textView = (TextView) findViewById(R.id.list_item_ingredient_name);
             //textView.setText("haha");
