@@ -20,12 +20,12 @@ import java.util.ArrayList;
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.MyViewHolder>{
 
     private ArrayList<Ingredient> ingredientList;
-    private ArrayList<Steps> stepsList;
+    //private ArrayList<Steps> stepsList;
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.list_item_ingredient_name) TextView ingredientText;
+        @BindView(R.id.list_item_ingredient_name) TextView ingredientName;
         //@BindView(R.id.recycler_step) TextView stepText;
 
         public MyViewHolder(View itemView) {
@@ -36,9 +36,11 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
         void bind(int listIndex){
 
-            ingredientText.setText(ingredientList.get(listIndex).getIngredient() +
+            ingredientName.setText(ingredientList.get(listIndex).getIngredient() +
                     " (" + ingredientList.get(listIndex).getQuantity() + " " +
                     ingredientList.get(listIndex).getMeasure() + ")");
+            //ingredientDescription.setText(ingredientList.get(listIndex)());
+
             //stepText.setText("Step " + (listIndex + 1) + ": " + stepsList.get(listIndex).getShortDescription());
             Log.v("Myactivity",  "bind() -" + ingredientList.get(listIndex).getIngredient());
         }
@@ -47,7 +49,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     public IngredientsAdapter(ArrayList<Ingredient> ingredientsList, ArrayList<Steps> stepsList) {
 
         this.ingredientList = ingredientsList;
-        this.stepsList = stepsList;
+        //this.stepsList = stepsList;
     }
 
     @Override
