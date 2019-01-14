@@ -83,17 +83,25 @@ public class DetailActivity extends AppCompatActivity{
         recipes = bundle.getParcelableArrayList("recipe");
         Log.v(TAG, "recipe is..: " + recipes);
 
+        RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
+        recipeDetailFragment.setArguments(bundle);
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, recipeDetailFragment)
+                .addToBackStack("recipe_stack")
+                .commit();
+
         if (recipes != null){
 
             Log.v("Myactivity", "creating new IngredientsAdapter..in DetailActivity");
             //ingredientAdapter = new IngredientsAdapter(recipes.getIngredients(), recipes.getSteps());
             ingredientLayoutManager = new LinearLayoutManager(getApplicationContext());
 
-            ingredientView = (RecyclerView)findViewById(R.id.recycler_ingredient);
-            ingredientView.setLayoutManager(ingredientLayoutManager);
-            ingredientView.setAdapter(ingredientAdapter);
+            //ingredientView = (RecyclerView)findViewById(R.id.recycler_ingredient);
+            //ingredientView.setLayoutManager(ingredientLayoutManager);
+            //ingredientView.setAdapter(ingredientAdapter);
 
-            stepView = (RecyclerView)findViewById(R.id.recycler_step);
+            //stepView = (RecyclerView)findViewById(R.id.recycler_step);
             //stepAdapter = new StepAdapter(recipes.getSteps());
             stepLayoutManager = new LinearLayoutManager(getApplicationContext());
             stepView.setLayoutManager(stepLayoutManager);
