@@ -38,17 +38,19 @@ public class RecipeDetailFragment extends Fragment {
 
         recipeModels = new ArrayList<>();
 
-        // TODO:  add handle for case where savedInstanceState is null
+        // add handle for case where savedInstanceState is null
         if (savedInstanceState != null){
             Log.v(TAG, "RecipeDetailFragment onCreateView (savedInstanceState)...: ");
             recipeModels = savedInstanceState.getParcelableArrayList("recipe");
 
         } else {
 
-            //Intent recipeIntent = Intent.g;
-            //Bundle bundle = recipeIntent.getExtras();
+            //Intent recipeIntent = getActivity().getIntent().getExtras().getString("image")
+            Intent recipeIntent = getActivity().getIntent();
+            Bundle bundle = recipeIntent.getExtras();
             ArrayList recipes;
-            //recipes = bundle.getParcelableArrayList("recipe");
+            recipes = bundle.getParcelableArrayList("recipe");
+            Log.v(TAG, "what is recipe in RecipeDetailFragment - onCreateView: " + recipes);
         }
 
 
