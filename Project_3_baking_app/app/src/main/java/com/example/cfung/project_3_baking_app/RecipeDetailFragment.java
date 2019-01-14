@@ -1,6 +1,7 @@
 package com.example.cfung.project_3_baking_app;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import static android.content.Intent.getIntent;
 
 /**
  * Created by cfung on 1/7/19.
@@ -35,11 +38,21 @@ public class RecipeDetailFragment extends Fragment {
 
         recipeModels = new ArrayList<>();
 
+        // TODO:  add handle for case where savedInstanceState is null
         if (savedInstanceState != null){
+            Log.v(TAG, "RecipeDetailFragment onCreateView (savedInstanceState)...: ");
             recipeModels = savedInstanceState.getParcelableArrayList("recipe");
+
+        } else {
+
+            //Intent recipeIntent = Intent.g;
+            //Bundle bundle = recipeIntent.getExtras();
+            ArrayList recipes;
+            //recipes = bundle.getParcelableArrayList("recipe");
         }
 
-        Log.v(TAG, "recipe (RecipeDetailFragment) is..: " + recipeModels.get(0).getRecipeName());
+
+        Log.v(TAG, "recipe (RecipeDetailFragment) recipeModels is..: " + recipeModels);
 
         View rootview = inflater.inflate(R.layout.recipe_detail_fragment_body_part, container, false);
 
