@@ -325,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
         Bundle recipeBundle = new Bundle();
         ArrayList<RecipeModel> recipeModel = new ArrayList<>();
         recipeModel.add(clickedItemIndex);
-        recipeBundle.putParcelableArrayList("SELECTED_RECIPE", recipeModel);
+        recipeBundle.putParcelableArrayList("recipe", recipeModel);
         final Intent recipeIntent = new Intent(this, DetailActivity.class);
         recipeIntent.putExtras(recipeBundle);
         startActivity(recipeIntent);
