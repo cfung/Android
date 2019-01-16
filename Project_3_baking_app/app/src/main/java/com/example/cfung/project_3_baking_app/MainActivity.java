@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
 
                         for (int x = 0; x < ingredients.length(); x++){
                             JSONObject json = ingredients.getJSONObject(x);
-                            int quantity = json.getInt("quantity");
+                            String quantity = json.getString("quantity");
                             String measure = json.getString("measure");
                             String ingredientStr = json.getString("ingredient");
 
