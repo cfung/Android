@@ -1,8 +1,8 @@
 package com.example.cfung.project_3_baking_app;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,12 +17,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cfung on 3/5/18.
  */
 
-public class DetailActivity extends AppCompatActivity{
+public class DetailActivity extends AppCompatActivity implements IngredientsAdapter.ListItemClickListener, RecipeStepDetailFragment.ListItemClickListener{
 
     private RecyclerView.LayoutManager ingredientLayoutManager;
     private RecyclerView ingredientView;
@@ -33,6 +34,8 @@ public class DetailActivity extends AppCompatActivity{
     private RecyclerView.LayoutManager stepLayoutManager;
     private RecyclerView stepView;
     private ArrayList<Steps> steps;
+    private ArrayList<RecipeModel> recipeModels;
+    String recipeName;
 
     // Track whether to display a two-pane or single-pane UI
     private boolean mTwoPane;
@@ -51,7 +54,7 @@ public class DetailActivity extends AppCompatActivity{
         return view;
     }*/
 
-    private void loadFragment(Fragment fragment){
+    /*private void loadFragment(Fragment fragment){
 
         FragmentManager fm = getFragmentManager();
 
@@ -59,7 +62,7 @@ public class DetailActivity extends AppCompatActivity{
 
         //fragmentTransaction.replace(R.id.de);
         fragmentTransaction.commit();
-    }
+    }*/
 
     public void onCreate(Bundle savedInstanceState){
 
@@ -77,25 +80,33 @@ public class DetailActivity extends AppCompatActivity{
 
         //ingredientName.setText("testing");
 
+        Log.v(TAG, "savedInstanceState: " + savedInstanceState);
+
         Intent recipeIntent = getIntent();
         Bundle bundle = recipeIntent.getExtras();
-        ArrayList recipes;
-        recipes = bundle.getParcelableArrayList("recipe");
-        Log.v(TAG, "recipe is..: " + recipes);
+        recipeModels = new ArrayList<>();
+        recipeModels = bundle.getParcelableArrayList("recipe");
+        Log.v(TAG, "recipe is..: " + recipeModels);
+        recipeName = recipeModels.get(0).getRecipeName();
+        Log.v(TAG, "recipeName is: " + recipeName);
 
-        RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
+        final RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
         recipeDetailFragment.setArguments(bundle);
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, recipeDetailFragment)
                 .addToBackStack("recipe_stack")
                 .commit();
 
-        if (recipes != null){
 
-            Log.v("Myactivity", "creating new IngredientsAdapter..in DetailActivity");
+
+        if (recipeModels != null){
+
+            Log.v(TAG, "recipes NOT null");
+
+            Log.v(TAG, "creating new IngredientsAdapter..in DetailActivity");
             //ingredientAdapter = new IngredientsAdapter(recipes.getIngredients(), recipes.getSteps());
-            ingredientLayoutManager = new LinearLayoutManager(getApplicationContext());
+            //ingredientLayoutManager = new LinearLayoutManager(getApplicationContext());
 
             //ingredientView = (RecyclerView)findViewById(R.id.recycler_ingredient);
             //ingredientView.setLayoutManager(ingredientLayoutManager);
@@ -103,7 +114,7 @@ public class DetailActivity extends AppCompatActivity{
 
             //stepView = (RecyclerView)findViewById(R.id.recycler_step);
             //stepAdapter = new StepAdapter(recipes.getSteps());
-            stepLayoutManager = new LinearLayoutManager(getApplicationContext());
+            //stepLayoutManager = new LinearLayoutManager(getApplicationContext());
             //stepView.setLayoutManager(stepLayoutManager);
             //stepView.setAdapter(stepAdapter);
 
@@ -133,5 +144,23 @@ public class DetailActivity extends AppCompatActivity{
 
         }
 
+    }
+
+    @Override
+    public void onListItemClick(List<Steps> steps, int index, String recipeName) {
+
+        Log.v(TAG, "onListItemClick() starting..");
+        final RecipeStepDetailFragment fragment = new RecipeStepDetailFragment();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("steps", (ArrayList<Steps>) steps);
+        bundle.putString("Title", recipeName);
+        fragment.setArguments(bundle);
+
+        if (findViewById(R.id.recipe_detail_layout) != null) {
+            fragmentManager.beginTransaction().replace(R.id.master_list_fragment, fragment)
+                    .addToBackStack("step_detail").commit();
+        }
     }
 }
