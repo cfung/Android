@@ -12,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cfung on 3/16/18.
@@ -19,22 +20,88 @@ import java.util.ArrayList;
 
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.MyViewHolder>{
 
-    private ArrayList<Ingredient> ingredientList;
-    //private ArrayList<Steps> stepsList;
+    //private ArrayList<Ingredient> ingredientList;
+    List<Steps> stepsList;
+    private String recipeName;
 
+    final private ListItemClickListener listItemClickListener;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    private static final String TAG = "IngredientsAdapter";
 
-        @BindView(R.id.list_item_ingredient_name) TextView ingredientName;
+    public interface ListItemClickListener {
+        void onListItemClick(List<Steps> steps, int index, String recipeName);
+    }
+
+    public IngredientsAdapter(ListItemClickListener listItemClickListener) {
+
+        this.listItemClickListener = listItemClickListener;
+        //this.stepsList = stepsList;
+        //listItemClickListener = null;
+    }
+
+    public void setIngredientsAdapterData(List<RecipeModel> recipeModels, Context context){
+        Log.v(TAG, "setIngredientsAdapterData() starting..");
+        stepsList = recipeModels.get(0).getSteps();
+        recipeName = recipeModels.get(0).getRecipeName();
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+
+        Log.v(TAG, "IngredientsAdapter-onCreateViewHolder");
+        Context context = viewGroup.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.recipe_detail_cardview_items, viewGroup, false);
+        MyViewHolder viewHolder = new MyViewHolder(view);
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(IngredientsAdapter.MyViewHolder holder, int position) {
+        Log.v(TAG, "IngredientsAdapter - onBindViewHolder..");
+        Log.v(TAG, "stepsList getID(): " + stepsList.get(position).getId());
+        Log.v(TAG, "stepsList getShortDescription: " + stepsList.get(position).getShortDescription());
+        holder.tv_shortDescription.setText(stepsList.get(position).getId() + ". " + stepsList.get(position).getShortDescription());
+        //holder.bind(position);
+
+    }
+
+    @Override
+    public int getItemCount() {
+
+        if (stepsList != null) {
+            Log.v(TAG, "getItemCount(): " + stepsList.size());
+            return stepsList.size();
+        } else {
+            return 0;
+        }
+
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        //@BindView(R.id.list_item_ingredient_name) TextView ingredientName;
         //@BindView(R.id.recycler_step) TextView stepText;
+        //@BindView(R.id.short_description) TextView tv_shortDescription;
+        TextView tv_shortDescription;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            //ButterKnife.bind(this, itemView);
+            tv_shortDescription = (TextView) itemView.findViewById(R.id.short_description);
+
+            itemView.setOnClickListener(this);
 
         }
 
-        void bind(int listIndex){
+        @Override
+        public void onClick(View view) {
+            int pos = getAdapterPosition();
+            listItemClickListener.onListItemClick(stepsList, pos, recipeName);
+        }
+
+        /*void bind(int listIndex){
 
             ingredientName.setText(ingredientList.get(listIndex).getIngredient() +
                     " (" + ingredientList.get(listIndex).getQuantity() + " " +
@@ -43,36 +110,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
             //stepText.setText("Step " + (listIndex + 1) + ": " + stepsList.get(listIndex).getShortDescription());
             Log.v("Myactivity",  "bind() -" + ingredientList.get(listIndex).getIngredient());
-        }
+        }*/
     }
 
-    public IngredientsAdapter(ArrayList<Ingredient> ingredientsList, ArrayList<Steps> stepsList) {
-
-        this.ingredientList = ingredientsList;
-        //this.stepsList = stepsList;
-    }
-
-    @Override
-    public IngredientsAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-
-        Log.v("MyActivity", "onCreateViewHolder");
-        Context context = viewGroup.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.ingredients, viewGroup, false);
-        MyViewHolder viewHolder = new MyViewHolder(view);
-        return viewHolder;
-    }
-
-    @Override
-    public void onBindViewHolder(IngredientsAdapter.MyViewHolder holder, int position) {
-        Log.v("MyActivity", "IngredientsAdapter - onBindViewHolder..");
-
-        holder.bind(position);
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return ingredientList.size();
-    }
 }
