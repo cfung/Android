@@ -155,12 +155,26 @@ public class DetailActivity extends AppCompatActivity implements IngredientsAdap
 
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("steps", (ArrayList<Steps>) steps);
+        bundle.putInt("index", index);
         bundle.putString("Title", recipeName);
         fragment.setArguments(bundle);
 
-        if (findViewById(R.id.recipe_detail_layout) != null) {
+
+
+        // TODO:  add getTag with "tablet-land", then uncomment code
+        fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment)
+                .addToBackStack("step_detail").commit();
+        /*if (findViewById(R.id.recipe_detail_layout) != null && findViewById(R.id.recipe_detail_layout).getTag().equals("tablet-land")) {
+
+            final RecipeStepDetailFragment stepDetailFragment = new RecipeStepDetailFragment();
+            stepDetailFragment.setArguments(bundle);
+
+            // TODO:  replace R.id.master_list_fragment with fragment_container2
             fragmentManager.beginTransaction().replace(R.id.master_list_fragment, fragment)
                     .addToBackStack("step_detail").commit();
-        }
+        } else {
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment)
+                    .addToBackStack("step_detail").commit();
+        }*/
     }
 }
