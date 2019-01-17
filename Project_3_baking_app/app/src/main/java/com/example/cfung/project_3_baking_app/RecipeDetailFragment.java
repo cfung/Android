@@ -1,6 +1,6 @@
 package com.example.cfung.project_3_baking_app;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -75,7 +75,9 @@ public class RecipeDetailFragment extends Fragment {
         LinearLayoutManager detailLinearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(detailLinearLayoutManager);
 
-
+        IngredientsAdapter ingredientsAdapter = new IngredientsAdapter((DetailActivity)getActivity());
+        recyclerView.setAdapter(ingredientsAdapter);
+        ingredientsAdapter.setIngredientsAdapterData(recipeModels, getContext());
 
 
         return rootview;
