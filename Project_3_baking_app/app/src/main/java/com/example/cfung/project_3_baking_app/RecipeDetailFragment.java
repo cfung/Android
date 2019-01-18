@@ -22,6 +22,13 @@ public class RecipeDetailFragment extends Fragment {
     ArrayList<RecipeModel> recipeModels;
     String name;
 
+    static String RECIPES = "RECIPES";
+    static String SELECTED_RECIPES = "SELECTED_RECIPES";
+    static String STEPS = "STEPS";
+    static String INDEX = "INDEX";
+    static String RECIPE_DETAIL = "RECIPE_DETAIL";
+    static String RECIPE_STEP_DETAIL = "RECIPE_STEP_DETAIL";
+
     private static final String TAG = "RecipeDetailFragment";
 
     public RecipeDetailFragment(){}
@@ -47,14 +54,17 @@ public class RecipeDetailFragment extends Fragment {
             Intent recipeIntent = getActivity().getIntent();
             Bundle bundle = recipeIntent.getExtras();
             ArrayList recipes;
-            recipes = bundle.getParcelableArrayList("recipe");
+            recipes = bundle.getParcelableArrayList(RECIPES);
             Log.v(TAG, "what is recipe in RecipeDetailFragment - onCreateView: " + recipes);
             recipeModels = recipes;
         }
 
 
         Log.v(TAG, "recipe (RecipeDetailFragment) recipeModels is..: " + recipeModels);
-        Log.v(TAG, "first recipe name is ..: " + recipeModels.get(0).getRecipeName());
+        if (recipeModels != null) {
+            Log.v(TAG, "first recipe name is ..: " + recipeModels.get(0).getRecipeName());
+        }
+
 
         View rootview = inflater.inflate(R.layout.recipe_detail_fragment_body_part, container, false);
 
