@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toolbar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -36,6 +38,14 @@ public class DetailActivity extends AppCompatActivity implements IngredientsAdap
     private ArrayList<Steps> steps;
     private ArrayList<RecipeModel> recipeModels;
     String recipeName;
+
+    static String RECIPES = "RECIPES";
+    static String SELECTED_RECIPES = "SELECTED_RECIPES";
+    static String STEPS = "STEPS";
+    static String INDEX = "INDEX";
+    static String RECIPE_DETAIL = "RECIPE_DETAIL";
+    static String RECIPE_STEP_DETAIL = "RECIPE_STEP_DETAIL";
+
 
     // Track whether to display a two-pane or single-pane UI
     private boolean mTwoPane;
@@ -71,77 +81,36 @@ public class DetailActivity extends AppCompatActivity implements IngredientsAdap
 
         Log.v(TAG, "onCreate starting for DetailActivity");
 
-        // 1. Recipe ingredients
-        // 2. Recipe step 1
-        // 3. Recipe step 2....
-        //TextView ingredientsView = (TextView) findViewById(R.id.ingredients);
-        //TextView stepsView = (TextView) findViewById(R.id.step);
-        //TextView idView = (TextView) findViewById(R.id.recpieID);
 
-        //ingredientName.setText("testing");
-
+        // TODO: handle savedInstanceState null and not null
         Log.v(TAG, "savedInstanceState: " + savedInstanceState);
 
         Intent recipeIntent = getIntent();
         Bundle bundle = recipeIntent.getExtras();
         recipeModels = new ArrayList<>();
-        recipeModels = bundle.getParcelableArrayList("recipe");
+        recipeModels = bundle.getParcelableArrayList(RECIPES);
         Log.v(TAG, "recipe is..: " + recipeModels);
         recipeName = recipeModels.get(0).getRecipeName();
         Log.v(TAG, "recipeName is: " + recipeName);
 
         final RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
         recipeDetailFragment.setArguments(bundle);
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, recipeDetailFragment)
-                .addToBackStack("recipe_stack")
+                .addToBackStack(RECIPE_STEP_DETAIL)
                 .commit();
 
 
+        if (findViewById(R.id.recipe_detail_layout).getTag() != null && findViewById(R.id.recipe_detail_layout).getTag().equals("tablet-land")) {
 
-        if (recipeModels != null){
-
-            Log.v(TAG, "recipes NOT null");
-
-            Log.v(TAG, "creating new IngredientsAdapter..in DetailActivity");
-            //ingredientAdapter = new IngredientsAdapter(recipes.getIngredients(), recipes.getSteps());
-            //ingredientLayoutManager = new LinearLayoutManager(getApplicationContext());
-
-            //ingredientView = (RecyclerView)findViewById(R.id.recycler_ingredient);
-            //ingredientView.setLayoutManager(ingredientLayoutManager);
-            //ingredientView.setAdapter(ingredientAdapter);
-
-            //stepView = (RecyclerView)findViewById(R.id.recycler_step);
-            //stepAdapter = new StepAdapter(recipes.getSteps());
-            //stepLayoutManager = new LinearLayoutManager(getApplicationContext());
-            //stepView.setLayoutManager(stepLayoutManager);
-            //stepView.setAdapter(stepAdapter);
-
-            //TextView textView = (TextView) findViewById(R.id.list_item_ingredient_name);
-            //textView.setText("haha");
-            //stepView = (RecyclerView)findViewById(R.id.)
-            //ingredientText = (TextView) findViewById(R.id.list_item_ingredient_name);
-            //ingredientsView.setText(recipe.getIngridients().get(0).toString());
-            //stepsView.setText(recipe.getSteps().get(0).toString());
-            //Log.v("DetailActivity", "what is ingredient.." + recipes.getIngredients());
-            //steps = recipes.getSteps();
-            /*for (int x = 0; x < steps.size(); x++){
-                Log.v("DetailActivity", "what is step.." + steps.get(x).getShortDescription());
-            }*/
-
-            //Log.v("DetailActivity", "what is name.." + recipes.getRecipeName());
-            //Log.v("DetailActivity", "what is id.." + recipes.getid());
-
-            //ingredientsView.setText(recipe.getIngredients().get(0).getIngredient());
-            //stepsView.setText(recipe.getSteps().get(0).getShortDescription());
-            //idView.setText("ID: " + Integer.toString(recipe.getid()));
-            //for (int i=0; i < recipes.getIngredients().size(); i++){
-            //    Log.v("Myactivity", "size..." + recipes.getIngredients().get(i).toString());
-                //ingredientText.setText(recipe.getIngredients().get(i).toString());
-            //}
-
-
+            final RecipeStepDetailFragment recipeStepDetailFragment = new RecipeStepDetailFragment();
+            recipeStepDetailFragment.setArguments(bundle);
+            //FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container_2, recipeStepDetailFragment)
+                    .addToBackStack(STEPS)
+                    .commit();
         }
 
     }
@@ -154,27 +123,31 @@ public class DetailActivity extends AppCompatActivity implements IngredientsAdap
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
 
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("steps", (ArrayList<Steps>) steps);
-        bundle.putInt("index", index);
+        bundle.putParcelableArrayList(STEPS, (ArrayList<Steps>) steps);
+        bundle.putInt(INDEX, index);
         bundle.putString("Title", recipeName);
         fragment.setArguments(bundle);
 
-
-
         // TODO:  add getTag with "tablet-land", then uncomment code
-        fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment)
-                .addToBackStack("step_detail").commit();
-        /*if (findViewById(R.id.recipe_detail_layout) != null && findViewById(R.id.recipe_detail_layout).getTag().equals("tablet-land")) {
+        //fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment)
+        //        .addToBackStack(RECIPE_STEP_DETAIL).commit();
+        Object tag = findViewById(R.id.recipe_detail_layout).getTag();
+        if (findViewById(R.id.recipe_detail_layout) != null && tag != null) {
 
-            final RecipeStepDetailFragment stepDetailFragment = new RecipeStepDetailFragment();
-            stepDetailFragment.setArguments(bundle);
+            if (tag.equals("tablet-land")) {
+                fragmentManager.beginTransaction().replace(R.id.fragment_container_2, fragment)
+                        .addToBackStack(RECIPE_STEP_DETAIL).commit();
+            }
+
+            //final RecipeStepDetailFragment stepDetailFragment = new RecipeStepDetailFragment();
+            //stepDetailFragment.setArguments(bundle);
 
             // TODO:  replace R.id.master_list_fragment with fragment_container2
-            fragmentManager.beginTransaction().replace(R.id.master_list_fragment, fragment)
-                    .addToBackStack("step_detail").commit();
-        } else {
+        }//close first if
+        else {
             fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment)
-                    .addToBackStack("step_detail").commit();
-        }*/
+                    .addToBackStack(RECIPE_STEP_DETAIL).commit();
+
+        }
     }
 }
