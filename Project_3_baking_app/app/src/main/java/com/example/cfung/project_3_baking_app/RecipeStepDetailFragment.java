@@ -48,6 +48,13 @@ public class RecipeStepDetailFragment extends Fragment{
     ArrayList<RecipeModel> recipeModels;
     String recipeName;
 
+    static String RECIPES = "RECIPES";
+    static String SELECTED_RECIPES = "SELECTED_RECIPES";
+    static String STEPS = "STEPS";
+    static String INDEX = "INDEX";
+    static String RECIPE_DETAIL = "RECIPE_DETAIL";
+    static String RECIPE_STEP_DETAIL = "RECIPE_STEP_DETAIL";
+
     private static final String TAG = "RecipeStepDetailFrag";
 
     private ListItemClickListener listItemClickListener;
@@ -69,7 +76,7 @@ public class RecipeStepDetailFragment extends Fragment{
         recipeModels = new ArrayList<>();
 
         // TODO:  add case to handle savedInstanceState != null
-        steps = getArguments().getParcelableArrayList("steps");
+        steps = getArguments().getParcelableArrayList(STEPS);
         Log.v(TAG, "steps in stepFragment is...: " + steps);
         if (steps != null) {
             //steps = getArguments().get
@@ -79,6 +86,7 @@ public class RecipeStepDetailFragment extends Fragment{
             Log.v(TAG, "recipeName is: " + recipeName);
         } else {
             Log.v(TAG, "steps is NULL, in else...");
+            Log.v(TAG, "recipeModel's size is..: " + recipeModels.size());
             steps = (ArrayList<Steps>) recipeModels.get(0).getSteps();
             index = 0;
         }
