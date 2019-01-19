@@ -1,5 +1,6 @@
 package com.example.cfung.project_3_baking_app;
 
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -52,28 +53,6 @@ public class DetailActivity extends AppCompatActivity implements IngredientsAdap
 
     private static final String TAG = "DetailActivity";
 
-    //@BindView(R.id.list_item_ingredient_name) TextView ingredientName;
-
-    /*public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-
-        View view = inflater.inflate(R.layout.detail, container, false);
-
-        Intent recipeIntent = getIntent();
-
-        return view;
-    }*/
-
-    /*private void loadFragment(Fragment fragment){
-
-        FragmentManager fm = getFragmentManager();
-
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-
-        //fragmentTransaction.replace(R.id.de);
-        fragmentTransaction.commit();
-    }*/
-
     public void onCreate(Bundle savedInstanceState){
 
         super.onCreate(savedInstanceState);
@@ -88,7 +67,7 @@ public class DetailActivity extends AppCompatActivity implements IngredientsAdap
         Intent recipeIntent = getIntent();
         Bundle bundle = recipeIntent.getExtras();
         recipeModels = new ArrayList<>();
-        recipeModels = bundle.getParcelableArrayList(RECIPES);
+        recipeModels = bundle.getParcelableArrayList(SELECTED_RECIPES);
         Log.v(TAG, "recipe is..: " + recipeModels);
         recipeName = recipeModels.get(0).getRecipeName();
         Log.v(TAG, "recipeName is: " + recipeName);
@@ -102,11 +81,12 @@ public class DetailActivity extends AppCompatActivity implements IngredientsAdap
                 .commit();
 
 
-        if (findViewById(R.id.recipe_detail_layout).getTag() != null && findViewById(R.id.recipe_detail_layout).getTag().equals("tablet-land")) {
+        if (findViewById(R.id.recipe_detail_layout).getTag() != null &&
+                (findViewById(R.id.recipe_detail_layout).getTag().equals("tablet-land") ||
+                        findViewById(R.id.recipe_detail_layout).getTag().equals("land") )) {
 
             final RecipeStepDetailFragment recipeStepDetailFragment = new RecipeStepDetailFragment();
             recipeStepDetailFragment.setArguments(bundle);
-            //FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container_2, recipeStepDetailFragment)
                     .addToBackStack(STEPS)
@@ -128,26 +108,36 @@ public class DetailActivity extends AppCompatActivity implements IngredientsAdap
         bundle.putString("Title", recipeName);
         fragment.setArguments(bundle);
 
-        // TODO:  add getTag with "tablet-land", then uncomment code
-        //fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment)
-        //        .addToBackStack(RECIPE_STEP_DETAIL).commit();
         Object tag = findViewById(R.id.recipe_detail_layout).getTag();
         if (findViewById(R.id.recipe_detail_layout) != null && tag != null) {
-
+            Log.v(TAG, "getTag() is not null: " + tag);
             if (tag.equals("tablet-land")) {
+                Log.v(TAG, "inside tablet-land");
                 fragmentManager.beginTransaction().replace(R.id.fragment_container_2, fragment)
                         .addToBackStack(RECIPE_STEP_DETAIL).commit();
             }
+            else {
+                // case == phone landscape mode
+                Log.v(TAG, "inside phone-land");
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment)
+                        .addToBackStack(RECIPE_STEP_DETAIL).commit();
 
-            //final RecipeStepDetailFragment stepDetailFragment = new RecipeStepDetailFragment();
-            //stepDetailFragment.setArguments(bundle);
+            }
 
-            // TODO:  replace R.id.master_list_fragment with fragment_container2
+
         }//close first if
         else {
+            // Portrait mode
             fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment)
                     .addToBackStack(RECIPE_STEP_DETAIL).commit();
 
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("Title", recipeName);
+    }
+
 }
