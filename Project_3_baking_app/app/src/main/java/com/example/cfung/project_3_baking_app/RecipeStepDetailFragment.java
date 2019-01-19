@@ -1,5 +1,7 @@
 package com.example.cfung.project_3_baking_app;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -75,21 +78,34 @@ public class RecipeStepDetailFragment extends Fragment{
         listItemClickListener = (DetailActivity)getActivity();
         recipeModels = new ArrayList<>();
 
-        // TODO:  add case to handle savedInstanceState != null
-        steps = getArguments().getParcelableArrayList(STEPS);
-        Log.v(TAG, "steps in stepFragment is...: " + steps);
-        if (steps != null) {
-            //steps = getArguments().get
-            index = getArguments().getInt("index");
-            Log.v(TAG, "index is...: " + index);
+        // Completed:  add case to handle savedInstanceState != null
+        if (savedInstanceState != null) {
+            steps = getArguments().getParcelableArrayList(STEPS);
+            index = getArguments().getInt(INDEX);
             recipeName = getArguments().getString("Title");
-            Log.v(TAG, "recipeName is: " + recipeName);
-        } else {
-            Log.v(TAG, "steps is NULL, in else...");
-            Log.v(TAG, "recipeModel's size is..: " + recipeModels.size());
-            steps = (ArrayList<Steps>) recipeModels.get(0).getSteps();
-            index = 0;
+
         }
+        else {
+
+            steps = getArguments().getParcelableArrayList(STEPS);
+
+            if (steps != null) {
+                //steps = getArguments().get
+                index = getArguments().getInt(INDEX);
+                Log.v(TAG, "index is...: " + index);
+                recipeName = getArguments().getString("Title");
+                Log.v(TAG, "recipeName is: " + recipeName);
+            } else {
+                recipeModels = getArguments().getParcelableArrayList(SELECTED_RECIPES);
+                Log.v(TAG, "steps is NULL, in else...");
+                steps = (ArrayList<Steps>) recipeModels.get(0).getSteps();
+                index = 0;
+            }
+
+        }
+
+        Log.v(TAG, "steps in stepFragment is...: " + steps);
+
 
         View rootView = inflater.inflate(R.layout.recipe_step_fragment, container, false);
         textView = (TextView) rootView.findViewById(R.id.step_detail_text);
@@ -114,10 +130,30 @@ public class RecipeStepDetailFragment extends Fragment{
         if (!videoURL.isEmpty()) {
 
             initializeExoPlayer(Uri.parse(steps.get(index).getVideoURL()));
+
+            if (rootView.findViewWithTag("sw600dp-land-recipe_step_detail") != null) {
+                getActivity().findViewById(R.id.fragment_container_2).setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
+                exoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
+            }
+            else if (landscapeMode(getContext())) {
+                textView.setVisibility(View.GONE);
+            }
+        } // completed:  add else
+        else {
+            exoPlayer = null;
+            exoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(300,300));
         }
 
 
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(STEPS, steps);
+        outState.putString("Title", recipeName);
+        outState.putInt(INDEX, index);
     }
 
     private void initializeExoPlayer(Uri uri) {
@@ -137,6 +173,10 @@ public class RecipeStepDetailFragment extends Fragment{
             exoPlayer.setPlayWhenReady(true);
 
         }
+    }
+
+    private boolean landscapeMode(Context context) {
+        return (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
     }
 
 }
