@@ -61,36 +61,42 @@ public class DetailActivity extends AppCompatActivity implements IngredientsAdap
         Log.v(TAG, "onCreate starting for DetailActivity");
 
 
-        // TODO: handle savedInstanceState null and not null
+        // Completed: handle savedInstanceState null and not null
         Log.v(TAG, "savedInstanceState: " + savedInstanceState);
 
-        Intent recipeIntent = getIntent();
-        Bundle bundle = recipeIntent.getExtras();
-        recipeModels = new ArrayList<>();
-        recipeModels = bundle.getParcelableArrayList(SELECTED_RECIPES);
-        Log.v(TAG, "recipe is..: " + recipeModels);
-        recipeName = recipeModels.get(0).getRecipeName();
-        Log.v(TAG, "recipeName is: " + recipeName);
+        if (savedInstanceState == null) {
 
-        final RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
-        recipeDetailFragment.setArguments(bundle);
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, recipeDetailFragment)
-                .addToBackStack(RECIPE_STEP_DETAIL)
-                .commit();
+            Intent recipeIntent = getIntent();
+            Bundle bundle = recipeIntent.getExtras();
+            recipeModels = new ArrayList<>();
+            recipeModels = bundle.getParcelableArrayList(SELECTED_RECIPES);
+            Log.v(TAG, "recipe is..: " + recipeModels);
+            recipeName = recipeModels.get(0).getRecipeName();
+            Log.v(TAG, "recipeName is: " + recipeName);
 
-
-        if (findViewById(R.id.recipe_detail_layout).getTag() != null &&
-                (findViewById(R.id.recipe_detail_layout).getTag().equals("tablet-land") ||
-                        findViewById(R.id.recipe_detail_layout).getTag().equals("land") )) {
-
-            final RecipeStepDetailFragment recipeStepDetailFragment = new RecipeStepDetailFragment();
-            recipeStepDetailFragment.setArguments(bundle);
+            final RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
+            recipeDetailFragment.setArguments(bundle);
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container_2, recipeStepDetailFragment)
-                    .addToBackStack(STEPS)
+                    .replace(R.id.fragment_container, recipeDetailFragment)
+                    .addToBackStack(RECIPE_STEP_DETAIL)
                     .commit();
+
+
+            if (findViewById(R.id.recipe_detail_layout).getTag() != null &&
+                    (findViewById(R.id.recipe_detail_layout).getTag().equals("tablet-land") ||
+                            findViewById(R.id.recipe_detail_layout).getTag().equals("land") )) {
+
+                final RecipeStepDetailFragment recipeStepDetailFragment = new RecipeStepDetailFragment();
+                recipeStepDetailFragment.setArguments(bundle);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container_2, recipeStepDetailFragment)
+                        .addToBackStack(STEPS)
+                        .commit();
+            }
+
+        } else {
+            recipeName = savedInstanceState.getString("Title");
         }
 
     }
