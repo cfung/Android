@@ -43,18 +43,18 @@ public class RecipeDetailFragment extends Fragment {
 
         recipeModels = new ArrayList<>();
 
+
         // add handle for case where savedInstanceState is null
         if (savedInstanceState != null){
             Log.v(TAG, "RecipeDetailFragment onCreateView (savedInstanceState)...: ");
-            recipeModels = savedInstanceState.getParcelableArrayList("recipe");
+            recipeModels = savedInstanceState.getParcelableArrayList(SELECTED_RECIPES);
 
         } else {
 
-            //Intent recipeIntent = getActivity().getIntent().getExtras().getString("image")
             Intent recipeIntent = getActivity().getIntent();
             Bundle bundle = recipeIntent.getExtras();
             ArrayList recipes;
-            recipes = bundle.getParcelableArrayList(RECIPES);
+            recipes = bundle.getParcelableArrayList(SELECTED_RECIPES);
             Log.v(TAG, "what is recipe in RecipeDetailFragment - onCreateView: " + recipes);
             recipeModels = recipes;
         }
@@ -63,6 +63,7 @@ public class RecipeDetailFragment extends Fragment {
         Log.v(TAG, "recipe (RecipeDetailFragment) recipeModels is..: " + recipeModels);
         if (recipeModels != null) {
             Log.v(TAG, "first recipe name is ..: " + recipeModels.get(0).getRecipeName());
+            name = recipeModels.get(0).getRecipeName();
         }
 
 
@@ -89,8 +90,14 @@ public class RecipeDetailFragment extends Fragment {
         recyclerView.setAdapter(ingredientsAdapter);
         ingredientsAdapter.setIngredientsAdapterData(recipeModels, getContext());
 
-
         return rootview;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(SELECTED_RECIPES, recipeModels);
+        outState.putString("Title", name);
     }
 
 }
