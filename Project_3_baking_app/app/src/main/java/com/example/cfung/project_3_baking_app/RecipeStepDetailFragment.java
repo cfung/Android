@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -70,7 +71,7 @@ public class RecipeStepDetailFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         TextView textView;
         handler = new Handler();
         bandwidthMeter = new DefaultBandwidthMeter();
@@ -144,6 +145,44 @@ public class RecipeStepDetailFragment extends Fragment{
             exoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(300,300));
         }
 
+        // handle previous and next button clicks
+        Button prevButton = (Button) rootView.findViewById(R.id.prev_step);
+        Button nextButton = (Button) rootView.findViewById(R.id.next_step);
+
+        prevButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+
+                if (steps.get(index).getId() > 1) {
+
+                    if (exoPlayer != null){
+                        exoPlayer.stop();
+                    }
+                    listItemClickListener.onListItemClick(steps, steps.get(index).getId() - 1, recipeName);
+                } else {
+                    Log.v(TAG, "already in first step of recipe");
+                }
+            }
+        });
+
+        nextButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+
+                int lastIdx = steps.size() - 1;
+                if (steps.get(index).getId() < steps.get(lastIdx).getId()) {
+
+                    if (exoPlayer != null){
+                        exoPlayer.stop();
+                    }
+                    listItemClickListener.onListItemClick(steps, steps.get(index).getId() + 1, recipeName);
+                } else {
+                    Log.v(TAG, "already in last step of recipe");
+                }
+            }
+        });
 
         return rootView;
     }
