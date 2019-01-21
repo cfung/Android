@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Project_3_baking_app</string>
+    <string name="next">Next</string>
+    <string name="previous">Prev</string>
 </resources>
