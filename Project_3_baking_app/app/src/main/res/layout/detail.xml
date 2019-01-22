@@ -14,12 +14,6 @@
 
     </FrameLayout>
 
-    <include
-        layout="@layout/toolbar"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-
-    </include>
 
 </LinearLayout>
 
