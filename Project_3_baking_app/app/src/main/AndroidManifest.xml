@@ -19,8 +19,19 @@
         <activity
             android:name=".DetailActivity"
             android:label="Detail Activity">
-
         </activity>
+
+        <receiver android:name=".widget.WidgetProvider" android:icon="@drawable/ic_launcher_foreground">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE2" />
+
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@layout/widget_info"
+            />
+        </receiver>
     </application>
 
 </manifest>
