@@ -56,6 +56,7 @@ public class RecipeStepDetailFragment extends Fragment{
     static String SELECTED_RECIPES = "SELECTED_RECIPES";
     static String STEPS = "STEPS";
     static String INDEX = "INDEX";
+    static String TITLE = "TITLE";
     static String RECIPE_DETAIL = "RECIPE_DETAIL";
     static String RECIPE_STEP_DETAIL = "RECIPE_STEP_DETAIL";
 
@@ -72,6 +73,9 @@ public class RecipeStepDetailFragment extends Fragment{
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        Log.v(TAG, "onCreateView starting for RecipeStepDetailFragment...");
+
         TextView textView;
         handler = new Handler();
         bandwidthMeter = new DefaultBandwidthMeter();
@@ -81,16 +85,22 @@ public class RecipeStepDetailFragment extends Fragment{
 
         // Completed:  add case to handle savedInstanceState != null
         if (savedInstanceState != null) {
-            steps = getArguments().getParcelableArrayList(STEPS);
-            index = getArguments().getInt(INDEX);
+            Log.v(TAG, "savedInstanceState != null..." + savedInstanceState);
+            steps = savedInstanceState.getParcelableArrayList(STEPS);
+            index = savedInstanceState.getInt(INDEX);
+            Log.v(TAG, "index is..." + savedInstanceState.getInt(INDEX));
             recipeName = getArguments().getString("Title");
+            Log.v(TAG, "Title is..." + savedInstanceState.getString("Title"));
+            Log.v(TAG, "steps is..." + savedInstanceState.getParcelableArrayList(STEPS));
+
 
         }
         else {
-
+            Log.v(TAG, "savedInstanceState == null");
             steps = getArguments().getParcelableArrayList(STEPS);
 
             if (steps != null) {
+                Log.v(TAG, "steps NOT NULL...");
                 //steps = getArguments().get
                 index = getArguments().getInt(INDEX);
                 Log.v(TAG, "index is...: " + index);
