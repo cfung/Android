@@ -66,6 +66,8 @@ public class DetailActivity extends AppCompatActivity implements IngredientsAdap
 
         if (savedInstanceState == null) {
 
+            Log.v(TAG, "savedInstanceState is null... ");
+
             Intent recipeIntent = getIntent();
             Bundle bundle = recipeIntent.getExtras();
             recipeModels = new ArrayList<>();
@@ -96,7 +98,31 @@ public class DetailActivity extends AppCompatActivity implements IngredientsAdap
             }
 
         } else {
+            Log.v(TAG, "savedInstanceState is NOT null... ");
             recipeName = savedInstanceState.getString("Title");
+            Log.v(TAG, "recipeName is ... " + recipeName);
+
+            Intent recipeIntent = getIntent();
+            Bundle bundle = recipeIntent.getExtras();
+            final RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
+            recipeDetailFragment.setArguments(bundle);
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, recipeDetailFragment)
+                    .addToBackStack(RECIPE_STEP_DETAIL)
+                    .commit();
+
+            if (findViewById(R.id.recipe_detail_layout).getTag() != null &&
+                    (findViewById(R.id.recipe_detail_layout).getTag().equals("tablet-land") ||
+                            findViewById(R.id.recipe_detail_layout).getTag().equals("land") )) {
+
+                final RecipeStepDetailFragment recipeStepDetailFragment = new RecipeStepDetailFragment();
+                recipeStepDetailFragment.setArguments(bundle);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container_2, recipeStepDetailFragment)
+                        .addToBackStack(STEPS)
+                        .commit();
+            }
         }
 
     }
@@ -143,7 +169,18 @@ public class DetailActivity extends AppCompatActivity implements IngredientsAdap
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Log.v(TAG, "onSaveInstanceState is called..");
         outState.putString("Title", recipeName);
     }
+
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.v(TAG, "onRestore is called...");
+        Log.v(TAG, "(onRestore) title is..." + savedInstanceState.getString("Title"));
+        recipeName = savedInstanceState.getString("Title");
+    }
+
 
 }
