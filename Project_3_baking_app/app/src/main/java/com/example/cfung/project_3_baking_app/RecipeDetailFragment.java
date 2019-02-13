@@ -11,7 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.cfung.project_3_baking_app.widget.UpdateBakingService;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cfung on 1/7/19.
@@ -46,36 +49,47 @@ public class RecipeDetailFragment extends Fragment {
 
         // add handle for case where savedInstanceState is null
         if (savedInstanceState != null){
-            Log.v(TAG, "RecipeDetailFragment onCreateView (savedInstanceState)...: ");
+            Log.v(TAG, "RecipeDetailFragment savedInstanceState NOT null...: ");
             recipeModels = savedInstanceState.getParcelableArrayList(SELECTED_RECIPES);
 
         } else {
 
-            Intent recipeIntent = getActivity().getIntent();
-            Bundle bundle = recipeIntent.getExtras();
-            ArrayList recipes;
-            recipes = bundle.getParcelableArrayList(SELECTED_RECIPES);
-            Log.v(TAG, "what is recipe in RecipeDetailFragment - onCreateView: " + recipes);
-            recipeModels = recipes;
+            Log.v(TAG, "RecipeDetailFragment savedInstanceState is null...: ");
+
+            //Intent recipeIntent = getActivity().getIntent();
+            //Bundle bundle = recipeIntent.getExtras();
+            //ArrayList recipes;
+            //recipes = bundle.getParcelableArrayList(SELECTED_RECIPES);
+            //Log.v(TAG, "what is recipe in RecipeDetailFragment - onCreateView: " + recipes);
+            recipeModels = getArguments().getParcelableArrayList(SELECTED_RECIPES);
         }
 
-
+        /*
         Log.v(TAG, "recipe (RecipeDetailFragment) recipeModels is..: " + recipeModels);
         if (recipeModels != null) {
             Log.v(TAG, "first recipe name is ..: " + recipeModels.get(0).getRecipeName());
             name = recipeModels.get(0).getRecipeName();
-        }
+        }*/
+        List<Ingredient> ingredients = recipeModels.get(0).getIngredients();
+        Log.v(TAG, "ingrdients...: " + ingredients);
+        name = recipeModels.get(0).getRecipeName();
 
 
         View rootview = inflater.inflate(R.layout.recipe_detail_fragment_body_part, container, false);
 
-        ArrayList<Ingredient> ingredients = recipeModels.get(0).getIngredients();
-        Log.v(TAG, "ingrdients...: " + ingredients);
+        //ArrayList<Ingredient> ingredients = recipeModels.get(0).getIngredients();
 
         textView = (TextView)rootview.findViewById(R.id.recipe_detail_text);
 
+        ArrayList<String> recipeIngredientsWidgets = new ArrayList<>();
+
         for (int x=0; x < ingredients.size(); x++){
             textView.append(ingredients.get(x).getIngredient() + " (" +
+                    ingredients.get(x).getQuantity() +
+                    " " +
+                    ingredients.get(x).getMeasure() + ")" + "\n");
+
+            recipeIngredientsWidgets.add(ingredients.get(x).getIngredient() + " (" +
                     ingredients.get(x).getQuantity() +
                     " " +
                     ingredients.get(x).getMeasure() + ")" + "\n");
@@ -89,6 +103,10 @@ public class RecipeDetailFragment extends Fragment {
         IngredientsAdapter ingredientsAdapter = new IngredientsAdapter((DetailActivity)getActivity());
         recyclerView.setAdapter(ingredientsAdapter);
         ingredientsAdapter.setIngredientsAdapterData(recipeModels, getContext());
+
+        // update widget
+        Log.v(TAG, "calling startBakingService...");
+        UpdateBakingService.startBakingService(getContext(), recipeIngredientsWidgets);
 
         return rootview;
     }

@@ -6,7 +6,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.cfung.project_3_baking_app.R;
-
+import static com.example.cfung.project_3_baking_app.widget.WidgetProvider.ingredientsList;
 import java.util.List;
 
 /**
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class WidgetService extends RemoteViewsService{
 
-    List<String> ingredientsList;
+    List<String> remoteingredientsList;
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -38,7 +38,7 @@ public class WidgetService extends RemoteViewsService{
 
         @Override
         public void onDataSetChanged() {
-
+            remoteingredientsList = ingredientsList;
         }
 
         @Override
@@ -71,7 +71,7 @@ public class WidgetService extends RemoteViewsService{
 
         @Override
         public int getViewTypeCount() {
-            return 0;
+            return 1;  // this needs to return 1 instead of 0
         }
 
         @Override

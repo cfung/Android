@@ -6,6 +6,13 @@
     android:widgetCategory="home_screen"
     android:initialKeyguardLayout="@layout/baking_widget_before_recipe"
     android:initialLayout="@layout/baking_widget_before_recipe"
+    android:resizeMode="horizontal|vertical"
+    android:minWidth="80dp"
+    android:minHeight="150dp"
+    android:minResizeHeight="73dp"
+    android:minResizeWidth="50dp"
+    android:updatePeriodMillis="86400000"
+    android:previewImage="@drawable/ic_launcher_background"
     >
 
 </appwidget-provider>

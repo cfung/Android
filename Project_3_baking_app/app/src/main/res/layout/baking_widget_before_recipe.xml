@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:background="@drawable/ic_launcher_foreground"
+    android:background="@drawable/ic_launcher_background"
 
     android:textAlignment="viewStart">
 
@@ -10,9 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-
         android:contentDescription="baking widget"
-        android:text="baking widget"
+        android:text="baking widget testing"
+
         android:textColor="#ffffff"
         android:textSize="14sp"
         android:fillViewport="false"
